@@ -1224,6 +1224,20 @@ p {
   min-height: 52px;
 }
 
+.care-card-visual {
+  max-width: 480px;
+  margin: 0 auto 56px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+
+.care-card-visual img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 .care-content {
   max-width: 720px;
   margin: 0 auto;
