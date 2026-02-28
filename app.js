@@ -1,16 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const curtain = document.getElementById('pageCurtain');
-  if (curtain) {
-    document.body.classList.add('curtain-active');
-    setTimeout(() => {
-      curtain.classList.add('lifted');
-      document.body.classList.remove('curtain-active');
-    }, 1000);
-    setTimeout(() => {
-      curtain.remove();
-    }, 1800);
-  }
-
   const menuBtn = document.getElementById('menuBtn');
   const mobileNav = document.getElementById('mobileNav');
 

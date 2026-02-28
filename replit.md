@@ -1,7 +1,7 @@
 # AA WIGS — Where Luxury Meets Confidence
 
 ## Overview
-Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vanilla HTML, CSS, and JavaScript — no frameworks. Designed for quiet luxury, premium spacing, smooth animations, and a clean boutique feel.
+Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vanilla HTML, CSS, and JavaScript — no frameworks. Designed for quiet luxury, premium spacing, and a clean boutique feel.
 
 ## Brand
 - **Name**: AA WIGS
@@ -22,9 +22,9 @@ Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vani
 
 ## File Structure
 ```
-/index.html         — Home (cinematic gradient hero, quick-product card, brand statement, packaging experience, Why AA cards, reviews, waitlist teaser with 4 shade buttons)
+/index.html         — Home (gradient hero, quick-product card, brand statement, packaging experience, Why AA cards, reviews, waitlist teaser with 4 shade buttons)
 /cart.js             — Shopping cart (slide-out panel, localStorage persistence, toast notifications, quantity controls)
-/product.html        — Product detail (10-slot gallery, shade swatches, Buy Now Stripe placeholder, What's Included, specs table, shipping/returns, trust badges, AA Promise)
+/product.html        — Product detail (gallery, shade swatches, Buy Now Stripe placeholder, What's Included, specs table, shipping/returns, trust badges, AA Promise)
 /collection.html     — 6 shade cards (Natural Black=Available → product.html, others=Notify Me → waitlist.html?shade=...)
 /waitlist.html       — Waitlist form (email, shade dropdown, length preference) with URL param shade pre-fill, Formspree placeholder
 /about.html          — Brand story, quality promise, packaging image placeholder, 3 value cards
@@ -36,6 +36,13 @@ Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vani
 /assets/             — Image placeholders directory
 ```
 
+## Key Design Notes
+- Hero section uses `.hero` class with burgundy-to-gold gradient applied directly on the section element — no child divs or animations for the background
+- Hero CTA button is solid white with burgundy text — always visible on any background
+- No page curtain, no opacity-based entrance animations on hero text — everything renders immediately
+- Fade-in animations (IntersectionObserver) only used on below-fold sections
+- Luxury dividers (gold ✦ with gradient lines) between homepage sections
+
 ## Key Features
 - All buttons/inputs have 48px minimum height for mobile accessibility
 - Sticky "Shop Now" bar fixed to bottom on mobile (768px and below)
@@ -45,18 +52,7 @@ Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vani
 - URL-based shade pre-filling on waitlist (?shade=Shade+Name)
 - Fade-in animations via IntersectionObserver
 - OG/Twitter meta tags on all pages
-
-## Premium First-Impression Features (Homepage)
-- **Page curtain reveal**: Dark burgundy gradient with gold "AA WIGS" logo, lifts after 1s (JS-controlled, CSS transitions)
-- **Cinematic hero**: Deep burgundy→gold gradient with slow 20s zoom animation, gold overlay pulse
-- **Gold particles**: 6 floating CSS-animated particles rising through the hero
-- **Headline shimmer**: Gold light sweep across "Where Luxury Meets Confidence" text (background-clip animation)
-- **Glass CTA button**: Frosted glass effect with gold border, hover light sweep via ::before pseudo-element
-- **Scroll indicator**: Pulsing gold line at bottom of hero
-- **Bouncing arrow**: Animated arrow on "View the experience" link
-- **Premium topbar**: Gradient background with gold separator line
-- **Luxury dividers**: Gold ✦ with gradient lines between sections
-- All animations are CSS-only (no JS libraries), curtain timing is JS
+- Cart uses localStorage key `aa_cart`; cart.js must be loaded after app.js on every page
 
 ## Placeholders to Replace
 - `YOUR_FORM_ID` in waitlist.html and contact.html (Formspree action URLs)
