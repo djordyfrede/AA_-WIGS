@@ -46,6 +46,18 @@ Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vani
 - Fade-in animations via IntersectionObserver
 - OG/Twitter meta tags on all pages
 
+## Premium First-Impression Features (Homepage)
+- **Page curtain reveal**: Dark burgundy gradient with gold "AA WIGS" logo, lifts after 1s (JS-controlled, CSS transitions)
+- **Cinematic hero**: Deep burgundy→gold gradient with slow 20s zoom animation, gold overlay pulse
+- **Gold particles**: 6 floating CSS-animated particles rising through the hero
+- **Headline shimmer**: Gold light sweep across "Where Luxury Meets Confidence" text (background-clip animation)
+- **Glass CTA button**: Frosted glass effect with gold border, hover light sweep via ::before pseudo-element
+- **Scroll indicator**: Pulsing gold line at bottom of hero
+- **Bouncing arrow**: Animated arrow on "View the experience" link
+- **Premium topbar**: Gradient background with gold separator line
+- **Luxury dividers**: Gold ✦ with gradient lines between sections
+- All animations are CSS-only (no JS libraries), curtain timing is JS
+
 ## Placeholders to Replace
 - `YOUR_FORM_ID` in waitlist.html and contact.html (Formspree action URLs)
 - `#buy-now-stripe-link-placeholder` in product.html (Stripe checkout link)
