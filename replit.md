@@ -22,7 +22,8 @@ Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vani
 
 ## File Structure
 ```
-/index.html         — Home (hero, brand statement, product highlight, packaging experience, Why AA cards, reviews, waitlist teaser with 4 shade buttons)
+/index.html         — Home (cinematic gradient hero, quick-product card, brand statement, packaging experience, Why AA cards, reviews, waitlist teaser with 4 shade buttons)
+/cart.js             — Shopping cart (slide-out panel, localStorage persistence, toast notifications, quantity controls)
 /product.html        — Product detail (10-slot gallery, shade swatches, Buy Now Stripe placeholder, What's Included, specs table, shipping/returns, trust badges, AA Promise)
 /collection.html     — 6 shade cards (Natural Black=Available → product.html, others=Notify Me → waitlist.html?shade=...)
 /waitlist.html       — Waitlist form (email, shade dropdown, length preference) with URL param shade pre-fill, Formspree placeholder
