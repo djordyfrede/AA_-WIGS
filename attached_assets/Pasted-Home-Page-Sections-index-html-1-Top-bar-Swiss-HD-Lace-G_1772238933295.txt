@@ -1,0 +1,95 @@
+Home Page Sections (index.html)
+	1.	Top bar: “Swiss HD Lace • Glueless Ready • Premium Packaging”
+	2.	Hero section:
+	•	Large premium hero image (placeholder)
+	•	Big headline + tagline
+	•	CTA buttons: “Shop The Crown” + “View The Experience”
+	3.	Brand statement:
+	•	Short luxury message: “This isn’t just hair. It’s presence. It’s power.”
+	4.	Signature Product Highlight:
+	•	Featured product card (22” 13x6 Swiss HD Lace, Body Wave, 180% density, Natural Black 1B, $350)
+	5.	The Packaging Experience:
+	•	Show box + satin interior (placeholder)
+	•	Mention: burgundy box, gold foil logo, champagne satin interior, care card + thank-you card
+	6.	Why AA Wigs:
+	•	3 cards: Premium Sourcing, Expert Construction, Luxury Delivery
+	7.	Reviews:
+	•	3 review cards (placeholders)
+	8.	Waitlist teaser:
+	•	“New Shades Coming Soon” with shade buttons (Chocolate Brown, Honey Highlight, Burgundy Wine, Platinum Blonde) → each goes to waitlist page
+	9.	Footer:
+	•	Minimal links (Shipping, Returns, Contact, Instagram)
+
+Product Page (product.html)
+	•	Product title: “AA Signature Body Wave”
+	•	Price: $350
+	•	Image gallery (6–10 slots)
+	•	“What’s Included” section:
+	•	Luxury magnetic box
+	•	Champagne satin interior
+	•	Care guide card
+	•	Thank-you / confidence card
+	•	Optional satin bag
+	•	Specs table:
+	•	100% Virgin Human Hair
+	•	13x6 Swiss HD Lace (NOT transparent)
+	•	180% density
+	•	Pre-plucked hairline
+	•	Bleached knots
+	•	Glueless adjustable band
+	•	Heat safe up to 200°C (392°F)
+	•	CTA buttons:
+	•	“Buy Now” (use Stripe payment link placeholder)
+	•	“Join Waitlist for Other Colors”
+	•	Shipping/returns section
+	•	Trust badges row
+
+Collection Page (collection.html)
+	•	Grid of 6 wigs (placeholders):
+	•	Natural Black (Available)
+	•	Soft Black (Notify me)
+	•	Chocolate Brown (Notify me)
+	•	Honey Highlight (Notify me)
+	•	Burgundy Wine (Notify me)
+	•	Platinum Blonde (Notify me)
+	•	Each card shows “Available” or “Notify Me”
+	•	Clicking “Notify Me” opens waitlist page with that shade pre-filled.
+
+Waitlist Page (waitlist.html)
+	•	Form to collect:
+	•	Email
+	•	Shade interested in (dropdown)
+	•	Length preference (20/22/24)
+	•	Submit to:
+	•	Formspree placeholder
+	•	After submit redirect to /success.html
+
+About Page (about.html)
+	•	Brand story: premium + luxury + confidence
+	•	“Quality Promise” section
+	•	Show packaging image
+
+Care Page (care.html)
+	•	Clean, premium layout matching your care card:
+	•	Washing
+	•	Detangling
+	•	Heat styling
+	•	Storage
+	•	Maintenance schedule
+	•	Add printable button (just triggers window.print())
+
+Contact Page (contact.html)
+	•	Contact form (Formspree placeholder)
+	•	Business email placeholder
+	•	Instagram link
+	•	FAQ snippet: shipping time, returns, lace type, etc.
+
+Technical Requirements
+	•	Fully responsive (mobile-first)
+	•	No tiny text
+	•	Buttons at least 48px height on mobile
+	•	Optimize images using CSS and set max width rules
+	•	Use subtle animations (fade-in on scroll)
+	•	Add SEO meta tags
+	•	Add Open Graph tags placeholders for sharing
+	•	Make it fast (no heavy libs)

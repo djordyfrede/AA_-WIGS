@@ -1,0 +1,122 @@
+document.addEventListener('DOMContentLoaded', () => {
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileNav = document.getElementById('mobileNav');
+
+  if (menuBtn && mobileNav) {
+    menuBtn.setAttribute('aria-controls', 'mobileNav');
+    menuBtn.setAttribute('aria-expanded', 'false');
+
+    menuBtn.addEventListener('click', () => {
+      const isOpen = mobileNav.classList.toggle('open');
+      menuBtn.classList.toggle('active');
+      menuBtn.setAttribute('aria-expanded', String(isOpen));
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+    });
+
+    mobileNav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        menuBtn.classList.remove('active');
+        mobileNav.classList.remove('open');
+        menuBtn.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+      });
+    });
+  }
+
+  const header = document.querySelector('.header');
+  if (header) {
+    let lastScroll = 0;
+    window.addEventListener('scroll', () => {
+      const current = window.scrollY;
+      if (current > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+      lastScroll = current;
+    }, { passive: true });
+  }
+
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', (e) => {
+      const targetId = anchor.getAttribute('href');
+      if (targetId === '#') return;
+      const target = document.querySelector(targetId);
+      if (target) {
+        e.preventDefault();
+        const headerHeight = document.querySelector('.header')?.offsetHeight || 70;
+        const topbar = document.querySelector('.topbar');
+        const topbarHeight = topbar ? topbar.offsetHeight : 0;
+        const offset = headerHeight + topbarHeight;
+        const top = target.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    });
+  });
+
+  const fadeEls = document.querySelectorAll('.fade-in');
+  if (fadeEls.length > 0) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    fadeEls.forEach(el => observer.observe(el));
+  }
+
+  const shadeSwitches = document.querySelectorAll('.shade-swatch');
+  shadeSwitches.forEach(swatch => {
+    swatch.setAttribute('role', 'button');
+    swatch.setAttribute('tabindex', '0');
+    swatch.setAttribute('aria-label', swatch.getAttribute('data-shade') || 'Select shade');
+
+    swatch.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        swatch.click();
+      }
+    });
+
+    swatch.addEventListener('click', () => {
+      shadeSwitches.forEach(s => s.classList.remove('active'));
+      swatch.classList.add('active');
+      const shade = swatch.getAttribute('data-shade');
+      const shadeLabel = document.getElementById('shadeLabel');
+      if (shadeLabel && shade) {
+        shadeLabel.textContent = shade;
+      }
+    });
+  });
+
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const collectionCards = document.querySelectorAll('.collection-card');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.getAttribute('data-filter');
+
+      collectionCards.forEach(card => {
+        if (filter === 'all' || card.getAttribute('data-category') === filter) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  const forms = document.querySelectorAll('form[data-redirect]');
+  forms.forEach(form => {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const redirect = form.getAttribute('data-redirect');
+      window.location.href = redirect || 'success.html';
+    });
+  });
+});
