@@ -25,15 +25,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const header = document.querySelector('.header');
   if (header) {
-    let lastScroll = 0;
     window.addEventListener('scroll', () => {
-      const current = window.scrollY;
-      if (current > 50) {
+      if (window.scrollY > 50) {
         header.classList.add('scrolled');
       } else {
         header.classList.remove('scrolled');
       }
-      lastScroll = current;
     }, { passive: true });
   }
 
@@ -119,4 +116,50 @@ document.addEventListener('DOMContentLoaded', () => {
       window.location.href = redirect || 'success.html';
     });
   });
+
+  const faqItems = document.querySelectorAll('.faq-item');
+  faqItems.forEach((item, index) => {
+    const question = item.querySelector('.faq-question');
+    const answer = item.querySelector('.faq-answer');
+    if (question && answer) {
+      const answerId = 'faq-answer-' + index;
+      answer.id = answerId;
+      question.setAttribute('aria-expanded', 'false');
+      question.setAttribute('aria-controls', answerId);
+
+      question.addEventListener('click', () => {
+        const wasOpen = item.classList.contains('open');
+        faqItems.forEach(i => {
+          i.classList.remove('open');
+          const q = i.querySelector('.faq-question');
+          if (q) q.setAttribute('aria-expanded', 'false');
+        });
+        if (!wasOpen) {
+          item.classList.add('open');
+          question.setAttribute('aria-expanded', 'true');
+        }
+      });
+    }
+  });
+
+  const printBtn = document.getElementById('printBtn');
+  if (printBtn) {
+    printBtn.addEventListener('click', () => {
+      window.print();
+    });
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const prefilledShade = params.get('shade');
+  if (prefilledShade) {
+    const shadeSelect = document.getElementById('shade');
+    if (shadeSelect) {
+      for (let i = 0; i < shadeSelect.options.length; i++) {
+        if (shadeSelect.options[i].value === prefilledShade) {
+          shadeSelect.selectedIndex = i;
+          break;
+        }
+      }
+    }
+  }
 });
