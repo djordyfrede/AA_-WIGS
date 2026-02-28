@@ -531,12 +531,35 @@ p {
 .packaging-gallery {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 20px;
+  perspective: 800px;
 }
 
 .packaging-gallery .img-wrap {
-  border-radius: var(--radius-lg);
+  border-radius: 12px;
   overflow: hidden;
+  box-shadow: 0 8px 32px rgba(124, 8, 50, 0.12), 0 2px 8px rgba(0,0,0,0.06);
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.packaging-gallery .img-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  border: 1px solid rgba(197, 163, 85, 0.2);
+  pointer-events: none;
+  transition: border-color 0.5s ease;
+}
+
+.packaging-gallery .img-wrap:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 20px 48px rgba(124, 8, 50, 0.18), 0 8px 24px rgba(0,0,0,0.1);
+}
+
+.packaging-gallery .img-wrap:hover::after {
+  border-color: rgba(197, 163, 85, 0.5);
 }
 
 .packaging-gallery .img-wrap img {
@@ -544,6 +567,11 @@ p {
   height: 100%;
   object-fit: cover;
   aspect-ratio: 4/5;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.packaging-gallery .img-wrap:hover img {
+  transform: scale(1.04);
 }
 
 .checklist li {
