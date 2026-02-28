@@ -1,7 +1,7 @@
 # AA WIGS — Where Luxury Meets Confidence
 
 ## Overview
-Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vanilla HTML, CSS, and JavaScript — no frameworks. Designed for quiet luxury, premium spacing, and a clean boutique feel.
+Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vanilla HTML, CSS, and JavaScript — no frameworks. Designed for quiet luxury, premium spacing, smooth animations, and a clean boutique feel.
 
 ## Brand
 - **Name**: AA WIGS
@@ -22,9 +22,9 @@ Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vani
 
 ## File Structure
 ```
-/index.html         — Home (gradient hero, quick-product card, brand statement, packaging experience, Why AA cards, reviews, waitlist teaser with 4 shade buttons)
+/index.html         — Home (cinematic gradient hero, quick-product card, brand statement, packaging experience, Why AA cards, reviews, waitlist teaser with 4 shade buttons)
 /cart.js             — Shopping cart (slide-out panel, localStorage persistence, toast notifications, quantity controls)
-/product.html        — Product detail (gallery, shade swatches, Buy Now Stripe placeholder, What's Included, specs table, shipping/returns, trust badges, AA Promise)
+/product.html        — Product detail (10-slot gallery, shade swatches, Buy Now Stripe placeholder, What's Included, specs table, shipping/returns, trust badges, AA Promise)
 /collection.html     — 6 shade cards (Natural Black=Available → product.html, others=Notify Me → waitlist.html?shade=...)
 /waitlist.html       — Waitlist form (email, shade dropdown, length preference) with URL param shade pre-fill, Formspree placeholder
 /about.html          — Brand story, quality promise, packaging image placeholder, 3 value cards
@@ -37,11 +37,14 @@ Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vani
 ```
 
 ## Key Design Notes
-- Hero section uses `.hero` class with burgundy-to-gold gradient applied directly on the section element — no child divs or animations for the background
-- Hero CTA button is solid white with burgundy text — always visible on any background
-- No page curtain, no opacity-based entrance animations on hero text — everything renders immediately
-- Fade-in animations (IntersectionObserver) only used on below-fold sections
+- Hero class is `.hero-cinematic` with gradient applied directly on the section element as a fallback
+- `.hero-cinematic-bg` child div provides the animated zoom gradient on top
+- `.btn-hero` is a gold-tinted frosted glass button with gold border
+- Page curtain with "AA WIGS" logo shows for 1s on load, then lifts (JS in app.js)
+- Hero text uses `.hero-fade-up` class (opacity 0 → 1 animation with staggered delays)
+- Gold particles, shimmer sweep, scroll indicator all CSS-only animations
 - Luxury dividers (gold ✦ with gradient lines) between homepage sections
+- Quick-product section has champagne background with gold top border
 
 ## Key Features
 - All buttons/inputs have 48px minimum height for mobile accessibility
