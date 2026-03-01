@@ -213,7 +213,7 @@ const Cart = {
         Cart.addItem({
           name: 'AA Signature Body Wave 22"',
           shade: shade,
-          price: 350
+          price: 199.99
         });
       });
     }
