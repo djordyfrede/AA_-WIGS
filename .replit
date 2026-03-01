@@ -50,5 +50,9 @@ outputType = "webview"
 expertMode = true
 
 [[ports]]
+localPort = 3000
+externalPort = 3000
+
+[[ports]]
 localPort = 5000
 externalPort = 5000
