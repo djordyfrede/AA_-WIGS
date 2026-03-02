@@ -221,3 +221,5 @@ const Cart = {
 };
 
 document.addEventListener('DOMContentLoaded', () => Cart.init());
+<link rel="icon" href="/favicon.png" type="image/png">
+<link rel="shortcut icon" href="/favicon.png">

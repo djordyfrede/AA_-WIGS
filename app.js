@@ -175,3 +175,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 });
+<link rel="icon" href="/favicon.png" type="image/png">
+<link rel="shortcut icon" href="/favicon.png">
