@@ -2471,3 +2471,9 @@ p {
   .topbar { font-size: 0.65rem; padding: 8px 12px; }
   .trust-badges { gap: 16px; }
 }
+.trust-badges {
+  margin-top: 12px;
+  font-size: 14px;
+  color: #444;
+  line-height: 1.6;
+}
