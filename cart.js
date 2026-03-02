@@ -103,7 +103,7 @@ const Cart = {
     if (!body || !footer) return;
 
     if (this.items.length === 0) {
-      body.innerHTML = '<div class="cart-empty"><div class="cart-empty-icon">\u2662</div><p>Your bag is empty</p><a href="product.html" class="btn btn-solid">Shop The Crown</a></div>';
+      body.innerHTML = '<div class="cart-empty"><div class="cart-empty-icon">\u2662</div><p>Your bag is empty</p><a href="/products/22-swiss-hd-body-wave/" class="btn btn-solid">Shop The Crown</a></div>';
       footer.style.display = 'none';
       return;
     }
@@ -175,7 +175,7 @@ const Cart = {
         '</div>' +
         '<p class="cart-shipping-note">Shipping calculated at checkout</p>' +
         '<a href="#buy-now-stripe-link-placeholder" class="btn btn-solid cart-checkout-btn">Checkout</a>' +
-        '<a href="product.html" class="cart-continue">Continue Shopping</a>' +
+        '<a href="/products/22-swiss-hd-body-wave/" class="cart-continue">Continue Shopping</a>' +
       '</div>';
     document.body.appendChild(panel);
 
@@ -213,7 +213,7 @@ const Cart = {
         Cart.addItem({
           name: 'AA Signature Body Wave 22"',
           shade: shade,
-          price: 199.99
+          price: 350
         });
       });
     }

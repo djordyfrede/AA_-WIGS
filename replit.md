@@ -23,9 +23,10 @@ Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vani
 ## File Structure
 ```
 /index.html         — Home (cinematic gradient hero, quick-product card, brand statement, packaging experience, Why AA cards, reviews, waitlist teaser with 4 shade buttons)
-/cart.js             — Shopping cart (slide-out panel, localStorage persistence, toast notifications, quantity controls)
-/product.html        — Product detail (10-slot gallery, shade swatches, Buy Now Stripe placeholder, What's Included, specs table, shipping/returns, trust badges, AA Promise)
-/collection.html     — 6 shade cards (Natural Black=Available → product.html, others=Notify Me → waitlist.html?shade=...)
+/cart.js             — Shopping cart (slide-out panel, localStorage persistence, toast notifications, quantity controls, price $350)
+/products/22-swiss-hd-body-wave/index.html — SEO product page (JSON-LD, breadcrumbs, emotional tagline, quick specs, trust indicators, inventory badge, shade swatches)
+/product.html        — Meta-refresh redirect to /products/22-swiss-hd-body-wave/ (noindex)
+/collection.html     — 6 shade cards (Natural Black=Available → product page, others=Notify Me → waitlist.html?shade=...)
 /waitlist.html       — Waitlist form (email, shade dropdown, length preference) with URL param shade pre-fill, Formspree placeholder
 /about.html          — Brand story, quality promise, packaging image placeholder, 3 value cards
 /care.html           — Full care guide (washing, detangling, heat, storage, lace care), maintenance schedule, print button
@@ -46,6 +47,16 @@ Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vani
 - Luxury dividers (gold ✦ with gradient lines) between homepage sections
 - Quick-product section has champagne background with gold top border
 
+## Product Page (SEO-optimized)
+- Canonical URL: /products/22-swiss-hd-body-wave/
+- JSON-LD Product structured data with price, availability, shipping
+- Emotional tagline: "This isn't just hair. It's presence."
+- Quick specs grid (2-col): Virgin Hair, HD Lace, Density, Hairline, Glueless, Heat Safe
+- Trust indicators: Free U.S. Shipping, Secure Stripe Checkout, Limited Stock
+- Inventory badge: "Only X Crowns Remaining" when stock ≤ 3; sold-out state with waitlist CTA
+- Breadcrumb navigation: Home > Collection > Signature Body Wave
+- Price: $350 (consistent across all pages)
+
 ## Key Features
 - All buttons/inputs have 48px minimum height for mobile accessibility
 - Sticky "Shop Now" bar fixed to bottom on mobile (768px and below)
@@ -59,7 +70,7 @@ Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vani
 
 ## Placeholders to Replace
 - `YOUR_FORM_ID` in waitlist.html and contact.html (Formspree action URLs)
-- `#buy-now-stripe-link-placeholder` in product.html (Stripe checkout link)
+- `#buy-now-stripe-link-placeholder` in product page and cart.js (Stripe checkout link)
 - Image placeholder divs throughout (replace with real product/packaging photos)
 - `assets/og-image.jpg` and `assets/og-product.jpg` (OG meta images)
 
@@ -68,6 +79,7 @@ Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vani
 - Desktop: Shop, Experience, Reviews, Care, Contact + "Shop The Crown" CTA
 - Mobile: Hamburger menu with large tap targets
 - Sticky "Shop Now" button fixed to bottom on mobile
+- All "Shop The Crown" links point to /products/22-swiss-hd-body-wave/
 
 ## Server
 - Static file server (`static-web-server`) on port 5000
