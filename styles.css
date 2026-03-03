@@ -62,12 +62,21 @@ body.curtain-active {
   align-items: center;
   justify-content: center;
   transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.6s;
+  animation: curtainFallback 0.6s 2s forwards;
 }
 
 .page-curtain.lifted {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
+}
+
+@keyframes curtainFallback {
+  to {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
 }
 
 .curtain-logo {
