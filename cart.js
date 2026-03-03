@@ -14,13 +14,15 @@ const Cart = {
   },
 
   addItem(product) {
-    const existing = this.items.find(i => i.shade === product.shade);
+    const itemKey = (product.shade || '') + '|' + (product.length || '');
+    const existing = this.items.find(i => ((i.shade || '') + '|' + (i.length || '')) === itemKey);
     if (existing) {
       existing.qty += 1;
     } else {
       this.items.push({
         name: product.name,
         shade: product.shade,
+        length: product.length || '',
         price: product.price,
         qty: 1
       });
@@ -32,19 +34,23 @@ const Cart = {
     this.showConfirmation();
   },
 
-  removeItem(shade) {
-    this.items = this.items.filter(i => i.shade !== shade);
+  getItemKey(item) {
+    return (item.shade || '') + '|' + (item.length || '');
+  },
+
+  removeItem(key) {
+    this.items = this.items.filter(i => this.getItemKey(i) !== key);
     this.save();
     this.updateBadge();
     this.render();
   },
 
-  updateQty(shade, delta) {
-    const item = this.items.find(i => i.shade === shade);
+  updateQty(key, delta) {
+    const item = this.items.find(i => this.getItemKey(i) === key);
     if (!item) return;
     item.qty += delta;
     if (item.qty <= 0) {
-      this.removeItem(shade);
+      this.removeItem(key);
       return;
     }
     this.save();
@@ -111,19 +117,21 @@ const Cart = {
     footer.style.display = 'block';
     let html = '';
     this.items.forEach(item => {
+      const key = this.getItemKey(item);
+      const lengthInfo = item.length ? ' · ' + item.length : '';
       html += '<div class="cart-item">' +
         '<div class="cart-item-info">' +
           '<h4>' + item.name + '</h4>' +
-          '<p class="cart-item-shade">' + item.shade + '</p>' +
+          '<p class="cart-item-shade">' + item.shade + lengthInfo + '</p>' +
           '<p class="cart-item-price">$' + item.price + '</p>' +
         '</div>' +
         '<div class="cart-item-controls">' +
           '<div class="qty-control">' +
-            '<button class="qty-btn" data-shade="' + item.shade + '" data-delta="-1" aria-label="Decrease quantity">\u2212</button>' +
+            '<button class="qty-btn" data-key="' + key + '" data-delta="-1" aria-label="Decrease quantity">\u2212</button>' +
             '<span class="qty-value">' + item.qty + '</span>' +
-            '<button class="qty-btn" data-shade="' + item.shade + '" data-delta="1" aria-label="Increase quantity">+</button>' +
+            '<button class="qty-btn" data-key="' + key + '" data-delta="1" aria-label="Increase quantity">+</button>' +
           '</div>' +
-          '<button class="cart-remove" data-shade="' + item.shade + '" aria-label="Remove item">' +
+          '<button class="cart-remove" data-key="' + key + '" aria-label="Remove item">' +
             '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
           '</button>' +
         '</div>' +
@@ -136,15 +144,15 @@ const Cart = {
 
     body.querySelectorAll('.qty-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        const shade = btn.getAttribute('data-shade');
+        const key = btn.getAttribute('data-key');
         const delta = parseInt(btn.getAttribute('data-delta'));
-        Cart.updateQty(shade, delta);
+        Cart.updateQty(key, delta);
       });
     });
 
     body.querySelectorAll('.cart-remove').forEach(btn => {
       btn.addEventListener('click', () => {
-        Cart.removeItem(btn.getAttribute('data-shade'));
+        Cart.removeItem(btn.getAttribute('data-key'));
       });
     });
   },
@@ -210,9 +218,12 @@ const Cart = {
         e.preventDefault();
         const shadeLabel = document.getElementById('shadeLabel');
         const shade = shadeLabel ? shadeLabel.textContent : '1B Natural Black';
+        const lengthLabel = document.getElementById('lengthLabel');
+        const length = lengthLabel ? lengthLabel.textContent : '22"';
         Cart.addItem({
-          name: 'AA Signature Body Wave 22"',
+          name: 'AA Signature Body Wave',
           shade: shade,
+          length: length,
           price: 350
         });
       });

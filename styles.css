@@ -2357,6 +2357,56 @@ p {
   font-size: 0.85rem;
 }
 
+.length-selector {
+  margin-bottom: 24px;
+}
+
+.length-selector h3 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 12px;
+  color: var(--black);
+}
+
+.length-selector h3 span {
+  font-weight: 700;
+  color: var(--burgundy);
+}
+
+.length-options {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.length-btn {
+  min-width: 56px;
+  height: 44px;
+  padding: 0 16px;
+  border: 1.5px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  background: var(--white);
+  color: var(--black);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.length-btn:hover {
+  border-color: var(--burgundy);
+  color: var(--burgundy);
+}
+
+.length-btn.active {
+  background: var(--burgundy);
+  border-color: var(--burgundy);
+  color: var(--white);
+  font-weight: 600;
+}
+
 .product-quick-specs {
   display: grid;
   grid-template-columns: 1fr 1fr;

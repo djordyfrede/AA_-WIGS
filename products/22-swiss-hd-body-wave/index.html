@@ -222,7 +222,7 @@
           <p class="eyebrow">Signature Collection</p>
           <h1>AA Signature Body Wave</h1>
           <p class="product-emotion">This isn't just hair. It's presence.</p>
-          <p class="product-subtitle">22" · 13x6 Swiss HD Lace · 180% Density · Glueless Ready</p>
+          <p class="product-subtitle"><span id="subtitleLength">22"</span> · 13x6 Swiss HD Lace · 180% Density · Glueless Ready</p>
 
           <div class="product-price-block">
             <span class="price">$350</span>
@@ -242,6 +242,17 @@
             <div class="quick-spec-item"><span class="spec-dot"></span> Pre-plucked Hairline</div>
             <div class="quick-spec-item"><span class="spec-dot"></span> Glueless Adjustable Band</div>
             <div class="quick-spec-item"><span class="spec-dot"></span> Heat Safe (up to 392°F)</div>
+          </div>
+
+          <div class="length-selector">
+            <h3>Length: <span id="lengthLabel">22"</span></h3>
+            <div class="length-options">
+              <button class="length-btn" data-length="18">18"</button>
+              <button class="length-btn" data-length="20">20"</button>
+              <button class="length-btn active" data-length="22">22"</button>
+              <button class="length-btn" data-length="24">24"</button>
+              <button class="length-btn" data-length="26">26"</button>
+            </div>
           </div>
 
           <div class="shade-selector">
@@ -441,6 +452,20 @@
       if (indicator) indicator.innerHTML =
         '<span class="stock-low">Only ' + STOCK + ' Crown' + (STOCK > 1 ? 's' : '') + ' Remaining</span>';
     }
+
+    var lengthBtns = document.querySelectorAll('.length-btn');
+    var lengthLabel = document.getElementById('lengthLabel');
+    var subtitleLength = document.getElementById('subtitleLength');
+
+    lengthBtns.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        lengthBtns.forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        var len = btn.getAttribute('data-length');
+        if (lengthLabel) lengthLabel.textContent = len + '"';
+        if (subtitleLength) subtitleLength.textContent = len + '"';
+      });
+    });
 
     var mobileAddBtn = document.getElementById('addToCartMobile');
     var mainAddBtn = document.getElementById('addToCartBtn');
