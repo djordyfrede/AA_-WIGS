@@ -14,7 +14,7 @@ const Cart = {
   },
 
   addItem(product) {
-    const itemKey = (product.shade || '') + '|' + (product.length || '');
+    const itemKey = this.getItemKey(product);
     const existing = this.items.find(i => this.getItemKey(i) === itemKey);
     if (existing) {
       existing.qty += 1;
@@ -38,7 +38,7 @@ const Cart = {
   },
 
   getItemKey(item) {
-    return (item.shade || '') + '|' + (item.length || '');
+    return ((item.shade || '') + '|' + (item.length || '')).replace(/"/g, 'in');
   },
 
   removeItem(key) {
