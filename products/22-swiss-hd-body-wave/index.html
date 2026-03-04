@@ -244,16 +244,26 @@
             <div class="quick-spec-item"><span class="spec-dot"></span> Heat Safe (up to 392°F)</div>
           </div>
 
-          <div class="length-selector">
-            <h3>Length: <span id="lengthLabel">22"</span></h3>
-            <div class="length-options">
-              <button class="length-btn" data-length="18">18"</button>
-              <button class="length-btn" data-length="20">20"</button>
-              <button class="length-btn active" data-length="22">22"</button>
-              <button class="length-btn" data-length="24">24"</button>
-              <button class="length-btn" data-length="26">26"</button>
+          <!-- LENGTH SELECTOR -->
+          <div class="length-block" style="margin-top:14px;">
+            <div class="length-label" style="font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:#6f6b67;">
+              LENGTH:
+              <span id="selectedLengthLabel" style="font-weight:700;">22"</span>
+            </div>
+
+            <div class="length-options" id="lengthOptions" style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
+              <button type="button" class="len-btn" data-len="18">18"</button>
+              <button type="button" class="len-btn" data-len="20">20"</button>
+              <button type="button" class="len-btn is-active" data-len="22">22"</button>
+              <button type="button" class="len-btn" data-len="24">24"</button>
+              <button type="button" class="len-btn" data-len="26">26"</button>
+            </div>
+
+            <div id="priceNote" style="margin-top:10px; font-size:12px; color:#8b857f;">
+              Price updates by length.
             </div>
           </div>
+            
 
           <div class="shade-selector">
             <h3>Shade: <span id="shadeLabel">1B Natural Black</span></h3>
@@ -475,6 +485,130 @@
       });
     }
   })();
+  </script>
+  <script>
+    // ✅ SET DEFAULTS
+    let selectedLength = "22";
+    let selectedColor = "1B"; // default color on load
+
+    // ✅ PRICES (edit if yours are different)
+    const PRICES = {
+      "18": $$$,
+      "20": $$$,
+      "22": $$$,
+      "24": $$$,
+      "26": $$$,
+    };
+
+    // ✅ STRIPE LINKS (Color -> Length -> {price, url})
+    const VARIANTS = {
+      "1B": {
+        "18": { price: PRICES["18"], url: "https://buy.stripe.com/28EbJ18V94nt3hmb4M4c801" },
+        "20": { price: PRICES["20"], url: "https://buy.stripe.com/3cIdR9c7l6vBg484Go4c802" },
+        "22": { price: PRICES["22"], url: "https://buy.stripe.com/14AfZh8V96vB2di1uc4c803" },
+        "24": { price: PRICES["24"], url: "https://buy.stripe.com/5kQ14n5IX07d19eegY4c804" },
+        "26": { price: PRICES["26"], url: "https://buy.stripe.com/eVq9ATdbp9HN5puegY4c805" }
+      },
+
+      "2": {
+        "18": { price: PRICES["18"], url: "https://buy.stripe.com/3cI00jfjx7zF05ac8Q4c806" },
+        "20": { price: PRICES["20"], url: "https://buy.stripe.com/cNi28reftdY35pudcU4c807" },
+        "22": { price: PRICES["22"], url: "https://buy.stripe.com/cNifZhgnB5rx7xC7SA4c808" },
+        "24": { price: PRICES["24"], url: "https://buy.stripe.com/5kQ5kDgnB8DJ6ty8WE4c809" },
+        "26": { price: PRICES["26"], url: "https://buy.stripe.com/14AeVd1sHg6bcRW3Ck4c80a" }
+      },
+
+      "4": {
+        "18": { price: PRICES["18"], url: "https://buy.stripe.com/00w8wP5IXcTZ3hmdcU4c80b" },
+        "20": { price: PRICES["20"], url: "https://buy.stripe.com/bJe3cv1sH9HNf048WE4c80c" },
+        "22": { price: PRICES["22"], url: "https://buy.stripe.com/9B6cN5b3haLRdW0a0I4c80d" },
+        "24": { price: PRICES["24"], url: "https://buy.stripe.com/bJeeVd6N11bh6ty1uc4c80e" },
+        "26": { price: PRICES["26"], url: "https://buy.stripe.com/14A7sLeft4nt19efl24c80f" }
+      },
+
+      "613": {
+        "18": { price: PRICES["18"], url: "https://buy.stripe.com/3cI7sL2wL2flcRW6Ow4c80g" },
+        "20": { price: PRICES["20"], url: "https://buy.stripe.com/eVq7sLfjx07d19e4Go4c80h" },
+        "22": { price: PRICES["22"], url: "https://buy.stripe.com/bJe7sLfjx3jpdW04Go4c80i" },
+        "24": { price: PRICES["24"], url: "https://buy.stripe.com/28E8wP3APbPV7xCegY4c80j" },
+        "26": { price: PRICES["26"], url: "https://buy.stripe.com/cNi8wP6N19HN05aegY4c80k" }
+      },
+
+      "99J": {
+        "18": { price: PRICES["18"], url: "https://buy.stripe.com/cNibJ11sH6vB8BGb4M4c80l" },
+        "20": { price: PRICES["20"], url: "https://buy.stripe.com/aFa8wPgnBcTZ3hm3Ck4c80m" },
+        "22": { price: PRICES["22"], url: "https://buy.stripe.com/dRmdR9fjx7zF05a2yg4c80n" },
+        "24": { price: PRICES["24"], url: "https://buy.stripe.com/00w00j4ET1bh19e1uc4c80o" },
+        "26": { price: PRICES["26"], url: "https://buy.stripe.com/dRm3cv1sH5rx19eegY4c80p" }
+      },
+
+      "27": {
+        "18": { price: PRICES["18"], url: "https://buy.stripe.com/28E14n3AP1bhbNSa0I4c80q" },
+        "20": { price: PRICES["20"], url: "https://buy.stripe.com/00w8wPeft3jpcRW1uc4c80r" },
+        "22": { price: PRICES["22"], url: "https://buy.stripe.com/bJe14n0oD9HNdW06Ow4c80s" },
+        "24": { price: PRICES["24"], url: "https://buy.stripe.com/7sYcN5c7l8DJ6tygp64c80t" },
+        "26": { price: PRICES["26"], url: "https://buy.stripe.com/eVq28r8V97zFdW0c8Q4c80u" }
+      }
+    };
+
+    // ✅ Update UI + attach Stripe link to button
+    function renderPriceAndButton(){
+      const v = VARIANTS?.[selectedColor]?.[selectedLength];
+      if(!v) return;
+
+      const priceText = `$${v.price}`;
+
+      // update big price
+      const bigPrice =
+        document.querySelector(".price-value") ||
+        document.querySelector(".price") ||
+        document.getElementById("priceValue");
+      if (bigPrice) bigPrice.textContent = priceText;
+
+      // update button + store url
+      const addBtn =
+        document.getElementById("addToCartBtn") ||
+        document.getElementById("addToCartMobile") ||
+        document.querySelector(".add-to-bag") ||
+        document.querySelector("button");
+      if (addBtn){
+        addBtn.textContent = `ADD TO BAG — ${priceText}`;
+        addBtn.dataset.stripeUrl = v.url;
+      }
+
+      // update length label if you have it
+      const lengthLabel = document.getElementById("lengthLabel") || document.getElementById("selectedLengthLabel");
+      if (lengthLabel) lengthLabel.textContent = `${selectedLength}"`;
+    }
+
+    // ✅ Hook length buttons (your HTML uses data-length)
+    document.querySelectorAll(".length-btn").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        selectedLength = btn.dataset.length;
+
+        document.querySelectorAll(".length-btn").forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+
+        renderPriceAndButton();
+      });
+    });
+
+    // ✅ Call this from your color click code (IMPORTANT)
+    window.setSelectedColor = function(colorCode){
+      selectedColor = colorCode; // ex: "1B", "2", "4", "613", "99J", "27"
+      renderPriceAndButton();
+    };
+
+    // ✅ Checkout
+    document.addEventListener("click", (e)=>{
+      const btn = e.target.closest("#addToCartBtn, #addToCartMobile, .add-to-bag, button");
+      if(!btn) return;
+      const url = btn.dataset.stripeUrl;
+      if(url && url.includes("stripe.com")) window.location.href = url;
+    });
+
+    // initial render
+    renderPriceAndButton();
   </script>
 </body>
 </html>

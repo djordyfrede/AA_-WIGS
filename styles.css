@@ -2538,3 +2538,16 @@ p {
 }
 <link rel="icon" href="/favicon.png" type="image/png">
 <link rel="shortcut icon" href="/favicon.png">
+.len-btn{
+  border: 1px solid rgba(0,0,0,.15);
+  background: #fff;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.len-btn:hover{ transform: translateY(-1px); }
+.len-btn.is-active{
+  border-color: rgba(0,0,0,.35);
+  box-shadow: 0 6px 18px rgba(0,0,0,.08);
+}
