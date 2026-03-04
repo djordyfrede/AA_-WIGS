@@ -23,7 +23,7 @@ Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vani
 ## File Structure
 ```
 /index.html         — Home (cinematic gradient hero, quick-product card, brand statement, packaging experience, Why AA cards, reviews, waitlist teaser with 4 shade buttons)
-/cart.js             — Shopping cart (slide-out panel, localStorage persistence, toast notifications, quantity controls, price $350)
+/cart.js             — Shopping cart (slide-out panel, localStorage persistence, toast notifications, quantity controls, Stripe checkout per variant)
 /products/22-swiss-hd-body-wave/index.html — SEO product page (JSON-LD, breadcrumbs, emotional tagline, quick specs, trust indicators, inventory badge, shade swatches)
 /product.html        — Meta-refresh redirect to /products/22-swiss-hd-body-wave/ (noindex)
 /collection.html     — 6 shade cards (Natural Black=Available → product page, others=Notify Me → waitlist.html?shade=...)
@@ -56,6 +56,7 @@ Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vani
 - Color selector: 6 colors (1B Natural Black, 2 Dark Brown, 4 Medium Brown, 613 Blonde, 99J Burgundy, 27 Honey Blonde)
 - Stripe payment integration: 30 unique Stripe checkout links (6 colors x 5 lengths), "Add to Bag" redirects directly to Stripe
 - Variant data stored in inline `<script>` on product page: PRICES, STRIPE_LINKS, COLOR_NAMES objects
+- Social proof section (below Add to Bag): star rating summary (4.9/5), 3 review cards (Ashley R., Tiffany J., Jasmine L.), trust badges (Free Shipping, Secure Checkout, Luxury Packaging)
 - Trust indicators: Free U.S. Shipping, Secure Stripe Checkout, Limited Stock
 - Inventory badge: "Only X Crowns Remaining" when stock ≤ 3; sold-out state with waitlist CTA
 - Breadcrumb navigation: Home > Collection > Signature Body Wave
