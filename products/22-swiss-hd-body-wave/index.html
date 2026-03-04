@@ -17,7 +17,7 @@
 
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="stylesheet" href="../../styles.css?v=20260304b">
+  <link rel="stylesheet" href="../../styles.css?v=20260304c">
 
   <script type="application/ld+json">
   {
@@ -421,8 +421,8 @@
     <button class="btn btn-solid" id="addToCartMobile">Add to Bag — $199.99</button>
   </div>
 
-  <script src="../../app.js?v=20260304b"></script>
-  <script src="../../cart.js?v=20260304b"></script>
+  <script src="../../app.js?v=20260304c"></script>
+  <script src="../../cart.js?v=20260304c"></script>
   <script>
   (function() {
     var selectedColor = '1B';
@@ -494,7 +494,6 @@
     function updateUI() {
       var variant = VARIANTS[selectedColor] && VARIANTS[selectedColor][selectedLength];
       var price = variant ? variant.price : 199.99;
-      var stripeUrl = variant ? variant.url : '';
       var colorName = COLOR_NAMES[selectedColor] || selectedColor;
 
       if (priceEl) priceEl.textContent = '$' + price.toFixed(2);
@@ -504,22 +503,22 @@
       if (imgLabel) imgLabel.textContent = colorName;
 
       var btnText = 'Add to Bag \u2014 $' + price.toFixed(2);
-      if (addBtn) {
-        addBtn.textContent = btnText;
-        addBtn.dataset.stripeUrl = stripeUrl || '';
-      }
-      if (mobileBtn) {
-        mobileBtn.textContent = btnText;
-        mobileBtn.dataset.stripeUrl = stripeUrl || '';
-      }
+      if (addBtn) addBtn.textContent = btnText;
+      if (mobileBtn) mobileBtn.textContent = btnText;
     }
 
-    function goToCheckout(e) {
+    function addToCart(e) {
       e.preventDefault();
-      var url = e.currentTarget.dataset.stripeUrl;
-      if (url) {
-        window.location.href = url;
-      }
+      var variant = VARIANTS[selectedColor] && VARIANTS[selectedColor][selectedLength];
+      if (!variant) return;
+      var colorName = COLOR_NAMES[selectedColor] || selectedColor;
+      Cart.addItem({
+        name: 'AA Signature Body Wave',
+        shade: colorName,
+        length: selectedLength + '"',
+        price: variant.price,
+        stripeUrl: variant.url
+      });
     }
 
     document.querySelectorAll('.length-btn').forEach(function(btn) {
@@ -540,8 +539,8 @@
       });
     });
 
-    if (addBtn) addBtn.addEventListener('click', goToCheckout);
-    if (mobileBtn) mobileBtn.addEventListener('click', goToCheckout);
+    if (addBtn) addBtn.addEventListener('click', addToCart);
+    if (mobileBtn) mobileBtn.addEventListener('click', addToCart);
 
     if (indicator) {
       indicator.innerHTML = '<span class="stock-low">Only 3 Crowns Remaining</span>';

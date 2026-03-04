@@ -2199,6 +2199,44 @@ p {
   margin-bottom: 12px;
 }
 
+.cart-checkout-btn.cart-checkout-multi {
+  display: none;
+}
+
+.cart-multi-checkout {
+  margin-bottom: 12px;
+}
+
+.cart-multi-note {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--gray-400);
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.cart-item-checkout {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  background: var(--burgundy);
+  color: var(--white);
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  border-radius: var(--radius-md);
+  transition: var(--transition);
+  text-decoration: none;
+}
+
+.cart-item-checkout:hover {
+  background: var(--black);
+  color: var(--white);
+}
+
 .cart-continue {
   display: block;
   text-align: center;

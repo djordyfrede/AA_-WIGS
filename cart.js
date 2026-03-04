@@ -15,15 +15,18 @@ const Cart = {
 
   addItem(product) {
     const itemKey = (product.shade || '') + '|' + (product.length || '');
-    const existing = this.items.find(i => ((i.shade || '') + '|' + (i.length || '')) === itemKey);
+    const existing = this.items.find(i => this.getItemKey(i) === itemKey);
     if (existing) {
       existing.qty += 1;
+      existing.price = product.price;
+      existing.stripeUrl = product.stripeUrl || existing.stripeUrl;
     } else {
       this.items.push({
         name: product.name,
         shade: product.shade,
         length: product.length || '',
         price: product.price,
+        stripeUrl: product.stripeUrl || '',
         qty: 1
       });
     }
@@ -59,7 +62,7 @@ const Cart = {
   },
 
   getTotal() {
-    return this.items.reduce((sum, i) => sum + i.price * i.qty, 0);
+    return this.items.reduce((sum, i) => sum + (parseFloat(i.price) || 0) * i.qty, 0).toFixed(2);
   },
 
   getCount() {
@@ -118,12 +121,14 @@ const Cart = {
     let html = '';
     this.items.forEach(item => {
       const key = this.getItemKey(item);
-      const lengthInfo = item.length ? ' · ' + item.length : '';
+      const lengthInfo = item.length ? ' \u00b7 ' + item.length : '';
+      const unitPrice = parseFloat(item.price) || 0;
+      const lineTotal = (unitPrice * item.qty).toFixed(2);
       html += '<div class="cart-item">' +
         '<div class="cart-item-info">' +
           '<h4>' + item.name + '</h4>' +
           '<p class="cart-item-shade">' + item.shade + lengthInfo + '</p>' +
-          '<p class="cart-item-price">$' + item.price + '</p>' +
+          '<p class="cart-item-price">$' + unitPrice.toFixed(2) + (item.qty > 1 ? ' \u00d7 ' + item.qty + ' = $' + lineTotal : '') + '</p>' +
         '</div>' +
         '<div class="cart-item-controls">' +
           '<div class="qty-control">' +
@@ -141,6 +146,49 @@ const Cart = {
 
     const totalEl = document.getElementById('cartTotal');
     if (totalEl) totalEl.textContent = '$' + this.getTotal();
+
+    const checkoutBtn = document.getElementById('cartCheckoutBtn');
+    if (checkoutBtn) {
+      if (this.items.length === 1) {
+        const item = this.items[0];
+        const url = item.stripeUrl || '';
+        if (url) {
+          checkoutBtn.href = url;
+          checkoutBtn.textContent = 'Checkout \u2014 $' + this.getTotal();
+        } else {
+          checkoutBtn.href = '/products/22-swiss-hd-body-wave/';
+          checkoutBtn.textContent = 'Checkout \u2014 $' + this.getTotal();
+        }
+        checkoutBtn.classList.remove('cart-checkout-multi');
+      } else {
+        checkoutBtn.removeAttribute('href');
+        checkoutBtn.textContent = 'Checkout \u2014 $' + this.getTotal();
+        checkoutBtn.classList.add('cart-checkout-multi');
+      }
+    }
+
+    if (this.items.length > 1) {
+      let itemBtns = '';
+      this.items.forEach(item => {
+        const key = this.getItemKey(item);
+        const label = item.shade + (item.length ? ' \u00b7 ' + item.length : '');
+        if (item.stripeUrl) {
+          itemBtns += '<a href="' + item.stripeUrl + '" class="cart-item-checkout" data-key="' + key + '">Buy ' + label + ' \u2014 $' + ((parseFloat(item.price) || 0) * item.qty).toFixed(2) + '</a>';
+        }
+      });
+      if (itemBtns) {
+        const multiNote = '<div class="cart-multi-checkout">' +
+          '<p class="cart-multi-note">Checkout each item separately:</p>' +
+          itemBtns +
+        '</div>';
+        const existingMulti = footer.querySelector('.cart-multi-checkout');
+        if (existingMulti) existingMulti.remove();
+        checkoutBtn.insertAdjacentHTML('afterend', multiNote);
+      }
+    } else {
+      const existingMulti = footer.querySelector('.cart-multi-checkout');
+      if (existingMulti) existingMulti.remove();
+    }
 
     body.querySelectorAll('.qty-btn').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -182,7 +230,7 @@ const Cart = {
           '<span id="cartTotal">$0</span>' +
         '</div>' +
         '<p class="cart-shipping-note">Shipping calculated at checkout</p>' +
-        '<a href="#buy-now-stripe-link-placeholder" class="btn btn-solid cart-checkout-btn">Checkout</a>' +
+        '<a id="cartCheckoutBtn" class="btn btn-solid cart-checkout-btn">Checkout</a>' +
         '<a href="/products/22-swiss-hd-body-wave/" class="cart-continue">Continue Shopping</a>' +
       '</div>';
     document.body.appendChild(panel);
@@ -211,23 +259,6 @@ const Cart = {
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') Cart.close();
     });
-
-    const addBtn = document.getElementById('addToCartBtn');
-    if (addBtn && !addBtn.dataset.stripeUrl) {
-      addBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const shadeLabel = document.getElementById('shadeLabel');
-        const shade = shadeLabel ? shadeLabel.textContent : '1B Natural Black';
-        const lengthLabel = document.getElementById('lengthLabel');
-        const length = lengthLabel ? lengthLabel.textContent : '22"';
-        Cart.addItem({
-          name: 'AA Signature Body Wave',
-          shade: shade,
-          length: length,
-          price: 199.99
-        });
-      });
-    }
   }
 };
 
