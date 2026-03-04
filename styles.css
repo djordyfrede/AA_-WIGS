@@ -2446,6 +2446,26 @@ p {
   font-weight: 600;
 }
 
+.demand-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 8px 0 12px;
+}
+
+.demand-icon {
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+.demand-text {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--burgundy);
+  letter-spacing: 0.3px;
+  transition: opacity 0.4s ease;
+}
+
 .social-proof {
   margin-top: 32px;
   padding-top: 28px;

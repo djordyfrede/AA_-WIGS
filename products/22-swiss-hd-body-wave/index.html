@@ -17,7 +17,7 @@
 
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="stylesheet" href="../../styles.css?v=20260304f">
+  <link rel="stylesheet" href="../../styles.css?v=20260304g">
 
   <script type="application/ld+json">
   {
@@ -239,6 +239,11 @@
           <div class="product-price-block">
             <span class="price">$199.99</span>
             <div class="product-stock-indicator" id="stockIndicator"></div>
+          </div>
+
+          <div class="demand-indicator" id="demandIndicator">
+            <span class="demand-icon">&#128293;</span>
+            <span class="demand-text" id="demandText">12 sold in the last 24 hours</span>
           </div>
 
           <div class="product-trust-row">
@@ -475,8 +480,8 @@
     <button class="btn btn-solid" id="addToCartMobile">Add to Bag — $199.99</button>
   </div>
 
-  <script src="../../app.js?v=20260304f"></script>
-  <script src="../../cart.js?v=20260304f"></script>
+  <script src="../../app.js?v=20260304g"></script>
+  <script src="../../cart.js?v=20260304g"></script>
   <script>
   (function() {
     var selectedColor = '1B';
@@ -598,6 +603,19 @@
 
     if (indicator) {
       indicator.innerHTML = '<span class="stock-low">Only 3 Crowns Remaining</span>';
+    }
+
+    var demandEl = document.getElementById('demandText');
+    if (demandEl) {
+      function randomSold() { return Math.floor(Math.random() * 11) + 8; }
+      demandEl.textContent = randomSold() + ' sold in the last 24 hours';
+      setInterval(function() {
+        demandEl.style.opacity = '0';
+        setTimeout(function() {
+          demandEl.textContent = randomSold() + ' sold in the last 24 hours';
+          demandEl.style.opacity = '1';
+        }, 400);
+      }, 30000);
     }
 
     updateUI();
