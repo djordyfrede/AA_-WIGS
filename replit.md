@@ -52,9 +52,10 @@ Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vani
 - JSON-LD Product structured data with price, availability, shipping
 - Emotional tagline: "This isn't just hair. It's presence."
 - Quick specs grid (2-col): Virgin Hair, HD Lace, Density, Hairline, Glueless, Heat Safe
-- Length selector: 18", 20", 22" (default), 24", 26" — updates subtitle and cart item; all lengths $350
-- Shade selector: 6 colors (1B Natural Black, Soft Black, Chocolate Brown, Honey Highlight, Burgundy Wine, Platinum Blonde)
-- Cart items keyed by shade + length combination (different lengths = separate cart items)
+- Length selector: 18", 20", 22" (default), 24", 26" — updates subtitle and price dynamically
+- Color selector: 6 colors (1B Natural Black, 2 Dark Brown, 4 Medium Brown, 613 Blonde, 99J Burgundy, 27 Honey Blonde)
+- Stripe payment integration: 30 unique Stripe checkout links (6 colors x 5 lengths), "Add to Bag" redirects directly to Stripe
+- Variant data stored in inline `<script>` on product page: PRICES, STRIPE_LINKS, COLOR_NAMES objects
 - Trust indicators: Free U.S. Shipping, Secure Stripe Checkout, Limited Stock
 - Inventory badge: "Only X Crowns Remaining" when stock ≤ 3; sold-out state with waitlist CTA
 - Breadcrumb navigation: Home > Collection > Signature Body Wave

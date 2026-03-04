@@ -205,8 +205,8 @@
 
       <div class="product-detail-grid">
         <div class="product-gallery">
-          <div class="img-placeholder product-main-img">
-            <span class="placeholder-text">Product Main Image</span>
+          <div class="img-placeholder product-main-img" id="productMainImg">
+            <span class="placeholder-text" id="productImgLabel">1B Natural Black</span>
           </div>
           <div class="product-gallery-thumbs">
             <div class="thumb active">1</div>
@@ -244,42 +244,31 @@
             <div class="quick-spec-item"><span class="spec-dot"></span> Heat Safe (up to 392°F)</div>
           </div>
 
-          <!-- LENGTH SELECTOR -->
-          <div class="length-block" style="margin-top:14px;">
-            <div class="length-label" style="font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:#6f6b67;">
-              LENGTH:
-              <span id="selectedLengthLabel" style="font-weight:700;">22"</span>
-            </div>
-
-            <div class="length-options" id="lengthOptions" style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
-              <button type="button" class="len-btn" data-len="18">18"</button>
-              <button type="button" class="len-btn" data-len="20">20"</button>
-              <button type="button" class="len-btn is-active" data-len="22">22"</button>
-              <button type="button" class="len-btn" data-len="24">24"</button>
-              <button type="button" class="len-btn" data-len="26">26"</button>
-            </div>
-
-            <div id="priceNote" style="margin-top:10px; font-size:12px; color:#8b857f;">
-              Price updates by length.
+          <div class="length-selector">
+            <h3>Length: <span id="lengthLabel">22"</span></h3>
+            <div class="length-options">
+              <button type="button" class="length-btn" data-length="18">18"</button>
+              <button type="button" class="length-btn" data-length="20">20"</button>
+              <button type="button" class="length-btn active" data-length="22">22"</button>
+              <button type="button" class="length-btn" data-length="24">24"</button>
+              <button type="button" class="length-btn" data-length="26">26"</button>
             </div>
           </div>
-            
 
           <div class="shade-selector">
-            <h3>Shade: <span id="shadeLabel">1B Natural Black</span></h3>
+            <h3>Color: <span id="shadeLabel">1B Natural Black</span></h3>
             <div class="shade-options">
-              <div class="shade-swatch active" data-shade="1B Natural Black" style="background:#1a1a1a;" title="1B Natural Black"></div>
-              <div class="shade-swatch" data-shade="Soft Black" style="background:#2a2a2a;" title="Soft Black"></div>
-              <div class="shade-swatch" data-shade="Chocolate Brown" style="background:#5c3a1e;" title="Chocolate Brown"></div>
-              <div class="shade-swatch" data-shade="Honey Highlight" style="background:#C5A355;" title="Honey Highlight"></div>
-              <div class="shade-swatch" data-shade="Burgundy Wine" style="background:#7C0832;" title="Burgundy Wine"></div>
-              <div class="shade-swatch" data-shade="Platinum Blonde" style="background:#E8D5A8;" title="Platinum Blonde"></div>
+              <div class="shade-swatch active" data-shade="1B" data-shade-name="1B Natural Black" style="background:#1a1a1a;" title="1B Natural Black"></div>
+              <div class="shade-swatch" data-shade="2" data-shade-name="2 Dark Brown" style="background:#3b2314;" title="2 Dark Brown"></div>
+              <div class="shade-swatch" data-shade="4" data-shade-name="4 Medium Brown" style="background:#5c3a1e;" title="4 Medium Brown"></div>
+              <div class="shade-swatch" data-shade="613" data-shade-name="613 Blonde" style="background:#E8D5A8;" title="613 Blonde"></div>
+              <div class="shade-swatch" data-shade="99J" data-shade-name="99J Burgundy" style="background:#7C0832;" title="99J Burgundy"></div>
+              <div class="shade-swatch" data-shade="27" data-shade-name="27 Honey Blonde" style="background:#C5A355;" title="27 Honey Blonde"></div>
             </div>
           </div>
 
           <div class="product-actions" id="productActions">
             <button class="btn btn-solid" id="addToCartBtn">Add to Bag — $350</button>
-            <a class="btn btn-outline" href="../../waitlist.html">Join Waitlist for Other Colors</a>
           </div>
 
           <div class="included-list fade-in">
@@ -436,179 +425,137 @@
   <script src="../../cart.js"></script>
   <script>
   (function() {
-    var STOCK = 3;
-    var indicator = document.getElementById('stockIndicator');
-    var actions = document.getElementById('productActions');
-    var mobileBar = document.getElementById('mobileShopBar');
+    var selectedColor = '1B';
+    var selectedLength = '22';
 
-    if (STOCK === 0) {
-      if (indicator) indicator.innerHTML = '<span class="stock-sold-out">Sold Out</span>';
-      if (actions) actions.innerHTML =
-        '<div class="sold-out-notice">' +
-          '<p class="sold-out-text">Signature Unit Sold Out</p>' +
-          '<p class="sold-out-sub">Restock Coming Soon</p>' +
-          '<a class="btn btn-outline" href="../../waitlist.html">Join Waitlist for Restock</a>' +
-        '</div>';
-      if (mobileBar) {
-        var mobileBtn = mobileBar.querySelector('.btn');
-        if (mobileBtn) {
-          mobileBtn.textContent = 'Sold Out — Join Waitlist';
-          mobileBtn.onclick = function() { window.location.href = '../../waitlist.html'; };
-          mobileBtn.classList.remove('btn-solid');
-          mobileBtn.classList.add('btn-outline');
-        }
+    var COLOR_NAMES = {
+      '1B': '1B Natural Black',
+      '2': '2 Dark Brown',
+      '4': '4 Medium Brown',
+      '613': '613 Blonde',
+      '99J': '99J Burgundy',
+      '27': '27 Honey Blonde'
+    };
+
+    var PRICES = {
+      '18': 350,
+      '20': 350,
+      '22': 350,
+      '24': 350,
+      '26': 350
+    };
+
+    var STRIPE_LINKS = {
+      '1B': {
+        '18': 'https://buy.stripe.com/28EbJ18V94nt3hmb4M4c801',
+        '20': 'https://buy.stripe.com/3cIdR9c7l6vBg484Go4c802',
+        '22': 'https://buy.stripe.com/14AfZh8V96vB2di1uc4c803',
+        '24': 'https://buy.stripe.com/5kQ14n5IX07d19eegY4c804',
+        '26': 'https://buy.stripe.com/eVq9ATdbp9HN5puegY4c805'
+      },
+      '2': {
+        '18': 'https://buy.stripe.com/3cI00jfjx7zF05ac8Q4c806',
+        '20': 'https://buy.stripe.com/cNi28reftdY35pudcU4c807',
+        '22': 'https://buy.stripe.com/cNifZhgnB5rx7xC7SA4c808',
+        '24': 'https://buy.stripe.com/5kQ5kDgnB8DJ6ty8WE4c809',
+        '26': 'https://buy.stripe.com/14AeVd1sHg6bcRW3Ck4c80a'
+      },
+      '4': {
+        '18': 'https://buy.stripe.com/00w8wP5IXcTZ3hmdcU4c80b',
+        '20': 'https://buy.stripe.com/bJe3cv1sH9HNf048WE4c80c',
+        '22': 'https://buy.stripe.com/9B6cN5b3haLRdW0a0I4c80d',
+        '24': 'https://buy.stripe.com/bJeeVd6N11bh6ty1uc4c80e',
+        '26': 'https://buy.stripe.com/14A7sLeft4nt19efl24c80f'
+      },
+      '613': {
+        '18': 'https://buy.stripe.com/3cI7sL2wL2flcRW6Ow4c80g',
+        '20': 'https://buy.stripe.com/eVq7sLfjx07d19e4Go4c80h',
+        '22': 'https://buy.stripe.com/bJe7sLfjx3jpdW04Go4c80i',
+        '24': 'https://buy.stripe.com/28E8wP3APbPV7xCegY4c80j',
+        '26': 'https://buy.stripe.com/cNi8wP6N19HN05aegY4c80k'
+      },
+      '99J': {
+        '18': 'https://buy.stripe.com/cNibJ11sH6vB8BGb4M4c80l',
+        '20': 'https://buy.stripe.com/aFa8wPgnBcTZ3hm3Ck4c80m',
+        '22': 'https://buy.stripe.com/dRmdR9fjx7zF05a2yg4c80n',
+        '24': 'https://buy.stripe.com/00w00j4ET1bh19e1uc4c80o',
+        '26': 'https://buy.stripe.com/dRm3cv1sH5rx19eegY4c80p'
+      },
+      '27': {
+        '18': 'https://buy.stripe.com/28E14n3AP1bhbNSa0I4c80q',
+        '20': 'https://buy.stripe.com/00w8wPeft3jpcRW1uc4c80r',
+        '22': 'https://buy.stripe.com/bJe14n0oD9HNdW06Ow4c80s',
+        '24': 'https://buy.stripe.com/7sYcN5c7l8DJ6tygp64c80t',
+        '26': 'https://buy.stripe.com/eVq28r8V97zFdW0c8Q4c80u'
       }
-    } else if (STOCK <= 3) {
-      if (indicator) indicator.innerHTML =
-        '<span class="stock-low">Only ' + STOCK + ' Crown' + (STOCK > 1 ? 's' : '') + ' Remaining</span>';
-    }
+    };
 
-    var lengthBtns = document.querySelectorAll('.length-btn');
+    var priceEl = document.querySelector('.price');
+    var addBtn = document.getElementById('addToCartBtn');
+    var mobileBtn = document.getElementById('addToCartMobile');
     var lengthLabel = document.getElementById('lengthLabel');
     var subtitleLength = document.getElementById('subtitleLength');
+    var shadeLabel = document.getElementById('shadeLabel');
+    var imgLabel = document.getElementById('productImgLabel');
+    var indicator = document.getElementById('stockIndicator');
 
-    lengthBtns.forEach(function(btn) {
+    function updateUI() {
+      var price = PRICES[selectedLength] || 350;
+      var stripeUrl = STRIPE_LINKS[selectedColor] && STRIPE_LINKS[selectedColor][selectedLength];
+      var colorName = COLOR_NAMES[selectedColor] || selectedColor;
+
+      if (priceEl) priceEl.textContent = '$' + price;
+      if (lengthLabel) lengthLabel.textContent = selectedLength + '"';
+      if (subtitleLength) subtitleLength.textContent = selectedLength + '"';
+      if (shadeLabel) shadeLabel.textContent = colorName;
+      if (imgLabel) imgLabel.textContent = colorName;
+
+      var btnText = 'Add to Bag \u2014 $' + price;
+      if (addBtn) {
+        addBtn.textContent = btnText;
+        addBtn.dataset.stripeUrl = stripeUrl || '';
+      }
+      if (mobileBtn) {
+        mobileBtn.textContent = btnText;
+        mobileBtn.dataset.stripeUrl = stripeUrl || '';
+      }
+    }
+
+    function goToCheckout(e) {
+      e.preventDefault();
+      var url = e.currentTarget.dataset.stripeUrl;
+      if (url) {
+        window.location.href = url;
+      }
+    }
+
+    document.querySelectorAll('.length-btn').forEach(function(btn) {
       btn.addEventListener('click', function() {
-        lengthBtns.forEach(function(b) { b.classList.remove('active'); });
+        document.querySelectorAll('.length-btn').forEach(function(b) { b.classList.remove('active'); });
         btn.classList.add('active');
-        var len = btn.getAttribute('data-length');
-        if (lengthLabel) lengthLabel.textContent = len + '"';
-        if (subtitleLength) subtitleLength.textContent = len + '"';
+        selectedLength = btn.getAttribute('data-length');
+        updateUI();
       });
     });
 
-    var mobileAddBtn = document.getElementById('addToCartMobile');
-    var mainAddBtn = document.getElementById('addToCartBtn');
-    if (mobileAddBtn && mainAddBtn && STOCK > 0) {
-      mobileAddBtn.addEventListener('click', function() {
-        mainAddBtn.click();
+    document.querySelectorAll('.shade-swatch').forEach(function(swatch) {
+      swatch.addEventListener('click', function() {
+        document.querySelectorAll('.shade-swatch').forEach(function(s) { s.classList.remove('active'); });
+        swatch.classList.add('active');
+        selectedColor = swatch.getAttribute('data-shade');
+        updateUI();
       });
+    });
+
+    if (addBtn) addBtn.addEventListener('click', goToCheckout);
+    if (mobileBtn) mobileBtn.addEventListener('click', goToCheckout);
+
+    if (indicator) {
+      indicator.innerHTML = '<span class="stock-low">Only 3 Crowns Remaining</span>';
     }
+
+    updateUI();
   })();
-  </script>
-  <script>
-    // ✅ SET DEFAULTS
-    let selectedLength = "22";
-    let selectedColor = "1B"; // default color on load
-
-    // ✅ PRICES (edit if yours are different)
-    const PRICES = {
-      "18": $$$,
-      "20": $$$,
-      "22": $$$,
-      "24": $$$,
-      "26": $$$,
-    };
-
-    // ✅ STRIPE LINKS (Color -> Length -> {price, url})
-    const VARIANTS = {
-      "1B": {
-        "18": { price: PRICES["18"], url: "https://buy.stripe.com/28EbJ18V94nt3hmb4M4c801" },
-        "20": { price: PRICES["20"], url: "https://buy.stripe.com/3cIdR9c7l6vBg484Go4c802" },
-        "22": { price: PRICES["22"], url: "https://buy.stripe.com/14AfZh8V96vB2di1uc4c803" },
-        "24": { price: PRICES["24"], url: "https://buy.stripe.com/5kQ14n5IX07d19eegY4c804" },
-        "26": { price: PRICES["26"], url: "https://buy.stripe.com/eVq9ATdbp9HN5puegY4c805" }
-      },
-
-      "2": {
-        "18": { price: PRICES["18"], url: "https://buy.stripe.com/3cI00jfjx7zF05ac8Q4c806" },
-        "20": { price: PRICES["20"], url: "https://buy.stripe.com/cNi28reftdY35pudcU4c807" },
-        "22": { price: PRICES["22"], url: "https://buy.stripe.com/cNifZhgnB5rx7xC7SA4c808" },
-        "24": { price: PRICES["24"], url: "https://buy.stripe.com/5kQ5kDgnB8DJ6ty8WE4c809" },
-        "26": { price: PRICES["26"], url: "https://buy.stripe.com/14AeVd1sHg6bcRW3Ck4c80a" }
-      },
-
-      "4": {
-        "18": { price: PRICES["18"], url: "https://buy.stripe.com/00w8wP5IXcTZ3hmdcU4c80b" },
-        "20": { price: PRICES["20"], url: "https://buy.stripe.com/bJe3cv1sH9HNf048WE4c80c" },
-        "22": { price: PRICES["22"], url: "https://buy.stripe.com/9B6cN5b3haLRdW0a0I4c80d" },
-        "24": { price: PRICES["24"], url: "https://buy.stripe.com/bJeeVd6N11bh6ty1uc4c80e" },
-        "26": { price: PRICES["26"], url: "https://buy.stripe.com/14A7sLeft4nt19efl24c80f" }
-      },
-
-      "613": {
-        "18": { price: PRICES["18"], url: "https://buy.stripe.com/3cI7sL2wL2flcRW6Ow4c80g" },
-        "20": { price: PRICES["20"], url: "https://buy.stripe.com/eVq7sLfjx07d19e4Go4c80h" },
-        "22": { price: PRICES["22"], url: "https://buy.stripe.com/bJe7sLfjx3jpdW04Go4c80i" },
-        "24": { price: PRICES["24"], url: "https://buy.stripe.com/28E8wP3APbPV7xCegY4c80j" },
-        "26": { price: PRICES["26"], url: "https://buy.stripe.com/cNi8wP6N19HN05aegY4c80k" }
-      },
-
-      "99J": {
-        "18": { price: PRICES["18"], url: "https://buy.stripe.com/cNibJ11sH6vB8BGb4M4c80l" },
-        "20": { price: PRICES["20"], url: "https://buy.stripe.com/aFa8wPgnBcTZ3hm3Ck4c80m" },
-        "22": { price: PRICES["22"], url: "https://buy.stripe.com/dRmdR9fjx7zF05a2yg4c80n" },
-        "24": { price: PRICES["24"], url: "https://buy.stripe.com/00w00j4ET1bh19e1uc4c80o" },
-        "26": { price: PRICES["26"], url: "https://buy.stripe.com/dRm3cv1sH5rx19eegY4c80p" }
-      },
-
-      "27": {
-        "18": { price: PRICES["18"], url: "https://buy.stripe.com/28E14n3AP1bhbNSa0I4c80q" },
-        "20": { price: PRICES["20"], url: "https://buy.stripe.com/00w8wPeft3jpcRW1uc4c80r" },
-        "22": { price: PRICES["22"], url: "https://buy.stripe.com/bJe14n0oD9HNdW06Ow4c80s" },
-        "24": { price: PRICES["24"], url: "https://buy.stripe.com/7sYcN5c7l8DJ6tygp64c80t" },
-        "26": { price: PRICES["26"], url: "https://buy.stripe.com/eVq28r8V97zFdW0c8Q4c80u" }
-      }
-    };
-
-    // ✅ Update UI + attach Stripe link to button
-    function renderPriceAndButton(){
-      const v = VARIANTS?.[selectedColor]?.[selectedLength];
-      if(!v) return;
-
-      const priceText = `$${v.price}`;
-
-      // update big price
-      const bigPrice =
-        document.querySelector(".price-value") ||
-        document.querySelector(".price") ||
-        document.getElementById("priceValue");
-      if (bigPrice) bigPrice.textContent = priceText;
-
-      // update button + store url
-      const addBtn =
-        document.getElementById("addToCartBtn") ||
-        document.getElementById("addToCartMobile") ||
-        document.querySelector(".add-to-bag") ||
-        document.querySelector("button");
-      if (addBtn){
-        addBtn.textContent = `ADD TO BAG — ${priceText}`;
-        addBtn.dataset.stripeUrl = v.url;
-      }
-
-      // update length label if you have it
-      const lengthLabel = document.getElementById("lengthLabel") || document.getElementById("selectedLengthLabel");
-      if (lengthLabel) lengthLabel.textContent = `${selectedLength}"`;
-    }
-
-    // ✅ Hook length buttons (your HTML uses data-length)
-    document.querySelectorAll(".length-btn").forEach(btn=>{
-      btn.addEventListener("click", ()=>{
-        selectedLength = btn.dataset.length;
-
-        document.querySelectorAll(".length-btn").forEach(b=>b.classList.remove("active"));
-        btn.classList.add("active");
-
-        renderPriceAndButton();
-      });
-    });
-
-    // ✅ Call this from your color click code (IMPORTANT)
-    window.setSelectedColor = function(colorCode){
-      selectedColor = colorCode; // ex: "1B", "2", "4", "613", "99J", "27"
-      renderPriceAndButton();
-    };
-
-    // ✅ Checkout
-    document.addEventListener("click", (e)=>{
-      const btn = e.target.closest("#addToCartBtn, #addToCartMobile, .add-to-bag, button");
-      if(!btn) return;
-      const url = btn.dataset.stripeUrl;
-      if(url && url.includes("stripe.com")) window.location.href = url;
-    });
-
-    // initial render
-    renderPriceAndButton();
   </script>
 </body>
 </html>

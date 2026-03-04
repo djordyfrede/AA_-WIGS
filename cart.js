@@ -213,7 +213,7 @@ const Cart = {
     });
 
     const addBtn = document.getElementById('addToCartBtn');
-    if (addBtn) {
+    if (addBtn && !addBtn.dataset.stripeUrl) {
       addBtn.addEventListener('click', (e) => {
         e.preventDefault();
         const shadeLabel = document.getElementById('shadeLabel');
