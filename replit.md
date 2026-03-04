@@ -59,7 +59,7 @@ Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vani
 - Trust indicators: Free U.S. Shipping, Secure Stripe Checkout, Limited Stock
 - Inventory badge: "Only X Crowns Remaining" when stock ≤ 3; sold-out state with waitlist CTA
 - Breadcrumb navigation: Home > Collection > Signature Body Wave
-- Price: $350 (consistent across all pages)
+- Price: varies by color + length ($185.99–$259.99), synced to Stripe payment links
 
 ## Key Features
 - All buttons/inputs have 48px minimum height for mobile accessibility

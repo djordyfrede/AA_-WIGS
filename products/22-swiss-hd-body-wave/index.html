@@ -17,7 +17,7 @@
 
   <meta name="twitter:card" content="summary_large_image">
 
-  <link rel="stylesheet" href="../../styles.css?v=20260304">
+  <link rel="stylesheet" href="../../styles.css?v=20260304b">
 
   <script type="application/ld+json">
   {
@@ -36,7 +36,7 @@
       "@type": "Offer",
       "url": "https://aawigs.com/products/22-swiss-hd-body-wave/",
       "priceCurrency": "USD",
-      "price": "350.00",
+      "price": "199.99",
       "availability": "https://schema.org/InStock",
       "itemCondition": "https://schema.org/NewCondition",
       "seller": {
@@ -225,7 +225,7 @@
           <p class="product-subtitle"><span id="subtitleLength">22"</span> · 13x6 Swiss HD Lace · 180% Density · Glueless Ready</p>
 
           <div class="product-price-block">
-            <span class="price">$350</span>
+            <span class="price">$199.99</span>
             <div class="product-stock-indicator" id="stockIndicator"></div>
           </div>
 
@@ -268,7 +268,7 @@
           </div>
 
           <div class="product-actions" id="productActions">
-            <button class="btn btn-solid" id="addToCartBtn">Add to Bag — $350</button>
+            <button class="btn btn-solid" id="addToCartBtn">Add to Bag — $199.99</button>
           </div>
 
           <div class="included-list fade-in">
@@ -418,11 +418,11 @@
   </footer>
 
   <div class="mobile-shop-btn" id="mobileShopBar">
-    <button class="btn btn-solid" id="addToCartMobile">Add to Bag — $350</button>
+    <button class="btn btn-solid" id="addToCartMobile">Add to Bag — $199.99</button>
   </div>
 
-  <script src="../../app.js?v=20260304"></script>
-  <script src="../../cart.js?v=20260304"></script>
+  <script src="../../app.js?v=20260304b"></script>
+  <script src="../../cart.js?v=20260304b"></script>
   <script>
   (function() {
     var selectedColor = '1B';
@@ -437,56 +437,48 @@
       '27': '27 Honey Blonde'
     };
 
-    var PRICES = {
-      '18': 350,
-      '20': 350,
-      '22': 350,
-      '24': 350,
-      '26': 350
-    };
-
-    var STRIPE_LINKS = {
+    var VARIANTS = {
       '1B': {
-        '18': 'https://buy.stripe.com/28EbJ18V94nt3hmb4M4c801',
-        '20': 'https://buy.stripe.com/3cIdR9c7l6vBg484Go4c802',
-        '22': 'https://buy.stripe.com/14AfZh8V96vB2di1uc4c803',
-        '24': 'https://buy.stripe.com/5kQ14n5IX07d19eegY4c804',
-        '26': 'https://buy.stripe.com/eVq9ATdbp9HN5puegY4c805'
+        '18': { price: 185.99, url: 'https://buy.stripe.com/28EbJ18V94nt3hmb4M4c801' },
+        '20': { price: 199.99, url: 'https://buy.stripe.com/3cIdR9c7l6vBg484Go4c802' },
+        '22': { price: 199.99, url: 'https://buy.stripe.com/14AfZh8V96vB2di1uc4c803' },
+        '24': { price: 239.99, url: 'https://buy.stripe.com/5kQ14n5IX07d19eegY4c804' },
+        '26': { price: 259.99, url: 'https://buy.stripe.com/eVq9ATdbp9HN5puegY4c805' }
       },
       '2': {
-        '18': 'https://buy.stripe.com/3cI00jfjx7zF05ac8Q4c806',
-        '20': 'https://buy.stripe.com/cNi28reftdY35pudcU4c807',
-        '22': 'https://buy.stripe.com/cNifZhgnB5rx7xC7SA4c808',
-        '24': 'https://buy.stripe.com/5kQ5kDgnB8DJ6ty8WE4c809',
-        '26': 'https://buy.stripe.com/14AeVd1sHg6bcRW3Ck4c80a'
+        '18': { price: 185.99, url: 'https://buy.stripe.com/3cI00jfjx7zF05ac8Q4c806' },
+        '20': { price: 199.99, url: 'https://buy.stripe.com/cNi28reftdY35pudcU4c807' },
+        '22': { price: 199.99, url: 'https://buy.stripe.com/cNifZhgnB5rx7xC7SA4c808' },
+        '24': { price: 239.99, url: 'https://buy.stripe.com/5kQ5kDgnB8DJ6ty8WE4c809' },
+        '26': { price: 259.99, url: 'https://buy.stripe.com/14AeVd1sHg6bcRW3Ck4c80a' }
       },
       '4': {
-        '18': 'https://buy.stripe.com/00w8wP5IXcTZ3hmdcU4c80b',
-        '20': 'https://buy.stripe.com/bJe3cv1sH9HNf048WE4c80c',
-        '22': 'https://buy.stripe.com/9B6cN5b3haLRdW0a0I4c80d',
-        '24': 'https://buy.stripe.com/bJeeVd6N11bh6ty1uc4c80e',
-        '26': 'https://buy.stripe.com/14A7sLeft4nt19efl24c80f'
+        '18': { price: 185.99, url: 'https://buy.stripe.com/00w8wP5IXcTZ3hmdcU4c80b' },
+        '20': { price: 199.99, url: 'https://buy.stripe.com/bJe3cv1sH9HNf048WE4c80c' },
+        '22': { price: 199.99, url: 'https://buy.stripe.com/9B6cN5b3haLRdW0a0I4c80d' },
+        '24': { price: 239.99, url: 'https://buy.stripe.com/bJeeVd6N11bh6ty1uc4c80e' },
+        '26': { price: 259.99, url: 'https://buy.stripe.com/14A7sLeft4nt19efl24c80f' }
       },
       '613': {
-        '18': 'https://buy.stripe.com/3cI7sL2wL2flcRW6Ow4c80g',
-        '20': 'https://buy.stripe.com/eVq7sLfjx07d19e4Go4c80h',
-        '22': 'https://buy.stripe.com/bJe7sLfjx3jpdW04Go4c80i',
-        '24': 'https://buy.stripe.com/28E8wP3APbPV7xCegY4c80j',
-        '26': 'https://buy.stripe.com/cNi8wP6N19HN05aegY4c80k'
+        '18': { price: 199.99, url: 'https://buy.stripe.com/3cI7sL2wL2flcRW6Ow4c80g' },
+        '20': { price: 209.99, url: 'https://buy.stripe.com/eVq7sLfjx07d19e4Go4c80h' },
+        '22': { price: 209.99, url: 'https://buy.stripe.com/bJe7sLfjx3jpdW04Go4c80i' },
+        '24': { price: 239.99, url: 'https://buy.stripe.com/28E8wP3APbPV7xCegY4c80j' },
+        '26': { price: 259.99, url: 'https://buy.stripe.com/cNi8wP6N19HN05aegY4c80k' }
       },
       '99J': {
-        '18': 'https://buy.stripe.com/cNibJ11sH6vB8BGb4M4c80l',
-        '20': 'https://buy.stripe.com/aFa8wPgnBcTZ3hm3Ck4c80m',
-        '22': 'https://buy.stripe.com/dRmdR9fjx7zF05a2yg4c80n',
-        '24': 'https://buy.stripe.com/00w00j4ET1bh19e1uc4c80o',
-        '26': 'https://buy.stripe.com/dRm3cv1sH5rx19eegY4c80p'
+        '18': { price: 209.99, url: 'https://buy.stripe.com/cNibJ11sH6vB8BGb4M4c80l' },
+        '20': { price: 219.99, url: 'https://buy.stripe.com/aFa8wPgnBcTZ3hm3Ck4c80m' },
+        '22': { price: 219.99, url: 'https://buy.stripe.com/dRmdR9fjx7zF05a2yg4c80n' },
+        '24': { price: 239.99, url: 'https://buy.stripe.com/00w00j4ET1bh19e1uc4c80o' },
+        '26': { price: 259.99, url: 'https://buy.stripe.com/dRm3cv1sH5rx19eegY4c80p' }
       },
       '27': {
-        '18': 'https://buy.stripe.com/28E14n3AP1bhbNSa0I4c80q',
-        '20': 'https://buy.stripe.com/00w8wPeft3jpcRW1uc4c80r',
-        '22': 'https://buy.stripe.com/bJe14n0oD9HNdW06Ow4c80s',
-        '24': 'https://buy.stripe.com/7sYcN5c7l8DJ6tygp64c80t',
-        '26': 'https://buy.stripe.com/eVq28r8V97zFdW0c8Q4c80u'
+        '18': { price: 185.99, url: 'https://buy.stripe.com/28E14n3AP1bhbNSa0I4c80q' },
+        '20': { price: 199.99, url: 'https://buy.stripe.com/00w8wPeft3jpcRW1uc4c80r' },
+        '22': { price: 199.99, url: 'https://buy.stripe.com/bJe14n0oD9HNdW06Ow4c80s' },
+        '24': { price: 239.99, url: 'https://buy.stripe.com/7sYcN5c7l8DJ6tygp64c80t' },
+        '26': { price: 259.99, url: 'https://buy.stripe.com/eVq28r8V97zFdW0c8Q4c80u' }
       }
     };
 
@@ -500,17 +492,18 @@
     var indicator = document.getElementById('stockIndicator');
 
     function updateUI() {
-      var price = PRICES[selectedLength] || 350;
-      var stripeUrl = STRIPE_LINKS[selectedColor] && STRIPE_LINKS[selectedColor][selectedLength];
+      var variant = VARIANTS[selectedColor] && VARIANTS[selectedColor][selectedLength];
+      var price = variant ? variant.price : 199.99;
+      var stripeUrl = variant ? variant.url : '';
       var colorName = COLOR_NAMES[selectedColor] || selectedColor;
 
-      if (priceEl) priceEl.textContent = '$' + price;
+      if (priceEl) priceEl.textContent = '$' + price.toFixed(2);
       if (lengthLabel) lengthLabel.textContent = selectedLength + '"';
       if (subtitleLength) subtitleLength.textContent = selectedLength + '"';
       if (shadeLabel) shadeLabel.textContent = colorName;
       if (imgLabel) imgLabel.textContent = colorName;
 
-      var btnText = 'Add to Bag \u2014 $' + price;
+      var btnText = 'Add to Bag \u2014 $' + price.toFixed(2);
       if (addBtn) {
         addBtn.textContent = btnText;
         addBtn.dataset.stripeUrl = stripeUrl || '';

@@ -224,7 +224,7 @@ const Cart = {
           name: 'AA Signature Body Wave',
           shade: shade,
           length: length,
-          price: 350
+          price: 199.99
         });
       });
     }
