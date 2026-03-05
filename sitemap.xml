@@ -17,15 +17,48 @@
   </url>
 
   <url>
+    <loc>https://aawigs.com/guides/buying-guide/</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://aawigs.com/guides/hd-lace-wigs/</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://aawigs.com/guides/wig-length-guide/</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://aawigs.com/guides/wig-care-guide/</loc>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
     <loc>https://aawigs.com/about.html</loc>
+    <priority>0.6</priority>
   </url>
 
   <url>
     <loc>https://aawigs.com/care.html</loc>
+    <priority>0.6</priority>
   </url>
 
   <url>
     <loc>https://aawigs.com/contact.html</loc>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>https://aawigs.com/shipping.html</loc>
+    <priority>0.4</priority>
+  </url>
+
+  <url>
+    <loc>https://aawigs.com/returns.html</loc>
+    <priority>0.4</priority>
   </url>
 
 </urlset>
