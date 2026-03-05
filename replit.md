@@ -42,6 +42,7 @@ Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vani
 /robots.txt          — Allows all crawlers, points to sitemap
 /styles.css          — All styles (single CSS file)
 /app.js              — All JS (hamburger, scroll, filters, shade selector, form handling, FAQ accordion, print, URL shade pre-fill)
+/chat.js             — Smart customer service chat widget (knowledge-based, covers pricing/shipping/returns/care/colors/lengths, quick-reply buttons, typing indicator)
 /assets/             — Image placeholders directory
 ```
 
@@ -80,6 +81,7 @@ Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vani
 - Fade-in animations via IntersectionObserver
 - OG/Twitter meta tags on all pages
 - Cart uses localStorage key `aa_cart`; cart.js must be loaded after app.js on every page
+- Smart chat widget (chat.js) on all pages: knowledge-based customer assistant, 17 topic patterns, quick-reply buttons, typing indicator, mobile fullscreen
 
 ## Placeholders to Replace
 - `YOUR_FORM_ID` in waitlist.html and contact.html (Formspree action URLs)
