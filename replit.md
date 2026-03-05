@@ -24,7 +24,7 @@ Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vani
 ```
 /index.html         — Home (cinematic gradient hero, quick-product card, brand statement, packaging experience, Why AA cards, reviews, waitlist teaser with 4 shade buttons)
 /cart.js             — Shopping cart (slide-out panel, localStorage persistence, toast notifications, quantity controls, Stripe checkout per variant)
-/products/22-swiss-hd-body-wave/index.html — SEO product page (JSON-LD, breadcrumbs, emotional tagline, quick specs, trust indicators, inventory badge, shade swatches)
+/products/22-swiss-hd-body-wave/index.html — SEO product page (JSON-LD Product, breadcrumbs, reviews, trust badges, demand indicator, shade swatches)
 /product.html        — Meta-refresh redirect to /products/22-swiss-hd-body-wave/ (noindex)
 /collection.html     — 6 shade cards (Natural Black=Available → product page, others=Notify Me → waitlist.html?shade=...)
 /waitlist.html       — Waitlist form (email, shade dropdown, length preference) with URL param shade pre-fill, Formspree placeholder
@@ -32,6 +32,14 @@ Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vani
 /care.html           — Full care guide (washing, detangling, heat, storage, lace care), maintenance schedule, print button
 /contact.html        — Contact form (Formspree placeholder), FAQ accordion (6 questions), email + Instagram links
 /success.html        — Thank-you page after form submission
+/shipping.html       — Shipping policy page
+/returns.html        — Return & refund policy page
+/guides/buying-guide/index.html     — SEO: Human Hair Wig Buying Guide (Article JSON-LD, targets: human hair wigs, HD lace, glueless)
+/guides/hd-lace-wigs/index.html     — SEO: HD Lace Wigs Guide (Article JSON-LD, targets: HD lace wigs, Swiss HD lace, pre-plucked)
+/guides/wig-length-guide/index.html — SEO: Wig Length Guide 18"–26" (Article JSON-LD, targets: body wave wig lengths, 22 inch wig)
+/guides/wig-care-guide/index.html   — SEO: Wig Care Guide (Article + FAQPage JSON-LD, targets: how to wash human hair wig)
+/sitemap.xml         — XML sitemap with all pages (12 URLs)
+/robots.txt          — Allows all crawlers, points to sitemap
 /styles.css          — All styles (single CSS file)
 /app.js              — All JS (hamburger, scroll, filters, shade selector, form handling, FAQ accordion, print, URL shade pre-fill)
 /assets/             — Image placeholders directory
