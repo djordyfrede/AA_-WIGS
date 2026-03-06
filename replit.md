@@ -43,6 +43,13 @@ Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vani
 /styles.css          — All styles (single CSS file)
 /app.js              — All JS (hamburger, scroll, filters, shade selector, form handling, FAQ accordion, print, URL shade pre-fill)
 /chat.js             — Smart customer service chat widget (knowledge-based, covers pricing/shipping/returns/care/colors/lengths, quick-reply buttons, typing indicator)
+/assets/favicon.svg          — SVG favicon source (burgundy bg, gold "AA")
+/assets/favicon.ico          — ICO favicon for legacy browsers
+/assets/favicon-32x32.png    — 32×32 PNG favicon
+/assets/favicon-48x48.png    — 48×48 PNG favicon
+/assets/favicon-512x512.png  — 512×512 PNG favicon (PWA)
+/assets/apple-touch-icon.png — 180×180 Apple touch icon
+/site.webmanifest            — Web app manifest (theme: #7C0832)
 /assets/             — Image placeholders directory
 ```
 
