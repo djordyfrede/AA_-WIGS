@@ -272,9 +272,15 @@
             <div class="product-stock-indicator" id="stockIndicator"></div>
           </div>
 
-          <div class="demand-indicator" id="demandIndicator">
-            <span class="demand-icon">&#128293;</span>
-            <span class="demand-text" id="demandText">12 sold in the last 24 hours</span>
+          <div class="social-proof-live">
+            <div class="proof-pill proof-viewing">
+              <span class="proof-dot"></span>
+              <span class="proof-text" id="proofViewing">14 people viewing this wig</span>
+            </div>
+            <div class="proof-pill proof-sold">
+              <span class="proof-check">&#10003;</span>
+              <span class="proof-text" id="proofSold">23 sold this week</span>
+            </div>
           </div>
 
           <div class="product-trust-row">
@@ -643,17 +649,45 @@
       indicator.innerHTML = '<span class="stock-low">Only 3 Crowns Remaining</span>';
     }
 
-    var demandEl = document.getElementById('demandText');
-    if (demandEl) {
-      function randomSold() { return Math.floor(Math.random() * 11) + 8; }
-      demandEl.textContent = randomSold() + ' sold in the last 24 hours';
-      setInterval(function() {
-        demandEl.style.opacity = '0';
-        setTimeout(function() {
-          demandEl.textContent = randomSold() + ' sold in the last 24 hours';
-          demandEl.style.opacity = '1';
-        }, 400);
-      }, 30000);
+    var viewingEl = document.getElementById('proofViewing');
+    var soldEl = document.getElementById('proofSold');
+
+    function randRange(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+    function drift(current, min, max, step) {
+      var delta = randRange(-step, step);
+      return Math.max(min, Math.min(max, current + delta));
+    }
+
+    var currentViewers = randRange(9, 22);
+    var currentSold = randRange(18, 34);
+
+    function updateViewing() {
+      if (!viewingEl) return;
+      currentViewers = drift(currentViewers, 6, 28, 3);
+      viewingEl.style.opacity = '0';
+      setTimeout(function() {
+        viewingEl.textContent = currentViewers + ' people viewing this wig';
+        viewingEl.style.opacity = '1';
+      }, 500);
+    }
+
+    function updateSold() {
+      if (!soldEl) return;
+      currentSold = drift(currentSold, 14, 42, 2);
+      soldEl.style.opacity = '0';
+      setTimeout(function() {
+        soldEl.textContent = currentSold + ' sold this week';
+        soldEl.style.opacity = '1';
+      }, 500);
+    }
+
+    if (viewingEl) {
+      viewingEl.textContent = currentViewers + ' people viewing this wig';
+      setInterval(updateViewing, 25000);
+    }
+    if (soldEl) {
+      soldEl.textContent = currentSold + ' sold this week';
+      setInterval(updateSold, 45000);
     }
 
     updateUI();
