@@ -43,13 +43,15 @@ Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vani
 /styles.css          — All styles (single CSS file)
 /app.js              — All JS (hamburger, scroll, filters, shade selector, form handling, FAQ accordion, print, URL shade pre-fill)
 /chat.js             — Smart customer service chat widget (knowledge-based, covers pricing/shipping/returns/care/colors/lengths, quick-reply buttons, typing indicator)
-/assets/favicon.svg          — SVG favicon source (burgundy bg, gold "AA")
-/assets/favicon.ico          — ICO favicon for legacy browsers
-/assets/favicon-32x32.png    — 32×32 PNG favicon
-/assets/favicon-48x48.png    — 48×48 PNG favicon
-/assets/favicon-512x512.png  — 512×512 PNG favicon (PWA)
+/favicon.ico                 — Root favicon (32x32+16x16 ICO, brand logo)
+/assets/favicon-48x48.png    — 48×48 PNG favicon (Google minimum)
+/assets/favicon-96x96.png    — 96×96 PNG favicon
+/assets/favicon-192x192.png  — 192×192 PNG favicon (PWA/Android)
+/assets/favicon-512x512.png  — 512×512 PNG favicon (PWA splash)
 /assets/apple-touch-icon.png — 180×180 Apple touch icon
-/site.webmanifest            — Web app manifest (theme: #7C0832)
+/assets/aa-logo.png          — Full AA Wigs brand logo (source for favicons + chat)
+/site.webmanifest            — Web app manifest (theme: #7C0832, all icon sizes)
+/assets/favicon.svg          — SVG favicon (deprecated, kept for reference)
 /assets/             — Image placeholders directory
 ```
 
