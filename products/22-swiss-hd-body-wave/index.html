@@ -694,5 +694,60 @@
   })();
   </script>
   <script src="../../chat.js?v=20260308a"></script>
+  <div class="recent-purchase" id="recentPurchase" aria-live="polite">
+    <button class="recent-purchase-close" id="recentPurchaseClose" aria-label="Dismiss">&times;</button>
+    <div class="recent-purchase-inner">
+      <span class="recent-purchase-icon">&#128172;</span>
+      <div class="recent-purchase-body">
+        <p class="recent-purchase-msg" id="recentPurchaseMsg">Sarah from Miami just purchased a 22" Body Wave wig.</p>
+        <p class="recent-purchase-time">A few moments ago</p>
+      </div>
+    </div>
+  </div>
+  <script>
+  (function() {
+    var names = ['Sarah','Jasmine','Tiffany','Ashley','Nicole','Maya','Brianna','Destiny','Aaliyah','Kiara','Monique','Crystal','Danielle','Ebony','Imani','Keisha','Latoya','Mia','Naomi','Simone','Tamara','Vanessa','Zara'];
+    var cities = ['Miami','Atlanta','Houston','Dallas','Chicago','Los Angeles','New York','Charlotte','Detroit','Memphis','New Orleans','Baltimore','Philadelphia','Brooklyn','Oakland','Tampa','Raleigh','Nashville','Phoenix','San Antonio','Jacksonville','Richmond','St. Louis'];
+    var lengths = ['18','20','22','24','26'];
+    var times = ['A few moments ago','Just now','2 minutes ago','3 minutes ago','5 minutes ago'];
+
+    var el = document.getElementById('recentPurchase');
+    var msgEl = document.getElementById('recentPurchaseMsg');
+    var closeBtn = document.getElementById('recentPurchaseClose');
+    var dismissed = false;
+
+    function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+    function showNotification() {
+      if (dismissed) return;
+      var name = pick(names);
+      var city = pick(cities);
+      var len = pick(lengths);
+      var time = pick(times);
+      msgEl.textContent = name + ' from ' + city + ' just purchased a ' + len + '" Body Wave wig.';
+      el.querySelector('.recent-purchase-time').textContent = time;
+      el.classList.add('visible');
+      setTimeout(function() {
+        el.classList.remove('visible');
+      }, 6000);
+    }
+
+    function scheduleNext() {
+      var delay = Math.floor(Math.random() * 50000) + 40000;
+      setTimeout(function() {
+        showNotification();
+        scheduleNext();
+      }, delay);
+    }
+
+    closeBtn.addEventListener('click', function() {
+      el.classList.remove('visible');
+      dismissed = true;
+    });
+
+    setTimeout(showNotification, 8000);
+    scheduleNext();
+  })();
+  </script>
 </body>
 </html>
