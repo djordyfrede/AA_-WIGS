@@ -1,0 +1,87 @@
+I want a professional private admin dashboard for my AA Wigs website, similar to Shopify, that lets me manually manage my store without coding.
+
+Requirements:
+	1.	Admin dashboard
+Build a clean, premium dashboard with:
+
+	•	sidebar navigation
+	•	overview / stats page
+	•	products tab
+	•	inventory tab
+	•	orders tab
+	•	settings tab
+
+	2.	Manual product management
+I want to be able to manually:
+
+	•	add products
+	•	edit product names
+	•	edit descriptions
+	•	edit prices
+	•	upload or replace product images
+	•	manage categories / collections
+
+	3.	Variant management
+Each product must support variants such as:
+
+	•	length: 20”, 22”, 24”, 26”
+	•	color: 1B Natural Black, Burgundy, Blonde, etc.
+
+For each variant, I want to manually control:
+	•	stock quantity
+	•	available / unavailable status
+	•	sold out status
+	•	SKU or variant key
+	•	optional variant price change
+
+	4.	Inventory behavior
+Make the system behave professionally like Shopify:
+
+	•	if stock is 0, show Sold Out on the product page
+	•	disable purchase for sold-out variants
+	•	if stock is between 1 and 5, show Low Stock — Only X left
+	•	if stock is above 5, show In Stock
+	•	gray out sold-out options
+	•	if customer selects a sold-out option, show a message telling them to choose another option
+
+	5.	Manual dashboard control
+The dashboard must let me do all of this manually from the admin panel, without editing code.
+I want simple forms, buttons, and save actions.
+	6.	Orders section
+Create an orders page where I can manually view:
+
+	•	customer name
+	•	product purchased
+	•	selected variant
+	•	quantity
+	•	payment status
+	•	order date
+
+	7.	Stripe integration
+Connect the system properly to Stripe so that:
+
+	•	stock decreases only after successful payment
+	•	sold-out status updates automatically after purchase
+	•	overselling is prevented
+	•	inventory stays synced with orders
+
+	8.	Security
+Make the admin dashboard private and protected, with a secure login or password protection.
+	9.	Design
+Make the dashboard look modern, clean, premium, and easy to use, similar to Shopify:
+
+	•	desktop and mobile responsive
+	•	professional layout
+	•	easy to update manually
+
+	10.	Important
+Please build this so it works with my current AA Wigs website and existing product pages without breaking my current frontend design.
+
+Start by:
+	•	reviewing my current project structure
+	•	proposing the database structure
+	•	building the admin dashboard UI
+	•	connecting product pages to the dashboard inventory
+	•	then connecting Stripe webhook inventory updates
+
+If needed, create sample products and sample variants so I can test everything easily.

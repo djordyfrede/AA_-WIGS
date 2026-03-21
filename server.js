@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const crypto = require('crypto');
 const { Pool } = require('pg');
 
 const app = express();
@@ -18,10 +19,251 @@ app.use(express.static(path.join(__dirname), {
 app.use('/api/webhook/stripe', express.raw({ type: 'application/json' }));
 app.use('/api', express.json());
 
+// ─── AUTH MIDDLEWARE ──────────────────────────────────────────────────────────
+
+async function requireAdmin(req, res, next) {
+  const token = req.headers['x-admin-token'];
+  if (!token) return res.status(401).json({ success: false, error: 'Unauthorized' });
+  try {
+    const result = await pool.query(
+      'SELECT id FROM admin_sessions WHERE token = $1 AND expires_at > NOW()',
+      [token]
+    );
+    if (result.rows.length === 0) return res.status(401).json({ success: false, error: 'Session expired' });
+    next();
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Auth check failed' });
+  }
+}
+
+// ─── ADMIN AUTH ───────────────────────────────────────────────────────────────
+
+app.post('/api/admin/login', async (req, res) => {
+  const { password } = req.body;
+  const adminPassword = process.env.ADMIN_PASSWORD;
+  if (!adminPassword) return res.status(500).json({ success: false, error: 'Admin password not configured' });
+  if (password !== adminPassword) return res.status(401).json({ success: false, error: 'Invalid password' });
+  try {
+    const token = crypto.randomBytes(32).toString('hex');
+    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+    await pool.query(
+      'INSERT INTO admin_sessions (token, expires_at) VALUES ($1, $2)',
+      [token, expiresAt]
+    );
+    res.json({ success: true, token });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Login failed' });
+  }
+});
+
+app.get('/api/admin/me', requireAdmin, (req, res) => {
+  res.json({ success: true, authenticated: true });
+});
+
+app.post('/api/admin/logout', requireAdmin, async (req, res) => {
+  const token = req.headers['x-admin-token'];
+  await pool.query('DELETE FROM admin_sessions WHERE token = $1', [token]);
+  res.json({ success: true });
+});
+
+app.post('/api/admin/change-password', requireAdmin, async (req, res) => {
+  const { newPassword } = req.body;
+  if (!newPassword || newPassword.length < 6) {
+    return res.status(400).json({ success: false, error: 'Password must be at least 6 characters' });
+  }
+  res.json({ success: true, message: 'To permanently change the password, update the ADMIN_PASSWORD environment variable in your Replit Secrets tab.' });
+});
+
+// ─── ADMIN STATS ──────────────────────────────────────────────────────────────
+
+app.get('/api/admin/stats', requireAdmin, async (req, res) => {
+  try {
+    const [ordersResult, revenueResult, productsResult, lowStockResult, outOfStockResult] = await Promise.all([
+      pool.query('SELECT COUNT(*) as total FROM orders'),
+      pool.query("SELECT COALESCE(SUM(amount_total), 0) as total FROM orders WHERE payment_status = 'paid'"),
+      pool.query('SELECT COUNT(*) as total FROM products WHERE active = TRUE'),
+      pool.query('SELECT COUNT(*) as total FROM inventory WHERE stock > 0 AND stock <= 5 AND active = TRUE'),
+      pool.query('SELECT COUNT(*) as total FROM inventory WHERE stock = 0 AND active = TRUE')
+    ]);
+    res.json({
+      success: true,
+      stats: {
+        totalOrders: parseInt(ordersResult.rows[0].total),
+        totalRevenue: parseFloat(revenueResult.rows[0].total),
+        totalProducts: parseInt(productsResult.rows[0].total),
+        lowStockVariants: parseInt(lowStockResult.rows[0].total),
+        outOfStockVariants: parseInt(outOfStockResult.rows[0].total)
+      }
+    });
+  } catch (err) {
+    console.error('Stats error:', err.message);
+    res.status(500).json({ success: false, error: 'Failed to load stats' });
+  }
+});
+
+// ─── PRODUCTS CRUD ────────────────────────────────────────────────────────────
+
+app.get('/api/admin/products', requireAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT p.*,
+        COUNT(DISTINCT i.id) as variant_count,
+        SUM(CASE WHEN i.active = TRUE THEN i.stock ELSE 0 END) as total_stock
+      FROM products p
+      LEFT JOIN inventory i ON i.product_id = p.id
+      GROUP BY p.id
+      ORDER BY p.created_at DESC
+    `);
+    res.json({ success: true, products: result.rows });
+  } catch (err) {
+    console.error('Products fetch error:', err.message);
+    res.status(500).json({ success: false, error: 'Failed to fetch products' });
+  }
+});
+
+app.post('/api/admin/products', requireAdmin, async (req, res) => {
+  const { name, slug, description, category, image_url, active } = req.body;
+  if (!name || !slug) return res.status(400).json({ success: false, error: 'name and slug required' });
+  try {
+    const result = await pool.query(
+      'INSERT INTO products (name, slug, description, category, image_url, active) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *',
+      [name, slug, description || null, category || 'wigs', image_url || null, active !== false]
+    );
+    res.json({ success: true, product: result.rows[0] });
+  } catch (err) {
+    if (err.code === '23505') return res.status(400).json({ success: false, error: 'Slug already exists' });
+    res.status(500).json({ success: false, error: 'Failed to create product' });
+  }
+});
+
+app.put('/api/admin/products/:id', requireAdmin, async (req, res) => {
+  const { name, slug, description, category, image_url, active } = req.body;
+  try {
+    const result = await pool.query(
+      `UPDATE products SET name=$1, slug=$2, description=$3, category=$4, image_url=$5, active=$6, updated_at=NOW()
+       WHERE id=$7 RETURNING *`,
+      [name, slug, description, category, image_url, active !== false, req.params.id]
+    );
+    if (result.rows.length === 0) return res.status(404).json({ success: false, error: 'Product not found' });
+    res.json({ success: true, product: result.rows[0] });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Failed to update product' });
+  }
+});
+
+app.delete('/api/admin/products/:id', requireAdmin, async (req, res) => {
+  try {
+    await pool.query('DELETE FROM products WHERE id = $1', [req.params.id]);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Failed to delete product' });
+  }
+});
+
+// ─── INVENTORY ADMIN ──────────────────────────────────────────────────────────
+
+app.get('/api/admin/inventory', requireAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT i.*, p.name as product_name
+      FROM inventory i
+      LEFT JOIN products p ON p.id = i.product_id
+      ORDER BY i.color_name, i.length
+    `);
+    res.json({ success: true, inventory: result.rows });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Failed to fetch inventory' });
+  }
+});
+
+app.put('/api/admin/inventory/:variantKey', requireAdmin, async (req, res) => {
+  const { stock, price, sku, active, color_name } = req.body;
+  try {
+    const fields = [];
+    const values = [];
+    let idx = 1;
+    if (stock !== undefined) { fields.push(`stock=$${idx++}`); values.push(parseInt(stock)); }
+    if (price !== undefined) { fields.push(`price=$${idx++}`); values.push(parseFloat(price)); }
+    if (sku !== undefined) { fields.push(`sku=$${idx++}`); values.push(sku); }
+    if (active !== undefined) { fields.push(`active=$${idx++}`); values.push(active); }
+    if (color_name !== undefined) { fields.push(`color_name=$${idx++}`); values.push(color_name); }
+    fields.push('updated_at=NOW()');
+    values.push(req.params.variantKey);
+    const result = await pool.query(
+      `UPDATE inventory SET ${fields.join(',')} WHERE variant_key=$${idx} RETURNING *`,
+      values
+    );
+    if (result.rows.length === 0) return res.status(404).json({ success: false, error: 'Variant not found' });
+    res.json({ success: true, variant: result.rows[0] });
+  } catch (err) {
+    console.error('Inventory update error:', err.message);
+    res.status(500).json({ success: false, error: 'Failed to update inventory' });
+  }
+});
+
+app.post('/api/admin/inventory/restock-all', requireAdmin, async (req, res) => {
+  const { quantity, product_id } = req.body;
+  if (typeof quantity !== 'number' || quantity < 0) {
+    return res.status(400).json({ success: false, error: 'Send { "quantity": 20 }' });
+  }
+  try {
+    let query = 'UPDATE inventory SET stock = $1, updated_at = NOW()';
+    const values = [quantity];
+    if (product_id) { query += ' WHERE product_id = $2'; values.push(product_id); }
+    const result = await pool.query(query, values);
+    res.json({ success: true, message: `${result.rowCount} variants restocked to ${quantity}` });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Restock failed' });
+  }
+});
+
+// ─── ORDERS ADMIN ─────────────────────────────────────────────────────────────
+
+app.get('/api/admin/orders', requireAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT * FROM orders ORDER BY order_date DESC LIMIT 200'
+    );
+    res.json({ success: true, orders: result.rows });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Failed to fetch orders' });
+  }
+});
+
+app.post('/api/admin/orders', requireAdmin, async (req, res) => {
+  const { customer_name, customer_email, product_name, variant_key, variant_description, quantity, amount_total, payment_status } = req.body;
+  try {
+    const result = await pool.query(
+      `INSERT INTO orders (customer_name, customer_email, product_name, variant_key, variant_description, quantity, amount_total, payment_status)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *`,
+      [customer_name, customer_email, product_name, variant_key, variant_description, quantity || 1, amount_total, payment_status || 'paid']
+    );
+    res.json({ success: true, order: result.rows[0] });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Failed to create order' });
+  }
+});
+
+app.put('/api/admin/orders/:id', requireAdmin, async (req, res) => {
+  const { payment_status, customer_name, customer_email } = req.body;
+  try {
+    const result = await pool.query(
+      'UPDATE orders SET payment_status=$1, customer_name=$2, customer_email=$3 WHERE id=$4 RETURNING *',
+      [payment_status, customer_name, customer_email, req.params.id]
+    );
+    if (result.rows.length === 0) return res.status(404).json({ success: false, error: 'Order not found' });
+    res.json({ success: true, order: result.rows[0] });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Failed to update order' });
+  }
+});
+
+// ─── PUBLIC INVENTORY API ─────────────────────────────────────────────────────
+
 app.get('/api/inventory', async (req, res) => {
   try {
     const result = await pool.query(
-      'SELECT variant_key, color_code, color_name, length, stock FROM inventory ORDER BY color_code, length'
+      'SELECT variant_key, color_code, color_name, length, stock, price, sku, active FROM inventory ORDER BY color_code, length'
     );
     const inventory = {};
     for (const row of result.rows) {
@@ -29,7 +271,10 @@ app.get('/api/inventory', async (req, res) => {
         colorCode: row.color_code,
         colorName: row.color_name,
         length: row.length,
-        stock: row.stock
+        stock: row.stock,
+        price: row.price,
+        sku: row.sku,
+        active: row.active
       };
     }
     res.json({ success: true, inventory });
@@ -42,187 +287,111 @@ app.get('/api/inventory', async (req, res) => {
 app.get('/api/inventory/:variantKey', async (req, res) => {
   try {
     const result = await pool.query(
-      'SELECT variant_key, color_code, color_name, length, stock FROM inventory WHERE variant_key = $1',
+      'SELECT * FROM inventory WHERE variant_key = $1',
       [req.params.variantKey]
     );
-    if (result.rows.length === 0) {
-      return res.status(404).json({ success: false, error: 'Variant not found' });
-    }
-    const row = result.rows[0];
-    res.json({
-      success: true,
-      variant: {
-        key: row.variant_key,
-        colorCode: row.color_code,
-        colorName: row.color_name,
-        length: row.length,
-        stock: row.stock
-      }
-    });
+    if (result.rows.length === 0) return res.status(404).json({ success: false, error: 'Variant not found' });
+    res.json({ success: true, variant: result.rows[0] });
   } catch (err) {
-    console.error('Variant fetch error:', err.message);
     res.status(500).json({ success: false, error: 'Failed to fetch variant' });
   }
 });
 
-app.post('/api/inventory/restock', async (req, res) => {
-  const adminKey = req.headers['x-admin-key'];
-  if (adminKey !== process.env.ADMIN_KEY) {
-    return res.status(401).json({ success: false, error: 'Unauthorized' });
-  }
-
-  const updates = req.body;
-  if (!updates || typeof updates !== 'object') {
-    return res.status(400).json({ success: false, error: 'Invalid body. Send { "variant_key": quantity }' });
-  }
-
-  try {
-    const results = [];
-    for (const [key, quantity] of Object.entries(updates)) {
-      if (typeof quantity !== 'number' || quantity < 0) {
-        results.push({ key, error: 'Invalid quantity' });
-        continue;
-      }
-      const result = await pool.query(
-        'UPDATE inventory SET stock = $1, updated_at = NOW() WHERE variant_key = $2 RETURNING variant_key, stock',
-        [quantity, key]
-      );
-      if (result.rows.length === 0) {
-        results.push({ key, error: 'Variant not found' });
-      } else {
-        results.push({ key, stock: result.rows[0].stock });
-      }
-    }
-    res.json({ success: true, results });
-  } catch (err) {
-    console.error('Restock error:', err.message);
-    res.status(500).json({ success: false, error: 'Restock failed' });
-  }
-});
-
-app.post('/api/inventory/restock-all', async (req, res) => {
-  const adminKey = req.headers['x-admin-key'];
-  if (adminKey !== process.env.ADMIN_KEY) {
-    return res.status(401).json({ success: false, error: 'Unauthorized' });
-  }
-
-  const { quantity } = req.body;
-  if (typeof quantity !== 'number' || quantity < 0) {
-    return res.status(400).json({ success: false, error: 'Send { "quantity": 20 }' });
-  }
-
-  try {
-    const result = await pool.query(
-      'UPDATE inventory SET stock = $1, updated_at = NOW()',
-      [quantity]
-    );
-    res.json({ success: true, message: `All ${result.rowCount} variants restocked to ${quantity}` });
-  } catch (err) {
-    console.error('Restock-all error:', err.message);
-    res.status(500).json({ success: false, error: 'Restock failed' });
-  }
-});
-
-app.post('/api/webhook/stripe', async (req, res) => {
-  const sig = req.headers['stripe-signature'];
-  const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
-
-  if (!endpointSecret) {
-    console.log('Stripe webhook: No STRIPE_WEBHOOK_SECRET set, processing without verification');
-    try {
-      const event = JSON.parse(req.body);
-      await handleStripeEvent(event);
-    } catch (err) {
-      console.error('Webhook parse error:', err.message);
-      return res.status(400).json({ error: 'Invalid payload' });
-    }
-    return res.json({ received: true });
-  }
-
-  try {
-    const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-    const event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
-    await handleStripeEvent(event);
-    res.json({ received: true });
-  } catch (err) {
-    console.error('Webhook verification failed:', err.message);
-    res.status(400).json({ error: 'Webhook verification failed' });
-  }
-});
-
-async function handleStripeEvent(event) {
-  if (event.type === 'checkout.session.completed') {
-    const session = event.data.object;
-    console.log('Payment completed:', session.id);
-
-    const url = session.url || '';
-    const metadata = session.metadata || {};
-
-    let variantKey = metadata.variant_key;
-
-    if (!variantKey && session.line_items) {
-      console.log('No variant_key in metadata, checking line items');
-    }
-
-    if (variantKey) {
-      try {
-        const result = await pool.query(
-          'UPDATE inventory SET stock = GREATEST(stock - 1, 0), updated_at = NOW() WHERE variant_key = $1 RETURNING variant_key, stock',
-          [variantKey]
-        );
-        if (result.rows.length > 0) {
-          console.log(`Stock decreased: ${variantKey} -> ${result.rows[0].stock} remaining`);
-        } else {
-          console.log(`Variant not found: ${variantKey}`);
-        }
-      } catch (err) {
-        console.error('Stock decrease error:', err.message);
-      }
-    } else {
-      console.log('No variant_key found in session metadata. Add variant_key to Stripe payment link metadata for automatic stock tracking.');
-    }
-  }
-}
-
 app.post('/api/inventory/decrease', async (req, res) => {
   const { variantKey } = req.body;
-  if (!variantKey) {
-    return res.status(400).json({ success: false, error: 'variantKey required' });
-  }
-
+  if (!variantKey) return res.status(400).json({ success: false, error: 'variantKey required' });
   try {
-    const check = await pool.query(
-      'SELECT stock FROM inventory WHERE variant_key = $1',
-      [variantKey]
-    );
-    if (check.rows.length === 0) {
-      return res.status(404).json({ success: false, error: 'Variant not found' });
-    }
-    if (check.rows[0].stock <= 0) {
-      return res.status(400).json({ success: false, error: 'Out of stock' });
-    }
-
+    const check = await pool.query('SELECT stock FROM inventory WHERE variant_key = $1', [variantKey]);
+    if (check.rows.length === 0) return res.status(404).json({ success: false, error: 'Variant not found' });
+    if (check.rows[0].stock <= 0) return res.status(400).json({ success: false, error: 'Out of stock' });
     const result = await pool.query(
       'UPDATE inventory SET stock = stock - 1, updated_at = NOW() WHERE variant_key = $1 AND stock > 0 RETURNING variant_key, stock',
       [variantKey]
     );
     res.json({ success: true, variant: result.rows[0] });
   } catch (err) {
-    console.error('Decrease error:', err.message);
     res.status(500).json({ success: false, error: 'Failed to decrease stock' });
   }
 });
 
-app.get('*', (req, res) => {
+// ─── STRIPE WEBHOOK ───────────────────────────────────────────────────────────
+
+app.post('/api/webhook/stripe', async (req, res) => {
+  const sig = req.headers['stripe-signature'];
+  const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+  let event;
+  try {
+    if (endpointSecret) {
+      const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+      event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+    } else {
+      event = JSON.parse(req.body);
+    }
+  } catch (err) {
+    console.error('Webhook error:', err.message);
+    return res.status(400).json({ error: 'Webhook failed' });
+  }
+  await handleStripeEvent(event);
+  res.json({ received: true });
+});
+
+async function handleStripeEvent(event) {
+  if (event.type !== 'checkout.session.completed') return;
+  const session = event.data.object;
+  const metadata = session.metadata || {};
+  const variantKey = metadata.variant_key || null;
+  const customerName = session.customer_details?.name || 'Guest';
+  const customerEmail = session.customer_details?.email || null;
+  const amountTotal = session.amount_total ? session.amount_total / 100 : null;
+
+  let variantDesc = variantKey || 'Unknown variant';
+  if (variantKey) {
+    try {
+      const inv = await pool.query('SELECT color_name, length FROM inventory WHERE variant_key = $1', [variantKey]);
+      if (inv.rows.length > 0) variantDesc = `${inv.rows[0].color_name} · ${inv.rows[0].length}"`;
+    } catch(e) {}
+  }
+
+  try {
+    await pool.query(
+      `INSERT INTO orders (stripe_session_id, customer_name, customer_email, product_name, variant_key, variant_description, quantity, amount_total, payment_status)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,'paid')
+       ON CONFLICT (stripe_session_id) DO NOTHING`,
+      [session.id, customerName, customerEmail, 'AA Signature Body Wave', variantKey, variantDesc, 1, amountTotal]
+    );
+    console.log('Order recorded:', session.id);
+  } catch (err) {
+    console.error('Order record error:', err.message);
+  }
+
+  if (variantKey) {
+    try {
+      const result = await pool.query(
+        'UPDATE inventory SET stock = GREATEST(stock - 1, 0), updated_at = NOW() WHERE variant_key = $1 RETURNING variant_key, stock',
+        [variantKey]
+      );
+      if (result.rows.length > 0) console.log(`Stock: ${variantKey} → ${result.rows[0].stock} remaining`);
+    } catch (err) {
+      console.error('Stock decrease error:', err.message);
+    }
+  }
+}
+
+// ─── ADMIN PAGE PROTECTION ────────────────────────────────────────────────────
+
+app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'admin', 'index.html')));
+app.get('/admin/', (req, res) => res.sendFile(path.join(__dirname, 'admin', 'index.html')));
+
+// ─── CATCH-ALL ────────────────────────────────────────────────────────────────
+
+app.get(/.*/, (req, res) => {
   const reqPath = req.path;
   if (reqPath.indexOf('.') === -1) {
     const htmlPath = path.join(__dirname, reqPath, 'index.html');
     res.sendFile(htmlPath, (err) => {
       if (err) {
         res.sendFile(path.join(__dirname, reqPath + '.html'), (err2) => {
-          if (err2) {
-            res.status(404).sendFile(path.join(__dirname, 'index.html'));
-          }
+          if (err2) res.status(404).sendFile(path.join(__dirname, 'index.html'));
         });
       }
     });

@@ -2374,6 +2374,46 @@ p {
   border-radius: 20px;
 }
 
+.stock-in {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #065f46;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 4px 12px;
+  background: #d1fae5;
+  border-radius: 20px;
+}
+
+.sold-out-option {
+  opacity: 0.38;
+  text-decoration: line-through;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.shade-swatch.sold-out-swatch {
+  opacity: 0.3;
+  cursor: not-allowed;
+  filter: grayscale(0.6);
+  position: relative;
+}
+.shade-swatch.sold-out-swatch::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.4);
+  border-radius: 50%;
+}
+
+.btn.btn-disabled,
+button.btn-disabled {
+  background: var(--gray-300) !important;
+  color: var(--gray-500) !important;
+  cursor: not-allowed !important;
+  border-color: var(--gray-300) !important;
+}
+
 .product-trust-row {
   display: flex;
   flex-wrap: wrap;

@@ -648,9 +648,105 @@
     if (addBtn) addBtn.addEventListener('click', addToCart);
     if (mobileBtn) mobileBtn.addEventListener('click', addToCart);
 
-    if (indicator) {
-      indicator.innerHTML = '<span class="stock-low">Only 3 Crowns Remaining</span>';
+    // ── LIVE INVENTORY ─────────────────────────────────────────────
+    var liveInventory = {};
+
+    function getVariantKey(color, length) {
+      return 'body-wave-' + color.toLowerCase() + '-' + length;
     }
+
+    function getStockInfo(color, length) {
+      var key = getVariantKey(color, length);
+      var data = liveInventory[key];
+      if (!data) return { status: 'unknown', stock: -1 };
+      var stock = parseInt(data.stock) || 0;
+      if (!data.active) return { status: 'unavailable', stock: stock };
+      if (stock === 0) return { status: 'sold-out', stock: 0 };
+      if (stock <= 5) return { status: 'low', stock: stock };
+      return { status: 'in-stock', stock: stock };
+    }
+
+    function applyInventoryUI() {
+      var info = getStockInfo(selectedColor, selectedLength);
+
+      // Update stock badge
+      if (indicator) {
+        if (info.status === 'sold-out') {
+          indicator.innerHTML = '<span class="stock-sold-out">Sold Out</span>';
+        } else if (info.status === 'low') {
+          indicator.innerHTML = '<span class="stock-low">Low Stock — Only ' + info.stock + ' left</span>';
+        } else if (info.status === 'in-stock') {
+          indicator.innerHTML = '<span class="stock-in">In Stock</span>';
+        } else {
+          indicator.innerHTML = '';
+        }
+      }
+
+      // Enable/disable Add to Cart buttons
+      var soldOut = info.status === 'sold-out' || info.status === 'unavailable';
+      if (addBtn) {
+        addBtn.disabled = soldOut;
+        addBtn.classList.toggle('btn-disabled', soldOut);
+        if (!soldOut) {
+          var variant = VARIANTS[selectedColor] && VARIANTS[selectedColor][selectedLength];
+          var price = variant ? variant.price : 199.99;
+          addBtn.textContent = 'Add to Bag \u2014 $' + price.toFixed(2);
+        } else {
+          addBtn.textContent = 'Sold Out';
+        }
+      }
+      if (mobileBtn) {
+        mobileBtn.disabled = soldOut;
+        mobileBtn.classList.toggle('btn-disabled', soldOut);
+        if (!soldOut) {
+          var variant2 = VARIANTS[selectedColor] && VARIANTS[selectedColor][selectedLength];
+          var price2 = variant2 ? variant2.price : 199.99;
+          mobileBtn.textContent = 'Add to Bag \u2014 $' + price2.toFixed(2);
+        } else {
+          mobileBtn.textContent = 'Sold Out';
+        }
+      }
+
+      // Update length buttons — gray out sold-out lengths for this color
+      document.querySelectorAll('.length-btn').forEach(function(btn) {
+        var len = btn.getAttribute('data-length');
+        var lenInfo = getStockInfo(selectedColor, len);
+        btn.classList.toggle('sold-out-option', lenInfo.status === 'sold-out');
+        btn.setAttribute('title', lenInfo.status === 'sold-out' ? 'Sold out — choose another length' : '');
+      });
+
+      // Update shade swatches — gray out if ALL lengths for that color are sold out
+      document.querySelectorAll('.shade-swatch').forEach(function(swatch) {
+        var shade = swatch.getAttribute('data-shade');
+        var allSoldOut = ['18','20','22','24','26'].every(function(l) {
+          return getStockInfo(shade, l).status === 'sold-out';
+        });
+        swatch.classList.toggle('sold-out-swatch', allSoldOut);
+        swatch.setAttribute('title', allSoldOut ? swatch.getAttribute('data-shade-name') + ' — Sold Out' : swatch.getAttribute('data-shade-name'));
+      });
+    }
+
+    function loadInventory() {
+      fetch('/api/inventory')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data.success) {
+            liveInventory = data.inventory;
+            applyInventoryUI();
+          }
+        })
+        .catch(function() {});
+    }
+
+    // Patch selectors to also trigger inventory UI
+    document.querySelectorAll('.length-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() { applyInventoryUI(); });
+    });
+    document.querySelectorAll('.shade-swatch').forEach(function(swatch) {
+      swatch.addEventListener('click', function() { applyInventoryUI(); });
+    });
+
+    loadInventory();
 
     var viewingEl = document.getElementById('proofViewing');
     var soldEl = document.getElementById('proofSold');
