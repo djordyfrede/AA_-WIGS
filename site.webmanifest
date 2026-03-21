@@ -1,6 +1,7 @@
 {
   "name": "AA Wigs - Where Luxury Meets Confidence",
   "short_name": "AA Wigs",
+  "description": "Shop luxury human hair wigs with Swiss HD lace and glueless fit.",
   "icons": [
     {
       "src": "/assets/favicon-48x48.png",
@@ -22,11 +23,11 @@
       "src": "/assets/favicon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     }
   ],
   "theme_color": "#7C0832",
-  "background_color": "#FDF8F0",
+  "background_color": "#7C0832",
   "display": "standalone",
   "start_url": "/",
   "scope": "/"
