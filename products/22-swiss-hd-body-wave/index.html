@@ -608,7 +608,7 @@
       if (shadeLabel) shadeLabel.textContent = colorName;
       if (imgLabel) imgLabel.textContent = colorName;
 
-      var btnText = 'Add to Bag \u2014 $' + price.toFixed(2);
+      var btnText = 'Buy Now \u2014 $' + price.toFixed(2);
       if (addBtn) addBtn.textContent = btnText;
       if (mobileBtn) mobileBtn.textContent = btnText;
     }
@@ -726,7 +726,7 @@
         if (!soldOut) {
           var variant = VARIANTS[selectedColor] && VARIANTS[selectedColor][selectedLength];
           var price = variant ? variant.price : 199.99;
-          addBtn.textContent = 'Add to Bag \u2014 $' + price.toFixed(2);
+          addBtn.textContent = 'Buy Now \u2014 $' + price.toFixed(2);
         } else {
           addBtn.textContent = 'Sold Out';
         }
@@ -737,7 +737,7 @@
         if (!soldOut) {
           var variant2 = VARIANTS[selectedColor] && VARIANTS[selectedColor][selectedLength];
           var price2 = variant2 ? variant2.price : 199.99;
-          mobileBtn.textContent = 'Add to Bag \u2014 $' + price2.toFixed(2);
+          mobileBtn.textContent = 'Buy Now \u2014 $' + price2.toFixed(2);
         } else {
           mobileBtn.textContent = 'Sold Out';
         }

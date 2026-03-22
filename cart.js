@@ -149,46 +149,23 @@ const Cart = {
 
     const checkoutBtn = document.getElementById('cartCheckoutBtn');
     if (checkoutBtn) {
-      if (this.items.length === 1) {
-        const item = this.items[0];
-        const url = item.stripeUrl || '';
-        if (url) {
-          checkoutBtn.href = url;
-          checkoutBtn.textContent = 'Checkout \u2014 $' + this.getTotal();
-        } else {
-          checkoutBtn.href = '/products/22-swiss-hd-body-wave/';
-          checkoutBtn.textContent = 'Checkout \u2014 $' + this.getTotal();
-        }
-        checkoutBtn.classList.remove('cart-checkout-multi');
-      } else {
-        checkoutBtn.removeAttribute('href');
-        checkoutBtn.textContent = 'Checkout \u2014 $' + this.getTotal();
-        checkoutBtn.classList.add('cart-checkout-multi');
-      }
+      checkoutBtn.removeAttribute('href');
+      checkoutBtn.textContent = 'Checkout \u2014 $' + this.getTotal();
+      checkoutBtn.classList.remove('cart-checkout-multi');
+
+      // Remove old listeners by replacing the element
+      const newBtn = checkoutBtn.cloneNode(true);
+      checkoutBtn.parentNode.replaceChild(newBtn, checkoutBtn);
+
+      newBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        Cart.startDynamicCheckout(newBtn);
+      });
     }
 
-    if (this.items.length > 1) {
-      let itemBtns = '';
-      this.items.forEach(item => {
-        const key = this.getItemKey(item);
-        const label = item.shade + (item.length ? ' \u00b7 ' + item.length : '');
-        if (item.stripeUrl) {
-          itemBtns += '<a href="' + item.stripeUrl + '" class="cart-item-checkout" data-key="' + key + '">Buy ' + label + ' \u2014 $' + ((parseFloat(item.price) || 0) * item.qty).toFixed(2) + '</a>';
-        }
-      });
-      if (itemBtns) {
-        const multiNote = '<div class="cart-multi-checkout">' +
-          '<p class="cart-multi-note">Checkout each item separately:</p>' +
-          itemBtns +
-        '</div>';
-        const existingMulti = footer.querySelector('.cart-multi-checkout');
-        if (existingMulti) existingMulti.remove();
-        checkoutBtn.insertAdjacentHTML('afterend', multiNote);
-      }
-    } else {
-      const existingMulti = footer.querySelector('.cart-multi-checkout');
-      if (existingMulti) existingMulti.remove();
-    }
+    // Remove multi-checkout section (no longer needed)
+    const existingMulti = footer.querySelector('.cart-multi-checkout');
+    if (existingMulti) existingMulti.remove();
 
     body.querySelectorAll('.qty-btn').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -240,6 +217,69 @@ const Cart = {
     toast.className = 'cart-toast';
     toast.innerHTML = '<span>\u2713</span> Added to bag';
     document.body.appendChild(toast);
+  },
+
+  startDynamicCheckout(btn) {
+    if (this.items.length === 0) return;
+
+    const originalText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Opening Checkout...';
+
+    // For single item: use dynamic Stripe checkout
+    if (this.items.length === 1) {
+      const item = this.items[0];
+      // Build variant key from shade and length
+      const shadeMap = {
+        '1B Natural Black': '1b', 'Natural Black': '1b',
+        '2 Dark Brown': '2', 'Dark Brown': '2',
+        '4 Medium Brown': '4', 'Medium Brown': '4',
+        '27 Honey Blonde': '27', 'Honey Blonde': '27',
+        '99J Burgundy': '99j', 'Burgundy': '99j',
+        'P27/613 Highlight': 'p27-613', 'Highlight': 'p27-613'
+      };
+      const lengthNum = (item.length || '').replace(/[^0-9]/g, '');
+      const shadeKey = shadeMap[item.shade] || item.shade.split(' ')[0].toLowerCase();
+      const variantKey = 'body-wave-' + shadeKey + '-' + lengthNum;
+
+      fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          variantKey: variantKey,
+          colorName: item.shade,
+          length: lengthNum,
+          price: item.price
+        })
+      })
+      .then(r => r.json())
+      .then(data => {
+        if (data.success && data.url) {
+          window.location.href = data.url;
+        } else if (item.stripeUrl) {
+          window.location.href = item.stripeUrl;
+        } else {
+          alert(data.error || 'Could not start checkout. Please try again.');
+          btn.disabled = false;
+          btn.textContent = originalText;
+        }
+      })
+      .catch(() => {
+        if (item.stripeUrl) {
+          window.location.href = item.stripeUrl;
+        } else {
+          alert('Connection error. Please try again.');
+          btn.disabled = false;
+          btn.textContent = originalText;
+        }
+      });
+    } else {
+      // Multiple items: send each through checkout sequentially
+      // Just redirect to the first item for now
+      alert('Please checkout items one at a time. Remove items to checkout individually.');
+      btn.disabled = false;
+      btn.textContent = originalText;
+    }
   },
 
   bindEvents() {
