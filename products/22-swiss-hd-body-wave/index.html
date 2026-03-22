@@ -618,12 +618,48 @@
       var variant = VARIANTS[selectedColor] && VARIANTS[selectedColor][selectedLength];
       if (!variant) return;
       var colorName = COLOR_NAMES[selectedColor] || selectedColor;
-      Cart.addItem({
-        name: 'AA Signature Body Wave',
-        shade: colorName,
-        length: selectedLength + '"',
-        price: variant.price,
-        stripeUrl: variant.url
+      var variantKey = 'body-wave-' + selectedColor.toLowerCase() + '-' + selectedLength;
+
+      var btn = e.currentTarget;
+      var originalText = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = 'Opening Checkout...';
+
+      fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          variantKey: variantKey,
+          colorName: colorName,
+          length: selectedLength,
+          price: variant.price
+        })
+      })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.success && data.url) {
+          window.location.href = data.url;
+        } else if (data.error === 'Stripe not configured') {
+          // Fallback to static link if Stripe keys not yet set
+          Cart.addItem({
+            name: 'AA Signature Body Wave',
+            shade: colorName,
+            length: selectedLength + '"',
+            price: variant.price,
+            stripeUrl: variant.url
+          });
+          btn.disabled = false;
+          btn.textContent = originalText;
+        } else {
+          alert(data.error || 'Could not start checkout. Please try again.');
+          btn.disabled = false;
+          btn.textContent = originalText;
+        }
+      })
+      .catch(function() {
+        alert('Connection error. Please try again.');
+        btn.disabled = false;
+        btn.textContent = originalText;
       });
     }
 
@@ -747,6 +783,39 @@
     });
 
     loadInventory();
+
+    // ── ORDER STATUS BANNER ────────────────────────────────────────
+    (function() {
+      var params = new URLSearchParams(window.location.search);
+      var orderStatus = params.get('order');
+      if (!orderStatus) return;
+
+      var banner = document.createElement('div');
+      banner.style.cssText = 'position:fixed;top:80px;left:50%;transform:translateX(-50%);z-index:9999;padding:14px 28px;border-radius:10px;font-family:var(--font-sans);font-size:0.95rem;font-weight:600;box-shadow:0 4px 24px rgba(0,0,0,0.18);animation:fadeInDown 0.4s ease;max-width:90vw;text-align:center;';
+
+      if (orderStatus === 'success') {
+        banner.style.background = '#d1fae5';
+        banner.style.color = '#065f46';
+        banner.style.border = '1.5px solid #6ee7b7';
+        banner.innerHTML = '&#10003; Order placed successfully! Thank you for your purchase.';
+      } else if (orderStatus === 'cancelled') {
+        banner.style.background = '#fff7ed';
+        banner.style.color = '#9a3412';
+        banner.style.border = '1.5px solid #fdba74';
+        banner.innerHTML = 'Checkout was cancelled. Your items are still here when you\'re ready.';
+      }
+
+      document.body.appendChild(banner);
+      // Remove after 6 seconds
+      setTimeout(function() {
+        banner.style.transition = 'opacity 0.5s';
+        banner.style.opacity = '0';
+        setTimeout(function() { banner.remove(); }, 500);
+      }, 6000);
+
+      // Clean URL without reloading
+      window.history.replaceState({}, '', window.location.pathname);
+    })();
 
     var viewingEl = document.getElementById('proofViewing');
     var soldEl = document.getElementById('proofSold');

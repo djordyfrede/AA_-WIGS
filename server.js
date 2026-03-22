@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const crypto = require('crypto');
 const { Pool } = require('pg');
+const Stripe = require('stripe');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -314,7 +315,65 @@ app.post('/api/inventory/decrease', async (req, res) => {
   }
 });
 
-// ─── STRIPE WEBHOOK ───────────────────────────────────────────────────────────
+// ─── DYNAMIC STRIPE CHECKOUT ──────────────────────────────────────────────────
+
+app.post('/api/checkout', async (req, res) => {
+  const stripeKey = process.env.STRIPE_SECRET_KEY;
+  if (!stripeKey) {
+    return res.status(503).json({ success: false, error: 'Stripe not configured' });
+  }
+
+  const { variantKey, colorName, length, price } = req.body;
+  if (!variantKey || !price) {
+    return res.status(400).json({ success: false, error: 'Missing variant info' });
+  }
+
+  try {
+    // Check stock before creating session
+    const stockCheck = await pool.query(
+      'SELECT stock, active FROM inventory WHERE variant_key = $1',
+      [variantKey]
+    );
+    if (stockCheck.rows.length > 0) {
+      const { stock, active } = stockCheck.rows[0];
+      if (!active || parseInt(stock) <= 0) {
+        return res.status(400).json({ success: false, error: 'This variant is sold out' });
+      }
+    }
+
+    const stripe = Stripe(stripeKey);
+    const origin = req.headers.origin || `https://${req.headers.host}`;
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      mode: 'payment',
+      line_items: [{
+        price_data: {
+          currency: 'usd',
+          unit_amount: Math.round(parseFloat(price) * 100),
+          product_data: {
+            name: `AA Signature Body Wave — ${colorName} · ${length}"`,
+            description: '13×6 Swiss HD Lace · 180% Density · Glueless Ready',
+            images: ['https://aawigs.com/assets/aa-logo.png'],
+          },
+        },
+        quantity: 1,
+      }],
+      metadata: {
+        variant_key: variantKey,
+        color_name: colorName,
+        length: String(length),
+      },
+      success_url: `${origin}/products/22-swiss-hd-body-wave/?order=success`,
+      cancel_url:  `${origin}/products/22-swiss-hd-body-wave/?order=cancelled`,
+    });
+
+    res.json({ success: true, url: session.url });
+  } catch (err) {
+    console.error('Checkout error:', err.message);
+    res.status(500).json({ success: false, error: 'Could not create checkout session' });
+  }
+});
 
 app.post('/api/webhook/stripe', async (req, res) => {
   const sig = req.headers['stripe-signature'];
