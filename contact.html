@@ -67,7 +67,7 @@
   </section>
 
   <div class="form-section">
-    <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" data-redirect="success.html">
+    <form id="contactForm">
       <div class="form-group">
         <label for="name">Full Name</label>
         <input type="text" id="name" name="name" placeholder="Your name" required>
@@ -93,9 +93,56 @@
         <textarea id="message" name="message" placeholder="Tell us how we can help..." required></textarea>
       </div>
       <div class="form-submit">
-        <button type="submit" class="btn btn-solid">Send Message</button>
+        <button type="submit" id="contactSubmit" class="btn btn-solid">Send Message</button>
       </div>
+      <div id="contactResult" style="display:none;margin-top:16px;padding:14px 20px;border-radius:8px;font-size:0.9rem;font-weight:600;text-align:center;"></div>
     </form>
+    <script>
+      document.getElementById('contactForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var btn = document.getElementById('contactSubmit');
+        var result = document.getElementById('contactResult');
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+        fetch('/api/contact', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({
+            name: document.getElementById('name').value,
+            email: document.getElementById('email').value,
+            subject: document.getElementById('subject').value,
+            message: document.getElementById('message').value
+          })
+        })
+        .then(function(r){return r.json();})
+        .then(function(data){
+          if (data.success) {
+            result.style.display = 'block';
+            result.style.background = '#d1fae5';
+            result.style.color = '#065f46';
+            result.style.border = '1.5px solid #6ee7b7';
+            result.textContent = '✓ Message sent! We\'ll be in touch within 24 hours.';
+            document.getElementById('contactForm').reset();
+          } else {
+            result.style.display = 'block';
+            result.style.background = '#fff7ed';
+            result.style.color = '#9a3412';
+            result.style.border = '1.5px solid #fdba74';
+            result.textContent = data.error || 'Something went wrong. Please email us directly at helloaawigs@gmail.com';
+          }
+          btn.disabled = false;
+          btn.textContent = 'Send Message';
+        })
+        .catch(function(){
+          result.style.display = 'block';
+          result.style.background = '#fff7ed';
+          result.style.color = '#9a3412';
+          result.textContent = 'Connection error. Please email helloaawigs@gmail.com directly.';
+          btn.disabled = false;
+          btn.textContent = 'Send Message';
+        });
+      });
+    </script>
 
     <div class="contact-info-row">
       <p style="font-size:0.85rem; color:var(--gray-500);">helloaawigs@gmail.com</p>

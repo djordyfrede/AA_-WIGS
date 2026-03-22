@@ -315,6 +315,38 @@ app.post('/api/inventory/decrease', async (req, res) => {
   }
 });
 
+// ─── CONTACT & WAITLIST FORMS ─────────────────────────────────────────────────
+
+app.post('/api/contact', async (req, res) => {
+  const { name, email, subject, message } = req.body;
+  if (!email || !message) return res.status(400).json({ success: false, error: 'Email and message required' });
+  try {
+    await pool.query(
+      'INSERT INTO contact_messages (form_type, name, email, message) VALUES ($1,$2,$3,$4)',
+      ['contact', name || '', email, `[${subject || 'General'}] ${message}`]
+    );
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Contact form error:', err.message);
+    res.status(500).json({ success: false, error: 'Failed to save message' });
+  }
+});
+
+app.post('/api/waitlist', async (req, res) => {
+  const { email, shade, length } = req.body;
+  if (!email) return res.status(400).json({ success: false, error: 'Email required' });
+  try {
+    await pool.query(
+      'INSERT INTO contact_messages (form_type, name, email, shade, message) VALUES ($1,$2,$3,$4,$5)',
+      ['waitlist', '', email, shade || '', `Waitlist: ${shade || ''} · ${length || ''}"`]
+    );
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Waitlist error:', err.message);
+    res.status(500).json({ success: false, error: 'Failed to save waitlist entry' });
+  }
+});
+
 // ─── DYNAMIC STRIPE CHECKOUT ──────────────────────────────────────────────────
 
 app.post('/api/checkout', async (req, res) => {
@@ -354,7 +386,7 @@ app.post('/api/checkout', async (req, res) => {
           product_data: {
             name: `AA Signature Body Wave — ${colorName} · ${length}"`,
             description: '13×6 Swiss HD Lace · 180% Density · Glueless Ready',
-            images: ['https://aawigs.com/assets/aa-logo.png'],
+            images: [`${origin}/assets/aa-logo.png`],
           },
         },
         quantity: 1,

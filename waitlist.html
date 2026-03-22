@@ -67,7 +67,7 @@
   </section>
 
   <div class="form-section">
-    <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" data-redirect="success.html">
+    <form id="waitlistForm">
       <div class="form-group">
         <label for="email">Email Address</label>
         <input type="email" id="email" name="email" placeholder="you@email.com" required>
@@ -94,9 +94,55 @@
         </select>
       </div>
       <div class="form-submit">
-        <button type="submit" class="btn btn-solid">Notify Me</button>
+        <button type="submit" id="waitlistSubmit" class="btn btn-solid">Notify Me</button>
       </div>
+      <div id="waitlistResult" style="display:none;margin-top:16px;padding:14px 20px;border-radius:8px;font-size:0.9rem;font-weight:600;text-align:center;"></div>
     </form>
+    <script>
+      document.getElementById('waitlistForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var btn = document.getElementById('waitlistSubmit');
+        var result = document.getElementById('waitlistResult');
+        btn.disabled = true;
+        btn.textContent = 'Joining...';
+        fetch('/api/waitlist', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({
+            email: document.getElementById('email').value,
+            shade: document.getElementById('shade').value,
+            length: document.getElementById('length').value
+          })
+        })
+        .then(function(r){return r.json();})
+        .then(function(data){
+          if (data.success) {
+            result.style.display = 'block';
+            result.style.background = '#d1fae5';
+            result.style.color = '#065f46';
+            result.style.border = '1.5px solid #6ee7b7';
+            result.textContent = '✓ You\'re on the list! We\'ll notify you as soon as your shade is back.';
+            document.getElementById('waitlistForm').reset();
+          } else {
+            result.style.display = 'block';
+            result.style.background = '#fff7ed';
+            result.style.color = '#9a3412';
+            result.style.border = '1.5px solid #fdba74';
+            result.textContent = data.error || 'Something went wrong. Please try again.';
+          }
+          btn.disabled = false;
+          btn.textContent = 'Notify Me';
+        })
+        .catch(function(){
+          result.style.display = 'block';
+          result.style.background = '#fff7ed';
+          result.style.color = '#9a3412';
+          result.textContent = 'Connection error. Please try again.';
+          btn.disabled = false;
+          btn.textContent = 'Notify Me';
+        });
+      });
+    </script>
   </div>
 
   <footer class="footer">
