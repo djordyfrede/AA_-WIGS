@@ -19,14 +19,14 @@ const Cart = {
     if (existing) {
       existing.qty += 1;
       existing.price = product.price;
-      existing.stripeUrl = product.stripeUrl || existing.stripeUrl;
+      existing.variantKey = product.variantKey || existing.variantKey;
     } else {
       this.items.push({
         name: product.name,
         shade: product.shade,
         length: product.length || '',
         price: product.price,
-        stripeUrl: product.stripeUrl || '',
+        variantKey: product.variantKey || '',
         qty: 1
       });
     }
@@ -226,27 +226,15 @@ const Cart = {
     btn.disabled = true;
     btn.textContent = 'Opening Checkout...';
 
-    // For single item: use dynamic Stripe checkout
     if (this.items.length === 1) {
       const item = this.items[0];
-      // Build variant key from shade and length
-      const shadeMap = {
-        '1B Natural Black': '1b', 'Natural Black': '1b',
-        '2 Dark Brown': '2', 'Dark Brown': '2',
-        '4 Medium Brown': '4', 'Medium Brown': '4',
-        '27 Honey Blonde': '27', 'Honey Blonde': '27',
-        '99J Burgundy': '99j', 'Burgundy': '99j',
-        'P27/613 Highlight': 'p27-613', 'Highlight': 'p27-613'
-      };
       const lengthNum = (item.length || '').replace(/[^0-9]/g, '');
-      const shadeKey = shadeMap[item.shade] || item.shade.split(' ')[0].toLowerCase();
-      const variantKey = 'body-wave-' + shadeKey + '-' + lengthNum;
 
       fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          variantKey: variantKey,
+          variantKey: item.variantKey,
           colorName: item.shade,
           length: lengthNum,
           price: item.price
@@ -256,8 +244,6 @@ const Cart = {
       .then(data => {
         if (data.success && data.url) {
           window.location.href = data.url;
-        } else if (item.stripeUrl) {
-          window.location.href = item.stripeUrl;
         } else {
           alert(data.error || 'Could not start checkout. Please try again.');
           btn.disabled = false;
@@ -265,20 +251,57 @@ const Cart = {
         }
       })
       .catch(() => {
-        if (item.stripeUrl) {
-          window.location.href = item.stripeUrl;
-        } else {
-          alert('Connection error. Please try again.');
-          btn.disabled = false;
-          btn.textContent = originalText;
-        }
+        alert('Connection error. Please try again.');
+        btn.disabled = false;
+        btn.textContent = originalText;
       });
+
     } else {
-      // Multiple items: send each through checkout sequentially
-      // Just redirect to the first item for now
-      alert('Please checkout items one at a time. Remove items to checkout individually.');
+      // Multiple items — checkout each separately
+      const footer = document.getElementById('cartFooter');
+      const existingMulti = footer && footer.querySelector('.cart-multi-checkout');
+      if (existingMulti) { existingMulti.remove(); }
+
+      let itemBtns = '';
+      this.items.forEach(item => {
+        const lengthNum = (item.length || '').replace(/[^0-9]/g, '');
+        const label = item.shade + (item.length ? ' · ' + item.length : '');
+        const total = ((parseFloat(item.price) || 0) * item.qty).toFixed(2);
+        itemBtns += '<button class="cart-item-checkout-btn" data-vk="' + item.variantKey +
+          '" data-cn="' + item.shade + '" data-len="' + lengthNum +
+          '" data-price="' + item.price + '">Buy ' + label + ' — $' + total + '</button>';
+      });
+
+      const multiNote = '<div class="cart-multi-checkout">' +
+        '<p class="cart-multi-note">Checkout each item separately:</p>' +
+        itemBtns + '</div>';
+
       btn.disabled = false;
       btn.textContent = originalText;
+      btn.insertAdjacentHTML('afterend', multiNote);
+
+      footer && footer.querySelectorAll('.cart-item-checkout-btn').forEach(b => {
+        b.addEventListener('click', () => {
+          b.disabled = true;
+          b.textContent = 'Opening...';
+          fetch('/api/checkout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              variantKey: b.dataset.vk,
+              colorName: b.dataset.cn,
+              length: b.dataset.len,
+              price: b.dataset.price
+            })
+          })
+          .then(r => r.json())
+          .then(data => {
+            if (data.success && data.url) window.location.href = data.url;
+            else alert(data.error || 'Could not start checkout.');
+          })
+          .catch(() => alert('Connection error. Please try again.'));
+        });
+      });
     }
   },
 

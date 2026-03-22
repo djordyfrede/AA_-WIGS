@@ -608,7 +608,7 @@
       if (shadeLabel) shadeLabel.textContent = colorName;
       if (imgLabel) imgLabel.textContent = colorName;
 
-      var btnText = 'Buy Now \u2014 $' + price.toFixed(2);
+      var btnText = 'Add to Bag \u2014 $' + price.toFixed(2);
       if (addBtn) addBtn.textContent = btnText;
       if (mobileBtn) mobileBtn.textContent = btnText;
     }
@@ -618,48 +618,12 @@
       var variant = VARIANTS[selectedColor] && VARIANTS[selectedColor][selectedLength];
       if (!variant) return;
       var colorName = COLOR_NAMES[selectedColor] || selectedColor;
-      var variantKey = 'body-wave-' + selectedColor.toLowerCase() + '-' + selectedLength;
-
-      var btn = e.currentTarget;
-      var originalText = btn.textContent;
-      btn.disabled = true;
-      btn.textContent = 'Opening Checkout...';
-
-      fetch('/api/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          variantKey: variantKey,
-          colorName: colorName,
-          length: selectedLength,
-          price: variant.price
-        })
-      })
-      .then(function(r) { return r.json(); })
-      .then(function(data) {
-        if (data.success && data.url) {
-          window.location.href = data.url;
-        } else if (data.error === 'Stripe not configured') {
-          // Fallback to static link if Stripe keys not yet set
-          Cart.addItem({
-            name: 'AA Signature Body Wave',
-            shade: colorName,
-            length: selectedLength + '"',
-            price: variant.price,
-            stripeUrl: variant.url
-          });
-          btn.disabled = false;
-          btn.textContent = originalText;
-        } else {
-          alert(data.error || 'Could not start checkout. Please try again.');
-          btn.disabled = false;
-          btn.textContent = originalText;
-        }
-      })
-      .catch(function() {
-        alert('Connection error. Please try again.');
-        btn.disabled = false;
-        btn.textContent = originalText;
+      Cart.addItem({
+        name: 'AA Signature Body Wave',
+        shade: colorName,
+        length: selectedLength + '"',
+        price: variant.price,
+        variantKey: 'body-wave-' + selectedColor.toLowerCase() + '-' + selectedLength
       });
     }
 
@@ -726,7 +690,7 @@
         if (!soldOut) {
           var variant = VARIANTS[selectedColor] && VARIANTS[selectedColor][selectedLength];
           var price = variant ? variant.price : 199.99;
-          addBtn.textContent = 'Buy Now \u2014 $' + price.toFixed(2);
+          addBtn.textContent = 'Add to Bag \u2014 $' + price.toFixed(2);
         } else {
           addBtn.textContent = 'Sold Out';
         }
@@ -737,7 +701,7 @@
         if (!soldOut) {
           var variant2 = VARIANTS[selectedColor] && VARIANTS[selectedColor][selectedLength];
           var price2 = variant2 ? variant2.price : 199.99;
-          mobileBtn.textContent = 'Buy Now \u2014 $' + price2.toFixed(2);
+          mobileBtn.textContent = 'Add to Bag \u2014 $' + price2.toFixed(2);
         } else {
           mobileBtn.textContent = 'Sold Out';
         }
