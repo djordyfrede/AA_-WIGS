@@ -1,0 +1,90 @@
+I want to restructure AA Wigs so the admin dashboard becomes the master control center for the entire website.
+
+My goal:
+- The customer website is only the storefront / presentation layer
+- The dashboard controls everything the customer sees
+- No important product state should be hardcoded on the frontend
+
+Please upgrade my system so the dashboard is the single source of truth for the website.
+
+Requirements:
+
+1. Product control
+Dashboard must control:
+- product active / inactive
+- product visible / hidden
+- featured / not featured
+- best seller badge
+- new arrival badge
+- sale badge
+- product title
+- product description
+- product images
+- category / collection assignment
+
+2. Variant control
+For each length / color variant, dashboard must control:
+- stock quantity
+- available / unavailable
+- sold out
+- low stock threshold
+- price
+- compare-at price / sale price
+- SKU
+- notify-me enabled / disabled
+
+3. Customer website behavior
+The storefront must read all of this live from the database/dashboard:
+- what products are visible
+- what variants are available
+- what shows as sold out
+- what shows as low stock
+- what products are featured
+- what badges appear
+- what price appears
+
+4. Homepage control
+Add dashboard controls for homepage sections:
+- hero featured product
+- featured collection
+- best seller section
+- new arrivals section
+- announcement bar
+- promotional text
+
+5. Inventory control
+Dashboard must allow:
+- manual restock
+- mark unavailable without changing stock
+- bulk restock
+- bulk enable / disable variants
+- low stock alerts
+
+6. Orders control
+Dashboard must allow:
+- pending / paid / shipped / delivered / cancelled
+- add tracking number
+- mark fulfilled
+- customer email visibility
+- shipping address visibility
+
+7. Content management
+Dashboard should also manage:
+- shipping policy text
+- return policy text
+- FAQ content
+- contact information
+- social links
+- store email
+
+8. Architecture
+Please refactor the storefront so it becomes database-driven:
+- frontend reads from API / database
+- dashboard writes to API / database
+- dashboard changes instantly affect what customers see
+
+9. Important
+I want the dashboard to manufacture and control the website.
+The website should just display what the dashboard tells it to display.
+
+Please propose the best database structure and then implement this in phases without breaking the current store.

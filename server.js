@@ -125,12 +125,15 @@ app.get('/api/admin/products', requireAdmin, async (req, res) => {
 });
 
 app.post('/api/admin/products', requireAdmin, async (req, res) => {
-  const { name, slug, description, category, image_url, active } = req.body;
+  const { name, slug, description, category, image_url, active, visible, featured, best_seller, new_arrival, on_sale, compare_at_price, sort_order, subtitle, badge_text } = req.body;
   if (!name || !slug) return res.status(400).json({ success: false, error: 'name and slug required' });
   try {
     const result = await pool.query(
-      'INSERT INTO products (name, slug, description, category, image_url, active) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *',
-      [name, slug, description || null, category || 'wigs', image_url || null, active !== false]
+      `INSERT INTO products (name, slug, description, category, image_url, active, visible, featured, best_seller, new_arrival, on_sale, compare_at_price, sort_order, subtitle, badge_text)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15) RETURNING *`,
+      [name, slug, description || null, category || 'wigs', image_url || null,
+       active !== false, visible !== false, featured === true, best_seller === true, new_arrival === true, on_sale === true,
+       compare_at_price ? parseFloat(compare_at_price) : null, sort_order || 0, subtitle || null, badge_text || null]
     );
     res.json({ success: true, product: result.rows[0] });
   } catch (err) {
@@ -140,12 +143,17 @@ app.post('/api/admin/products', requireAdmin, async (req, res) => {
 });
 
 app.put('/api/admin/products/:id', requireAdmin, async (req, res) => {
-  const { name, slug, description, category, image_url, active } = req.body;
+  const { name, slug, description, category, image_url, active, visible, featured, best_seller, new_arrival, on_sale, compare_at_price, sort_order, subtitle, badge_text } = req.body;
   try {
     const result = await pool.query(
-      `UPDATE products SET name=$1, slug=$2, description=$3, category=$4, image_url=$5, active=$6, updated_at=NOW()
-       WHERE id=$7 RETURNING *`,
-      [name, slug, description, category, image_url, active !== false, req.params.id]
+      `UPDATE products SET name=$1, slug=$2, description=$3, category=$4, image_url=$5, active=$6,
+       visible=$7, featured=$8, best_seller=$9, new_arrival=$10, on_sale=$11,
+       compare_at_price=$12, sort_order=$13, subtitle=$14, badge_text=$15, updated_at=NOW()
+       WHERE id=$16 RETURNING *`,
+      [name, slug, description, category, image_url, active !== false,
+       visible !== false, featured === true, best_seller === true, new_arrival === true, on_sale === true,
+       compare_at_price ? parseFloat(compare_at_price) : null, sort_order || 0, subtitle || null, badge_text || null,
+       req.params.id]
     );
     if (result.rows.length === 0) return res.status(404).json({ success: false, error: 'Product not found' });
     res.json({ success: true, product: result.rows[0] });
@@ -188,7 +196,7 @@ app.get('/api/admin/inventory', requireAdmin, async (req, res) => {
 });
 
 app.put('/api/admin/inventory/:variantKey', requireAdmin, async (req, res) => {
-  const { stock, price, sku, active, color_name } = req.body;
+  const { stock, price, sku, active, color_name, compare_at_price, low_stock_threshold } = req.body;
   try {
     const fields = [];
     const values = [];
@@ -198,6 +206,8 @@ app.put('/api/admin/inventory/:variantKey', requireAdmin, async (req, res) => {
     if (sku !== undefined) { fields.push(`sku=$${idx++}`); values.push(sku); }
     if (active !== undefined) { fields.push(`active=$${idx++}`); values.push(active); }
     if (color_name !== undefined) { fields.push(`color_name=$${idx++}`); values.push(color_name); }
+    if (compare_at_price !== undefined) { fields.push(`compare_at_price=$${idx++}`); values.push(compare_at_price ? parseFloat(compare_at_price) : null); }
+    if (low_stock_threshold !== undefined) { fields.push(`low_stock_threshold=$${idx++}`); values.push(parseInt(low_stock_threshold) || 5); }
     fields.push('updated_at=NOW()');
     values.push(req.params.variantKey);
     const result = await pool.query(
@@ -256,11 +266,17 @@ app.post('/api/admin/orders', requireAdmin, async (req, res) => {
 });
 
 app.put('/api/admin/orders/:id', requireAdmin, async (req, res) => {
-  const { payment_status, customer_name, customer_email } = req.body;
+  const { payment_status, customer_name, customer_email, fulfillment_status, tracking_number, notes } = req.body;
   try {
     const result = await pool.query(
-      'UPDATE orders SET payment_status=$1, customer_name=$2, customer_email=$3 WHERE id=$4 RETURNING *',
-      [payment_status, customer_name, customer_email, req.params.id]
+      `UPDATE orders SET payment_status=$1, customer_name=$2, customer_email=$3,
+       fulfillment_status=COALESCE($4, fulfillment_status),
+       tracking_number=COALESCE($5, tracking_number),
+       notes=COALESCE($6, notes)
+       WHERE id=$7 RETURNING *`,
+      [payment_status, customer_name, customer_email,
+       fulfillment_status || null, tracking_number !== undefined ? tracking_number : null,
+       notes !== undefined ? notes : null, req.params.id]
     );
     if (result.rows.length === 0) return res.status(404).json({ success: false, error: 'Order not found' });
     res.json({ success: true, order: result.rows[0] });
@@ -269,12 +285,66 @@ app.put('/api/admin/orders/:id', requireAdmin, async (req, res) => {
   }
 });
 
+// ─── ADMIN: SITE SETTINGS ─────────────────────────────────────────────────────
+
+app.get('/api/admin/settings', requireAdmin, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT key, value FROM site_settings ORDER BY key');
+    const settings = {};
+    result.rows.forEach(r => { settings[r.key] = r.value; });
+    res.json({ success: true, settings });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Failed to fetch settings' });
+  }
+});
+
+app.put('/api/admin/settings', requireAdmin, async (req, res) => {
+  const { settings } = req.body;
+  if (!settings || typeof settings !== 'object') {
+    return res.status(400).json({ success: false, error: 'Send { settings: { key: value } }' });
+  }
+  try {
+    for (const [key, value] of Object.entries(settings)) {
+      await pool.query(
+        'INSERT INTO site_settings (key, value, updated_at) VALUES ($1, $2, NOW()) ON CONFLICT (key) DO UPDATE SET value=$2, updated_at=NOW()',
+        [key, String(value)]
+      );
+    }
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Failed to save settings' });
+  }
+});
+
+// ─── ADMIN: MESSAGES ──────────────────────────────────────────────────────────
+
+app.get('/api/admin/messages', requireAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT * FROM contact_messages ORDER BY created_at DESC LIMIT 200'
+    );
+    res.json({ success: true, messages: result.rows });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Failed to fetch messages' });
+  }
+});
+
+app.delete('/api/admin/messages/:id', requireAdmin, async (req, res) => {
+  try {
+    await pool.query('DELETE FROM contact_messages WHERE id = $1', [req.params.id]);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Failed to delete message' });
+  }
+});
+
 // ─── PUBLIC INVENTORY API ─────────────────────────────────────────────────────
 
 app.get('/api/inventory', async (req, res) => {
   try {
     const result = await pool.query(`
-      SELECT i.variant_key, i.color_code, i.color_name, i.length, i.stock, i.price, i.sku, i.active,
+      SELECT i.variant_key, i.color_code, i.color_name, i.length, i.stock, i.price,
+             i.compare_at_price, i.sku, i.active, i.low_stock_threshold,
         COALESCE((
           SELECT COUNT(*) FROM reservations r
           WHERE r.variant_key = i.variant_key AND r.expires_at > NOW()
@@ -296,6 +366,8 @@ app.get('/api/inventory', async (req, res) => {
         reserved: parseInt(row.reserved),
         available: parseInt(row.available),
         price: row.price,
+        compareAtPrice: row.compare_at_price,
+        lowStockThreshold: row.low_stock_threshold || 5,
         sku: row.sku,
         active: row.active
       };
@@ -343,6 +415,34 @@ app.post('/api/inventory/decrease', async (req, res) => {
     res.json({ success: true, variant: result.rows[0] });
   } catch (err) {
     res.status(500).json({ success: false, error: 'Failed to decrease stock' });
+  }
+});
+
+// ─── PUBLIC: PRODUCT BY SLUG ──────────────────────────────────────────────────
+
+app.get('/api/products/:slug', async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT * FROM products WHERE slug = $1 AND active = TRUE LIMIT 1',
+      [req.params.slug]
+    );
+    if (result.rows.length === 0) return res.status(404).json({ success: false, error: 'Product not found' });
+    res.json({ success: true, product: result.rows[0] });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Failed to fetch product' });
+  }
+});
+
+// ─── PUBLIC: SITE SETTINGS ────────────────────────────────────────────────────
+
+app.get('/api/settings', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT key, value FROM site_settings ORDER BY key');
+    const settings = {};
+    result.rows.forEach(r => { settings[r.key] = r.value; });
+    res.json({ success: true, settings });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Failed to fetch settings' });
   }
 });
 
