@@ -432,8 +432,8 @@
           </div>
           <div class="card-body">
             <table>
-              <thead><tr><th>Variant Key / SKU</th><th>Color</th><th>Length</th><th>Stock</th><th>Price</th><th>Status</th><th>Active</th><th>Save</th></tr></thead>
-              <tbody id="inventoryBody"><tr><td colspan="8"><div class="empty-state"><p>Loading…</p></div></td></tr></tbody>
+              <thead><tr><th>Variant Key / SKU</th><th>Color</th><th>Length</th><th>Total Stock</th><th>Reserved</th><th>Available</th><th>Price</th><th>Status</th><th>Active</th><th>Save</th></tr></thead>
+              <tbody id="inventoryBody"><tr><td colspan="10"><div class="empty-state"><p>Loading…</p></div></td></tr></tbody>
             </table>
           </div>
         </div>
@@ -830,15 +830,22 @@ function loadInventory() {
 
 function renderInventory(rows) {
   var tbody = document.getElementById('inventoryBody');
-  if (!rows.length) { tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><p>No inventory data.</p></div></td></tr>'; return; }
+  if (!rows.length) { tbody.innerHTML = '<tr><td colspan="10"><div class="empty-state"><p>No inventory data.</p></div></td></tr>'; return; }
   tbody.innerHTML = rows.map(function(v) {
     var stock = parseInt(v.stock) || 0;
-    var badge = stock === 0 ? '<span class="badge badge-red">Sold Out</span>' : stock <= 5 ? '<span class="badge badge-yellow">Low Stock</span>' : '<span class="badge badge-green">In Stock</span>';
+    var reserved = parseInt(v.reserved) || 0;
+    var available = parseInt(v.available !== undefined ? v.available : Math.max(stock - reserved, 0));
+    var badge = available === 0 ? '<span class="badge badge-red">Sold Out</span>' : available <= 5 ? '<span class="badge badge-yellow">Low Stock</span>' : '<span class="badge badge-green">In Stock</span>';
+    var reservedCell = reserved > 0
+      ? '<span style="color:#b45309;font-weight:600">' + reserved + ' held</span>'
+      : '<span style="color:var(--muted)">—</span>';
     return '<tr data-key="' + v.variant_key + '">' +
       '<td><div style="font-weight:500;font-size:0.82rem">' + esc(v.variant_key) + '</div><div style="font-size:0.72rem;color:var(--muted)">' + esc(v.sku || '') + '</div></td>' +
       '<td>' + esc(v.color_name) + '</td>' +
       '<td>' + v.length + '"</td>' +
       '<td><input class="stock-input" type="number" value="' + stock + '" min="0" data-field="stock" data-key="' + v.variant_key + '"></td>' +
+      '<td style="text-align:center">' + reservedCell + '</td>' +
+      '<td style="text-align:center;font-weight:600;color:' + (available === 0 ? '#dc2626' : available <= 5 ? '#b45309' : '#059669') + '">' + available + '</td>' +
       '<td><input class="stock-input" style="width:90px" type="number" value="' + (v.price || '') + '" step="0.01" min="0" placeholder="0.00" data-field="price" data-key="' + v.variant_key + '"></td>' +
       '<td>' + badge + '</td>' +
       '<td><input type="checkbox" ' + (v.active ? 'checked' : '') + ' data-field="active" data-key="' + v.variant_key + '" style="width:16px;height:16px;cursor:pointer"></td>' +

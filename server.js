@@ -83,8 +83,10 @@ app.get('/api/admin/stats', requireAdmin, async (req, res) => {
       pool.query('SELECT COUNT(*) as total FROM orders'),
       pool.query("SELECT COALESCE(SUM(amount_total), 0) as total FROM orders WHERE payment_status = 'paid'"),
       pool.query('SELECT COUNT(*) as total FROM products WHERE active = TRUE'),
-      pool.query('SELECT COUNT(*) as total FROM inventory WHERE stock > 0 AND stock <= 5 AND active = TRUE'),
-      pool.query('SELECT COUNT(*) as total FROM inventory WHERE stock = 0 AND active = TRUE')
+      pool.query(`SELECT COUNT(*) as total FROM inventory i WHERE active = TRUE
+        AND GREATEST(i.stock - COALESCE((SELECT COUNT(*) FROM reservations r WHERE r.variant_key = i.variant_key AND r.expires_at > NOW()),0),0) BETWEEN 1 AND 5`),
+      pool.query(`SELECT COUNT(*) as total FROM inventory i WHERE active = TRUE
+        AND GREATEST(i.stock - COALESCE((SELECT COUNT(*) FROM reservations r WHERE r.variant_key = i.variant_key AND r.expires_at > NOW()),0),0) = 0`)
     ]);
     res.json({
       success: true,
@@ -166,7 +168,15 @@ app.delete('/api/admin/products/:id', requireAdmin, async (req, res) => {
 app.get('/api/admin/inventory', requireAdmin, async (req, res) => {
   try {
     const result = await pool.query(`
-      SELECT i.*, p.name as product_name
+      SELECT i.*, p.name as product_name,
+        COALESCE((
+          SELECT COUNT(*) FROM reservations r
+          WHERE r.variant_key = i.variant_key AND r.expires_at > NOW()
+        ), 0)::int AS reserved,
+        GREATEST(i.stock - COALESCE((
+          SELECT COUNT(*) FROM reservations r
+          WHERE r.variant_key = i.variant_key AND r.expires_at > NOW()
+        ), 0), 0)::int AS available
       FROM inventory i
       LEFT JOIN products p ON p.id = i.product_id
       ORDER BY i.color_name, i.length
@@ -263,16 +273,28 @@ app.put('/api/admin/orders/:id', requireAdmin, async (req, res) => {
 
 app.get('/api/inventory', async (req, res) => {
   try {
-    const result = await pool.query(
-      'SELECT variant_key, color_code, color_name, length, stock, price, sku, active FROM inventory ORDER BY color_code, length'
-    );
+    const result = await pool.query(`
+      SELECT i.variant_key, i.color_code, i.color_name, i.length, i.stock, i.price, i.sku, i.active,
+        COALESCE((
+          SELECT COUNT(*) FROM reservations r
+          WHERE r.variant_key = i.variant_key AND r.expires_at > NOW()
+        ), 0)::int AS reserved,
+        GREATEST(i.stock - COALESCE((
+          SELECT COUNT(*) FROM reservations r
+          WHERE r.variant_key = i.variant_key AND r.expires_at > NOW()
+        ), 0), 0)::int AS available
+      FROM inventory i
+      ORDER BY i.color_code, i.length
+    `);
     const inventory = {};
     for (const row of result.rows) {
       inventory[row.variant_key] = {
         colorCode: row.color_code,
         colorName: row.color_name,
         length: row.length,
-        stock: row.stock,
+        stock: parseInt(row.stock),
+        reserved: parseInt(row.reserved),
+        available: parseInt(row.available),
         price: row.price,
         sku: row.sku,
         active: row.active
@@ -287,10 +309,19 @@ app.get('/api/inventory', async (req, res) => {
 
 app.get('/api/inventory/:variantKey', async (req, res) => {
   try {
-    const result = await pool.query(
-      'SELECT * FROM inventory WHERE variant_key = $1',
-      [req.params.variantKey]
-    );
+    const result = await pool.query(`
+      SELECT i.*,
+        COALESCE((
+          SELECT COUNT(*) FROM reservations r
+          WHERE r.variant_key = i.variant_key AND r.expires_at > NOW()
+        ), 0)::int AS reserved,
+        GREATEST(i.stock - COALESCE((
+          SELECT COUNT(*) FROM reservations r
+          WHERE r.variant_key = i.variant_key AND r.expires_at > NOW()
+        ), 0), 0)::int AS available
+      FROM inventory i
+      WHERE i.variant_key = $1
+    `, [req.params.variantKey]);
     if (result.rows.length === 0) return res.status(404).json({ success: false, error: 'Variant not found' });
     res.json({ success: true, variant: result.rows[0] });
   } catch (err) {
@@ -360,54 +391,113 @@ app.post('/api/checkout', async (req, res) => {
     return res.status(400).json({ success: false, error: 'Missing variant info' });
   }
 
+  const client = await pool.connect();
+  let reservationId = null;
+
   try {
-    // Check stock before creating session
-    const stockCheck = await pool.query(
-      'SELECT stock, active FROM inventory WHERE variant_key = $1',
+    // ── ATOMIC RESERVATION ────────────────────────────────────────────────────
+    await client.query('BEGIN');
+
+    // Lock this inventory row so concurrent requests must wait
+    const lockResult = await client.query(
+      'SELECT stock, active FROM inventory WHERE variant_key = $1 FOR UPDATE',
       [variantKey]
     );
-    if (stockCheck.rows.length > 0) {
-      const { stock, active } = stockCheck.rows[0];
-      if (!active || parseInt(stock) <= 0) {
-        return res.status(400).json({ success: false, error: 'This variant is sold out' });
-      }
+
+    if (lockResult.rows.length === 0) {
+      await client.query('ROLLBACK');
+      return res.status(404).json({ success: false, error: 'Variant not found' });
     }
+
+    const { stock, active } = lockResult.rows[0];
+
+    if (!active) {
+      await client.query('ROLLBACK');
+      return res.status(400).json({ success: false, error: 'This variant is no longer available' });
+    }
+
+    // Count active (non-expired) reservations for this variant
+    const resCount = await client.query(
+      'SELECT COUNT(*) AS cnt FROM reservations WHERE variant_key = $1 AND expires_at > NOW()',
+      [variantKey]
+    );
+    const reserved = parseInt(resCount.rows[0].cnt);
+    const available = parseInt(stock) - reserved;
+
+    if (available <= 0) {
+      await client.query('ROLLBACK');
+      return res.status(409).json({ success: false, error: 'Sorry, this variant just sold out. Please refresh and try again.' });
+    }
+
+    // Create the reservation (15-minute hold)
+    const resResult = await client.query(
+      'INSERT INTO reservations (variant_key, expires_at) VALUES ($1, NOW() + INTERVAL \'15 minutes\') RETURNING id',
+      [variantKey]
+    );
+    reservationId = resResult.rows[0].id;
+
+    await client.query('COMMIT');
+    // ── END ATOMIC RESERVATION ────────────────────────────────────────────────
 
     const stripe = Stripe(stripeKey);
     const origin = req.headers.origin || `https://${req.headers.host}`;
 
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      mode: 'payment',
-      line_items: [{
-        price_data: {
-          currency: 'usd',
-          unit_amount: Math.round(parseFloat(price) * 100),
-          product_data: {
-            name: `AA Signature Body Wave — ${colorName} · ${length}"`,
-            description: '13×6 Swiss HD Lace · 180% Density · Glueless Ready',
-            images: [`${origin}/assets/aa-logo.png`],
+    let session;
+    try {
+      session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        mode: 'payment',
+        line_items: [{
+          price_data: {
+            currency: 'usd',
+            unit_amount: Math.round(parseFloat(price) * 100),
+            product_data: {
+              name: `AA Signature Body Wave — ${colorName} · ${length}"`,
+              description: '13×6 Swiss HD Lace · 180% Density · Glueless Ready',
+              images: [`${origin}/assets/aa-logo.png`],
+            },
           },
+          quantity: 1,
+        }],
+        shipping_address_collection: {
+          allowed_countries: ['US'],
         },
-        quantity: 1,
-      }],
-      shipping_address_collection: {
-        allowed_countries: ['US'],
-      },
-      billing_address_collection: 'required',
-      metadata: {
-        variant_key: variantKey,
-        color_name: colorName,
-        length: String(length),
-      },
-      success_url: `${origin}/products/22-swiss-hd-body-wave/?order=success`,
-      cancel_url:  `${origin}/products/22-swiss-hd-body-wave/?order=cancelled`,
-    });
+        billing_address_collection: 'required',
+        metadata: {
+          variant_key: variantKey,
+          color_name: colorName,
+          length: String(length),
+          reservation_id: String(reservationId),
+        },
+        success_url: `${origin}/products/22-swiss-hd-body-wave/?order=success`,
+        cancel_url:  `${origin}/products/22-swiss-hd-body-wave/?order=cancelled`,
+      });
+    } catch (stripeErr) {
+      // Stripe failed — release the reservation immediately
+      await pool.query('DELETE FROM reservations WHERE id = $1', [reservationId]);
+      console.error('Stripe session error:', stripeErr.message);
+      return res.status(500).json({ success: false, error: 'Could not create checkout session' });
+    }
 
+    // Link the reservation to the Stripe session so the webhook can find it
+    await pool.query(
+      'UPDATE reservations SET stripe_session_id = $1 WHERE id = $2',
+      [session.id, reservationId]
+    );
+
+    console.log(`Reservation #${reservationId} created for ${variantKey} (session ${session.id})`);
     res.json({ success: true, url: session.url });
+
   } catch (err) {
+    try { await client.query('ROLLBACK'); } catch(_) {}
+    // If reservation was created but something else failed, release it
+    if (reservationId) {
+      await pool.query('DELETE FROM reservations WHERE id = $1', [reservationId]).catch(() => {});
+    }
     console.error('Checkout error:', err.message);
     res.status(500).json({ success: false, error: 'Could not create checkout session' });
+  } finally {
+    client.release();
   }
 });
 
@@ -431,10 +521,31 @@ app.post('/api/webhook/stripe', async (req, res) => {
 });
 
 async function handleStripeEvent(event) {
-  if (event.type !== 'checkout.session.completed') return;
   const session = event.data.object;
+  const sessionId = session.id;
   const metadata = session.metadata || {};
+
+  // ── CHECKOUT EXPIRED: release the reservation ──────────────────────────────
+  if (event.type === 'checkout.session.expired') {
+    try {
+      const del = await pool.query(
+        'DELETE FROM reservations WHERE stripe_session_id = $1 RETURNING id, variant_key',
+        [sessionId]
+      );
+      if (del.rows.length > 0) {
+        console.log(`Reservation released (session expired): ${del.rows[0].variant_key} — res #${del.rows[0].id}`);
+      }
+    } catch (err) {
+      console.error('Reservation release error:', err.message);
+    }
+    return;
+  }
+
+  if (event.type !== 'checkout.session.completed') return;
+
+  // ── CHECKOUT COMPLETED: confirm sale atomically ────────────────────────────
   const variantKey = metadata.variant_key || null;
+  const reservationId = metadata.reservation_id ? parseInt(metadata.reservation_id) : null;
   const customerName = session.customer_details?.name || 'Guest';
   const customerEmail = session.customer_details?.email || null;
   const amountTotal = session.amount_total ? session.amount_total / 100 : null;
@@ -459,31 +570,63 @@ async function handleStripeEvent(event) {
     } catch(e) {}
   }
 
+  const client = await pool.connect();
   try {
-    await pool.query(
-      `INSERT INTO orders (stripe_session_id, customer_name, customer_email, product_name, variant_key, variant_description, quantity, amount_total, payment_status, shipping_name, shipping_address, shipping_city, shipping_state, shipping_zip, shipping_country)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,'paid',$9,$10,$11,$12,$13,$14)
-       ON CONFLICT (stripe_session_id) DO NOTHING`,
-      [session.id, customerName, customerEmail, 'AA Signature Body Wave', variantKey, variantDesc, 1, amountTotal,
-       shipName, shipFull, shipCity, shipState, shipZip, shipCountry]
-    );
-    console.log('Order recorded:', session.id, '| Ship to:', shipFull || 'no address');
-  } catch (err) {
-    console.error('Order record error:', err.message);
-  }
+    await client.query('BEGIN');
 
-  if (variantKey) {
-    try {
-      const result = await pool.query(
+    // Delete the reservation (whether found or not, the sale still records)
+    const delRes = await client.query(
+      'DELETE FROM reservations WHERE stripe_session_id = $1 OR id = $2 RETURNING id',
+      [sessionId, reservationId]
+    );
+    if (delRes.rows.length > 0) {
+      console.log(`Reservation #${delRes.rows[0].id} confirmed — converting to sale`);
+    }
+
+    // Atomically decrement stock (never below 0)
+    if (variantKey) {
+      const stockResult = await client.query(
         'UPDATE inventory SET stock = GREATEST(stock - 1, 0), updated_at = NOW() WHERE variant_key = $1 RETURNING variant_key, stock',
         [variantKey]
       );
-      if (result.rows.length > 0) console.log(`Stock: ${variantKey} → ${result.rows[0].stock} remaining`);
-    } catch (err) {
-      console.error('Stock decrease error:', err.message);
+      if (stockResult.rows.length > 0) {
+        console.log(`Stock: ${variantKey} → ${stockResult.rows[0].stock} remaining`);
+      }
     }
+
+    // Record the order
+    await client.query(
+      `INSERT INTO orders (stripe_session_id, customer_name, customer_email, product_name, variant_key, variant_description, quantity, amount_total, payment_status, shipping_name, shipping_address, shipping_city, shipping_state, shipping_zip, shipping_country)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,'paid',$9,$10,$11,$12,$13,$14)
+       ON CONFLICT (stripe_session_id) DO NOTHING`,
+      [sessionId, customerName, customerEmail, 'AA Signature Body Wave', variantKey, variantDesc, 1, amountTotal,
+       shipName, shipFull, shipCity, shipState, shipZip, shipCountry]
+    );
+
+    await client.query('COMMIT');
+    console.log('Order recorded:', sessionId, '| Ship to:', shipFull || 'no address');
+  } catch (err) {
+    await client.query('ROLLBACK').catch(() => {});
+    console.error('Order/stock update error:', err.message);
+  } finally {
+    client.release();
   }
 }
+
+// ─── RESERVATION CLEANUP JOB ──────────────────────────────────────────────────
+// Runs every 5 minutes to release any reservations that expired without payment
+setInterval(async () => {
+  try {
+    const result = await pool.query(
+      'DELETE FROM reservations WHERE expires_at < NOW() RETURNING id, variant_key'
+    );
+    if (result.rows.length > 0) {
+      console.log(`Cleanup: released ${result.rows.length} expired reservation(s):`, result.rows.map(r => `${r.variant_key}#${r.id}`).join(', '));
+    }
+  } catch (err) {
+    console.error('Cleanup error:', err.message);
+  }
+}, 5 * 60 * 1000);
 
 // ─── ADMIN PAGE PROTECTION ────────────────────────────────────────────────────
 

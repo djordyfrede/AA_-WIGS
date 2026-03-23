@@ -659,11 +659,12 @@
       var key = getVariantKey(color, length);
       var data = liveInventory[key];
       if (!data) return { status: 'unknown', stock: -1 };
-      var stock = parseInt(data.stock) || 0;
-      if (!data.active) return { status: 'unavailable', stock: stock };
-      if (stock === 0) return { status: 'sold-out', stock: 0 };
-      if (stock <= 5) return { status: 'low', stock: stock };
-      return { status: 'in-stock', stock: stock };
+      // Use available (stock minus active reservations) to prevent overselling
+      var available = (data.available !== undefined) ? parseInt(data.available) : parseInt(data.stock) || 0;
+      if (!data.active) return { status: 'unavailable', stock: available };
+      if (available === 0) return { status: 'sold-out', stock: 0 };
+      if (available <= 5) return { status: 'low', stock: available };
+      return { status: 'in-stock', stock: available };
     }
 
     function applyInventoryUI() {
