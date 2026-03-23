@@ -451,8 +451,8 @@
           </div>
           <div class="card-body">
             <table>
-              <thead><tr><th>ID</th><th>Customer</th><th>Product</th><th>Variant</th><th>Qty</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
-              <tbody id="ordersBody"><tr><td colspan="8"><div class="empty-state"><div class="empty-state-icon">📋</div><p>No orders yet</p></td></tr></tbody>
+              <thead><tr><th>ID</th><th>Customer</th><th>Ship To</th><th>Product</th><th>Variant</th><th>Qty</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
+              <tbody id="ordersBody"><tr><td colspan="9"><div class="empty-state"><div class="empty-state-icon">📋</div><p>No orders yet</p></td></tr></tbody>
             </table>
           </div>
         </div>
@@ -894,13 +894,15 @@ function loadOrders() {
 function renderOrders(orders) {
   var tbody = document.getElementById('ordersBody');
   if (!orders.length) {
-    tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><div class="empty-state-icon">📋</div><p>No orders yet. Orders from Stripe appear here automatically after successful payments.</p></div></td></tr>';
+    tbody.innerHTML = '<tr><td colspan="9"><div class="empty-state"><div class="empty-state-icon">📋</div><p>No orders yet. Orders from Stripe appear here automatically after successful payments.</p></div></td></tr>';
     return;
   }
   tbody.innerHTML = orders.map(function(o) {
+    var shipDisplay = o.shipping_address ? esc(o.shipping_address) : '<span style="color:var(--muted);font-size:0.78rem">—</span>';
     return '<tr>' +
       '<td><strong>#' + o.id + '</strong></td>' +
       '<td><div>' + esc(o.customer_name || 'Guest') + '</div><div style="font-size:0.72rem;color:var(--muted)">' + esc(o.customer_email || '') + '</div></td>' +
+      '<td style="font-size:0.78rem;max-width:180px;white-space:normal">' + shipDisplay + '</td>' +
       '<td>' + esc(o.product_name || '—') + '</td>' +
       '<td>' + esc(o.variant_description || '—') + '</td>' +
       '<td style="text-align:center">' + (o.quantity || 1) + '</td>' +

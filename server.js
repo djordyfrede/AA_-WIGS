@@ -391,6 +391,10 @@ app.post('/api/checkout', async (req, res) => {
         },
         quantity: 1,
       }],
+      shipping_address_collection: {
+        allowed_countries: ['US'],
+      },
+      billing_address_collection: 'required',
       metadata: {
         variant_key: variantKey,
         color_name: colorName,
@@ -435,6 +439,18 @@ async function handleStripeEvent(event) {
   const customerEmail = session.customer_details?.email || null;
   const amountTotal = session.amount_total ? session.amount_total / 100 : null;
 
+  // Extract full shipping address
+  const ship = session.shipping_details?.address || session.shipping?.address || null;
+  const shipName = session.shipping_details?.name || session.shipping?.name || customerName;
+  const shipLine1 = ship?.line1 || '';
+  const shipLine2 = ship?.line2 || '';
+  const shipCity = ship?.city || '';
+  const shipState = ship?.state || '';
+  const shipZip = ship?.postal_code || '';
+  const shipCountry = ship?.country || '';
+  const shipFull = [shipLine1, shipLine2, shipCity, shipState, shipZip, shipCountry]
+    .filter(Boolean).join(', ');
+
   let variantDesc = variantKey || 'Unknown variant';
   if (variantKey) {
     try {
@@ -445,12 +461,13 @@ async function handleStripeEvent(event) {
 
   try {
     await pool.query(
-      `INSERT INTO orders (stripe_session_id, customer_name, customer_email, product_name, variant_key, variant_description, quantity, amount_total, payment_status)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,'paid')
+      `INSERT INTO orders (stripe_session_id, customer_name, customer_email, product_name, variant_key, variant_description, quantity, amount_total, payment_status, shipping_name, shipping_address, shipping_city, shipping_state, shipping_zip, shipping_country)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,'paid',$9,$10,$11,$12,$13,$14)
        ON CONFLICT (stripe_session_id) DO NOTHING`,
-      [session.id, customerName, customerEmail, 'AA Signature Body Wave', variantKey, variantDesc, 1, amountTotal]
+      [session.id, customerName, customerEmail, 'AA Signature Body Wave', variantKey, variantDesc, 1, amountTotal,
+       shipName, shipFull, shipCity, shipState, shipZip, shipCountry]
     );
-    console.log('Order recorded:', session.id);
+    console.log('Order recorded:', session.id, '| Ship to:', shipFull || 'no address');
   } catch (err) {
     console.error('Order record error:', err.message);
   }
