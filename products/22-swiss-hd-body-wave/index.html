@@ -775,7 +775,7 @@
               bar.style.display = 'none';
             } else {
               bar.style.display = '';
-              if (barText && s.announcement_bar_text) {
+              if (barText && 'announcement_bar_text' in s) {
                 barText.textContent = s.announcement_bar_text;
               }
             }
