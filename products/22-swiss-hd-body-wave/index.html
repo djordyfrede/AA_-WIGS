@@ -265,12 +265,14 @@
         </div>
 
         <div class="product-details">
+          <div id="productBadgeRow" class="product-badge-row" style="display:none"></div>
           <p class="eyebrow">Signature Collection</p>
           <h1>AA Signature Body Wave</h1>
           <p class="product-emotion">This isn't just hair. It's presence.</p>
           <p class="product-subtitle"><span id="subtitleLength">22"</span> · 13x6 Swiss HD Lace · 180% Density · Glueless Ready</p>
 
           <div class="product-price-block">
+            <span id="compareAtPrice" class="compare-at-price"></span>
             <span class="price">$199.99</span>
             <div class="product-stock-indicator" id="stockIndicator"></div>
           </div>
@@ -589,6 +591,7 @@
     };
 
     var priceEl = document.querySelector('.price');
+    var compareAtEl = document.getElementById('compareAtPrice');
     var addBtn = document.getElementById('addToCartBtn');
     var mobileBtn = document.getElementById('addToCartMobile');
     var lengthLabel = document.getElementById('lengthLabel');
@@ -606,6 +609,21 @@
       return v ? v.price : 199.99;
     }
 
+    function updateCompareAtPrice() {
+      if (!compareAtEl) return;
+      var key = getVariantKey(selectedColor, selectedLength);
+      var data = liveInventory[key];
+      var livePrice = getLivePrice(selectedColor, selectedLength);
+      var cap = data && data.compareAtPrice ? parseFloat(data.compareAtPrice) : 0;
+      if (cap > 0 && cap > livePrice) {
+        compareAtEl.textContent = '$' + cap.toFixed(2);
+        compareAtEl.classList.add('visible');
+      } else {
+        compareAtEl.textContent = '';
+        compareAtEl.classList.remove('visible');
+      }
+    }
+
     function updateUI() {
       var price = getLivePrice(selectedColor, selectedLength);
       var colorName = COLOR_NAMES[selectedColor] || selectedColor;
@@ -619,6 +637,8 @@
       var btnText = 'Add to Bag \u2014 $' + price.toFixed(2);
       if (addBtn) addBtn.textContent = btnText;
       if (mobileBtn) mobileBtn.textContent = btnText;
+
+      updateCompareAtPrice();
     }
 
     function addToCart(e) {
@@ -740,6 +760,53 @@
         .catch(function() {});
     }
 
+    // ── ANNOUNCEMENT BAR FROM DB ───────────────────────────────────
+    function loadSiteSettings() {
+      fetch('/api/settings')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (!data.success) return;
+          var s = data.settings;
+          var bar = document.getElementById('announcementBar');
+          var barText = document.getElementById('announcementText');
+          if (bar) {
+            var active = s.announcement_bar_active;
+            if (active === 'false' || active === false) {
+              bar.style.display = 'none';
+            } else {
+              bar.style.display = '';
+              if (barText && s.announcement_bar_text) {
+                barText.textContent = s.announcement_bar_text;
+              }
+            }
+          }
+        })
+        .catch(function() {});
+    }
+
+    // ── PRODUCT BADGES FROM DB ─────────────────────────────────────
+    function loadProductData() {
+      fetch('/api/products/22-swiss-hd-body-wave')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (!data.success) return;
+          var p = data.product;
+          var badgeRow = document.getElementById('productBadgeRow');
+          if (!badgeRow) return;
+          var badges = [];
+          if (p.badge_text) {
+            badges.push('<span class="product-badge-pill custom">' + p.badge_text + '</span>');
+          } else {
+            if (p.best_seller) badges.push('<span class="product-badge-pill best-seller">Best Seller</span>');
+            if (p.new_arrival) badges.push('<span class="product-badge-pill new-arrival">New Arrival</span>');
+            if (p.on_sale) badges.push('<span class="product-badge-pill on-sale">Sale</span>');
+          }
+          badgeRow.innerHTML = badges.join('');
+          badgeRow.style.display = badges.length ? '' : 'none';
+        })
+        .catch(function() {});
+    }
+
     // Patch selectors to also trigger inventory UI
     document.querySelectorAll('.length-btn').forEach(function(btn) {
       btn.addEventListener('click', function() { applyInventoryUI(); });
@@ -749,6 +816,8 @@
     });
 
     loadInventory();
+    loadSiteSettings();
+    loadProductData();
 
     // ── ORDER STATUS BANNER ────────────────────────────────────────
     (function() {

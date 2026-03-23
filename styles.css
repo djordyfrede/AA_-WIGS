@@ -2350,6 +2350,58 @@ p {
   margin-bottom: 0;
 }
 
+.product-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.product-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.product-badge-pill.best-seller {
+  background: var(--burgundy);
+  color: var(--white);
+}
+
+.product-badge-pill.new-arrival {
+  background: linear-gradient(135deg, #1e3a5f, #2a5298);
+  color: var(--white);
+}
+
+.product-badge-pill.on-sale {
+  background: #d97706;
+  color: var(--white);
+}
+
+.product-badge-pill.custom {
+  background: var(--gold);
+  color: var(--white);
+}
+
+.compare-at-price {
+  font-size: 0.92rem;
+  color: var(--gray-500);
+  text-decoration: line-through;
+  font-weight: 400;
+  font-family: var(--font-sans);
+  display: none;
+}
+
+.compare-at-price.visible {
+  display: inline;
+}
+
 .stock-low {
   font-size: 0.78rem;
   font-weight: 600;
