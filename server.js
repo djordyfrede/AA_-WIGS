@@ -386,8 +386,8 @@ app.post('/api/checkout', async (req, res) => {
     return res.status(503).json({ success: false, error: 'Stripe not configured' });
   }
 
-  const { variantKey, colorName, length, price } = req.body;
-  if (!variantKey || !price) {
+  const { variantKey, colorName, length } = req.body;
+  if (!variantKey) {
     return res.status(400).json({ success: false, error: 'Missing variant info' });
   }
 
@@ -428,7 +428,7 @@ app.post('/api/checkout', async (req, res) => {
 
     // Lock this inventory row so concurrent requests must wait
     const lockResult = await client.query(
-      'SELECT stock, active FROM inventory WHERE variant_key = $1 FOR UPDATE',
+      'SELECT stock, active, price, color_name, length FROM inventory WHERE variant_key = $1 FOR UPDATE',
       [resolvedKey]
     );
 
@@ -438,7 +438,7 @@ app.post('/api/checkout', async (req, res) => {
       return res.status(404).json({ success: false, error: 'This item is no longer available. Please refresh the page and try again.' });
     }
 
-    const { stock, active } = lockResult.rows[0];
+    const { stock, active, price: dbPrice, color_name: dbColorName, length: dbLength } = lockResult.rows[0];
 
     if (!active) {
       await client.query('ROLLBACK');
@@ -473,15 +473,20 @@ app.post('/api/checkout', async (req, res) => {
 
     let session;
     try {
+      // Use DB price — dashboard is the authoritative source, never trust frontend
+      const chargeAmount = Math.round(parseFloat(dbPrice) * 100);
+      const displayName = dbColorName || colorName || 'Selected Shade';
+      const displayLength = dbLength || length || '';
+
       session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
         mode: 'payment',
         line_items: [{
           price_data: {
             currency: 'usd',
-            unit_amount: Math.round(parseFloat(price) * 100),
+            unit_amount: chargeAmount,
             product_data: {
-              name: `AA Signature Body Wave — ${colorName} · ${length}"`,
+              name: `AA Signature Body Wave — ${displayName} · ${displayLength}"`,
               description: '13×6 Swiss HD Lace · 180% Density · Glueless Ready',
               images: [`${origin}/assets/aa-logo.png`],
             },
@@ -494,9 +499,10 @@ app.post('/api/checkout', async (req, res) => {
         billing_address_collection: 'required',
         metadata: {
           variant_key: resolvedKey,
-          color_name: colorName,
-          length: String(length),
+          color_name: displayName,
+          length: String(displayLength),
           reservation_id: String(reservationId),
+          db_price: String(dbPrice),
         },
         success_url: `${origin}/products/22-swiss-hd-body-wave/?order=success`,
         cancel_url:  `${origin}/products/22-swiss-hd-body-wave/?order=cancelled`,
