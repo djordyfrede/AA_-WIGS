@@ -487,6 +487,8 @@ app.post('/api/checkout', async (req, res) => {
   }
 
   const { variantKey, colorName, length } = req.body;
+  console.log(`[CHECKOUT] variantKey="${variantKey}" colorName="${colorName}" length="${length}"`);
+
   if (!variantKey) {
     return res.status(400).json({ success: false, error: 'Missing variant info' });
   }
@@ -500,6 +502,7 @@ app.post('/api/checkout', async (req, res) => {
       'SELECT variant_key FROM inventory WHERE variant_key = $1 LIMIT 1',
       [variantKey]
     );
+    console.log(`[CHECKOUT] DB lookup for "${variantKey}": ${keyCheck.rows.length} rows found`);
     if (keyCheck.rows.length === 0) {
       const colorPrefix = (colorName || '').split(' ')[0];
       const fallback = await pool.query(
@@ -508,15 +511,17 @@ app.post('/api/checkout', async (req, res) => {
          AND length = $3 AND active = TRUE LIMIT 1`,
         [colorName, '%' + colorPrefix + '%', parseInt(length) || 0]
       );
+      console.log(`[CHECKOUT] Fallback query (colorName="${colorName}", length=${parseInt(length)||0}): ${fallback.rows.length} rows found`);
       if (fallback.rows.length > 0) {
         resolvedKey = fallback.rows[0].variant_key;
-        console.log(`variantKey auto-corrected: "${variantKey}" → "${resolvedKey}"`);
+        console.log(`[CHECKOUT] variantKey auto-corrected: "${variantKey}" → "${resolvedKey}"`);
       } else {
+        console.error(`[CHECKOUT] FAILED — no match for variantKey="${variantKey}" colorName="${colorName}" length="${length}"`);
         return res.status(404).json({ success: false, error: 'This item is no longer available. Please refresh the page and try again.' });
       }
     }
   } catch (normErr) {
-    console.error('Key normalization error:', normErr.message);
+    console.error('[CHECKOUT] Key normalization error:', normErr.message);
   }
 
   const client = await pool.connect();
