@@ -271,8 +271,8 @@
           <p class="product-emotion">This isn't just hair. It's presence.</p>
           <p class="product-subtitle"><span id="subtitleLength">22"</span> · 13x6 Swiss HD Lace · 180% Density · Glueless Ready</p>
 
+          <span id="compareAtPrice" class="compare-at-price"></span>
           <div class="product-price-block">
-            <span id="compareAtPrice" class="compare-at-price"></span>
             <span class="price">$199.99</span>
             <div class="product-stock-indicator" id="stockIndicator"></div>
           </div>
@@ -616,7 +616,7 @@
       var livePrice = getLivePrice(selectedColor, selectedLength);
       var cap = data && data.compareAtPrice ? parseFloat(data.compareAtPrice) : 0;
       if (cap > 0 && cap > livePrice) {
-        compareAtEl.textContent = '$' + cap.toFixed(2);
+        compareAtEl.textContent = 'was $' + cap.toFixed(2);
         compareAtEl.classList.add('visible');
       } else {
         compareAtEl.textContent = '';
@@ -793,16 +793,23 @@
           var p = data.product;
           var badgeRow = document.getElementById('productBadgeRow');
           if (!badgeRow) return;
-          var badges = [];
-          if (p.badge_text) {
-            badges.push('<span class="product-badge-pill custom">' + p.badge_text + '</span>');
-          } else {
-            if (p.best_seller) badges.push('<span class="product-badge-pill best-seller">Best Seller</span>');
-            if (p.new_arrival) badges.push('<span class="product-badge-pill new-arrival">New Arrival</span>');
-            if (p.on_sale) badges.push('<span class="product-badge-pill on-sale">Sale</span>');
+          badgeRow.innerHTML = '';
+          var pills = [];
+          function makePill(cls, text) {
+            var el = document.createElement('span');
+            el.className = 'product-badge-pill ' + cls;
+            el.textContent = text;
+            return el;
           }
-          badgeRow.innerHTML = badges.join('');
-          badgeRow.style.display = badges.length ? '' : 'none';
+          if (p.badge_text) {
+            pills.push(makePill('custom', p.badge_text));
+          } else {
+            if (p.best_seller) pills.push(makePill('best-seller', 'Best Seller'));
+            if (p.new_arrival) pills.push(makePill('new-arrival', 'New Arrival'));
+            if (p.on_sale) pills.push(makePill('on-sale', 'Sale'));
+          }
+          pills.forEach(function(el) { badgeRow.appendChild(el); });
+          badgeRow.style.display = pills.length ? '' : 'none';
         })
         .catch(function() {});
     }

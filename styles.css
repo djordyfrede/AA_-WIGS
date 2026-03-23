@@ -2390,16 +2390,17 @@ p {
 }
 
 .compare-at-price {
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   color: var(--gray-500);
   text-decoration: line-through;
   font-weight: 400;
   font-family: var(--font-sans);
   display: none;
+  margin-bottom: 4px;
 }
 
 .compare-at-price.visible {
-  display: inline;
+  display: block;
 }
 
 .stock-low {
