@@ -391,6 +391,34 @@ app.post('/api/checkout', async (req, res) => {
     return res.status(400).json({ success: false, error: 'Missing variant info' });
   }
 
+  // ── NORMALIZE VARIANT KEY ─────────────────────────────────────────────────
+  // If the variantKey doesn't exist in the DB (stale cart data), try to find
+  // the correct one by matching color name + length as a fallback.
+  let resolvedKey = variantKey;
+  try {
+    const keyCheck = await pool.query(
+      'SELECT variant_key FROM inventory WHERE variant_key = $1 LIMIT 1',
+      [variantKey]
+    );
+    if (keyCheck.rows.length === 0) {
+      const colorPrefix = (colorName || '').split(' ')[0];
+      const fallback = await pool.query(
+        `SELECT variant_key FROM inventory
+         WHERE (LOWER(color_name) = LOWER($1) OR color_name ILIKE $2)
+         AND length = $3 AND active = TRUE LIMIT 1`,
+        [colorName, '%' + colorPrefix + '%', parseInt(length) || 0]
+      );
+      if (fallback.rows.length > 0) {
+        resolvedKey = fallback.rows[0].variant_key;
+        console.log(`variantKey auto-corrected: "${variantKey}" → "${resolvedKey}"`);
+      } else {
+        return res.status(404).json({ success: false, error: 'This item is no longer available. Please refresh the page and try again.' });
+      }
+    }
+  } catch (normErr) {
+    console.error('Key normalization error:', normErr.message);
+  }
+
   const client = await pool.connect();
   let reservationId = null;
 
@@ -401,12 +429,13 @@ app.post('/api/checkout', async (req, res) => {
     // Lock this inventory row so concurrent requests must wait
     const lockResult = await client.query(
       'SELECT stock, active FROM inventory WHERE variant_key = $1 FOR UPDATE',
-      [variantKey]
+      [resolvedKey]
     );
 
     if (lockResult.rows.length === 0) {
       await client.query('ROLLBACK');
-      return res.status(404).json({ success: false, error: 'Variant not found' });
+      client.release();
+      return res.status(404).json({ success: false, error: 'This item is no longer available. Please refresh the page and try again.' });
     }
 
     const { stock, active } = lockResult.rows[0];
@@ -419,7 +448,7 @@ app.post('/api/checkout', async (req, res) => {
     // Count active (non-expired) reservations for this variant
     const resCount = await client.query(
       'SELECT COUNT(*) AS cnt FROM reservations WHERE variant_key = $1 AND expires_at > NOW()',
-      [variantKey]
+      [resolvedKey]
     );
     const reserved = parseInt(resCount.rows[0].cnt);
     const available = parseInt(stock) - reserved;
@@ -432,7 +461,7 @@ app.post('/api/checkout', async (req, res) => {
     // Create the reservation (15-minute hold)
     const resResult = await client.query(
       'INSERT INTO reservations (variant_key, expires_at) VALUES ($1, NOW() + INTERVAL \'15 minutes\') RETURNING id',
-      [variantKey]
+      [resolvedKey]
     );
     reservationId = resResult.rows[0].id;
 
@@ -464,7 +493,7 @@ app.post('/api/checkout', async (req, res) => {
         },
         billing_address_collection: 'required',
         metadata: {
-          variant_key: variantKey,
+          variant_key: resolvedKey,
           color_name: colorName,
           length: String(length),
           reservation_id: String(reservationId),
@@ -485,7 +514,7 @@ app.post('/api/checkout', async (req, res) => {
       [session.id, reservationId]
     );
 
-    console.log(`Reservation #${reservationId} created for ${variantKey} (session ${session.id})`);
+    console.log(`Reservation #${reservationId} created for ${resolvedKey} (session ${session.id})`);
     res.json({ success: true, url: session.url });
 
   } catch (err) {

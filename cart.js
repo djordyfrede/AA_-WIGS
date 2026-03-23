@@ -230,11 +230,18 @@ const Cart = {
       const item = this.items[0];
       const lengthNum = (item.length || '').replace(/[^0-9]/g, '');
 
+      // Rebuild variantKey if it's missing or stale (legacy cart items)
+      let variantKey = item.variantKey;
+      if (!variantKey && item.shade) {
+        const colorCode = item.shade.split(' ')[0].toLowerCase();
+        variantKey = 'body-wave-' + colorCode + '-' + lengthNum;
+      }
+
       fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          variantKey: item.variantKey,
+          variantKey: variantKey,
           colorName: item.shade,
           length: lengthNum,
           price: item.price
@@ -265,9 +272,15 @@ const Cart = {
       let itemBtns = '';
       this.items.forEach(item => {
         const lengthNum = (item.length || '').replace(/[^0-9]/g, '');
+        // Rebuild variantKey if missing (legacy cart items)
+        let vk = item.variantKey;
+        if (!vk && item.shade) {
+          const colorCode = item.shade.split(' ')[0].toLowerCase();
+          vk = 'body-wave-' + colorCode + '-' + lengthNum;
+        }
         const label = item.shade + (item.length ? ' · ' + item.length : '');
         const total = ((parseFloat(item.price) || 0) * item.qty).toFixed(2);
-        itemBtns += '<button class="cart-item-checkout-btn" data-vk="' + item.variantKey +
+        itemBtns += '<button class="cart-item-checkout-btn" data-vk="' + vk +
           '" data-cn="' + item.shade + '" data-len="' + lengthNum +
           '" data-price="' + item.price + '">Buy ' + label + ' — $' + total + '</button>';
       });
