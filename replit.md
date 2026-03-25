@@ -31,13 +31,15 @@ Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vani
 ## Database
 - **Engine**: PostgreSQL (via `DATABASE_URL` env var)
 - **ORM**: Raw `pg` Pool queries
+- **IMPORTANT**: Production deployment has its own separate PostgreSQL instance from development. The `initDatabase()` function at server startup handles CREATE TABLE IF NOT EXISTS for all 7 tables AND seeds them with default data if empty. This ensures production works on first deploy without manual setup.
 - **Tables**:
   - `products` — catalog with visibility flags, badges, compare-at price, sort order
-  - `inventory` — per-variant stock, price, compare-at price, low_stock_threshold, sku, active
-  - `orders` — customer orders with Stripe charge IDs, fulfillment_status, tracking_number, notes
+  - `inventory` — per-variant stock, price, compare-at price, sku, active (30 variants seeded: 6 colors × 5 lengths)
+  - `orders` — customer orders with Stripe session IDs, fulfillment_status, tracking_number, shipping address
   - `reservations` — 15-min inventory holds during checkout (cleaned up every 5 min)
   - `site_settings` — key/value store for all CMS content (announcement bar, hero text, policies, etc.)
-  - `messages` — contact form submissions and waitlist sign-ups (inbox)
+  - `admin_sessions` — admin auth tokens
+  - `contact_messages` — contact form submissions and waitlist sign-ups (inbox)
 
 ## Admin Dashboard
 - **URL**: `/admin/`

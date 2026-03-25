@@ -12,6 +12,199 @@ const pool = new Pool({
   ssl: false
 });
 
+// ─── DATABASE INIT + SEED ─────────────────────────────────────────────────────
+
+async function initDatabase() {
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS products (
+      id SERIAL PRIMARY KEY,
+      name TEXT NOT NULL,
+      slug TEXT UNIQUE NOT NULL,
+      description TEXT,
+      category TEXT DEFAULT 'wigs',
+      image_url TEXT,
+      active BOOLEAN DEFAULT TRUE,
+      visible BOOLEAN DEFAULT TRUE,
+      featured BOOLEAN DEFAULT FALSE,
+      best_seller BOOLEAN DEFAULT FALSE,
+      new_arrival BOOLEAN DEFAULT FALSE,
+      on_sale BOOLEAN DEFAULT FALSE,
+      compare_at_price NUMERIC(10,2),
+      sort_order INTEGER DEFAULT 0,
+      subtitle TEXT,
+      badge_text TEXT,
+      created_at TIMESTAMPTZ DEFAULT NOW(),
+      updated_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `);
+
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS inventory (
+      id SERIAL PRIMARY KEY,
+      product_id INTEGER REFERENCES products(id),
+      variant_key TEXT UNIQUE NOT NULL,
+      color_code TEXT,
+      color_name TEXT,
+      length INTEGER,
+      price NUMERIC(10,2) NOT NULL,
+      compare_at_price NUMERIC(10,2),
+      stock INTEGER DEFAULT 20,
+      reserved INTEGER DEFAULT 0,
+      active BOOLEAN DEFAULT TRUE,
+      sku TEXT,
+      created_at TIMESTAMPTZ DEFAULT NOW(),
+      updated_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `);
+
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS orders (
+      id SERIAL PRIMARY KEY,
+      stripe_session_id TEXT UNIQUE,
+      customer_name TEXT,
+      customer_email TEXT,
+      product_name TEXT,
+      variant_key TEXT,
+      variant_description TEXT,
+      quantity INTEGER DEFAULT 1,
+      amount_total NUMERIC(10,2),
+      payment_status TEXT DEFAULT 'pending',
+      fulfillment_status TEXT DEFAULT 'unfulfilled',
+      tracking_number TEXT,
+      tracking_carrier TEXT,
+      shipping_name TEXT,
+      shipping_address TEXT,
+      shipping_city TEXT,
+      shipping_state TEXT,
+      shipping_zip TEXT,
+      shipping_country TEXT,
+      notes TEXT,
+      created_at TIMESTAMPTZ DEFAULT NOW(),
+      updated_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `);
+
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS reservations (
+      id SERIAL PRIMARY KEY,
+      variant_key TEXT NOT NULL,
+      stripe_session_id TEXT,
+      expires_at TIMESTAMPTZ NOT NULL,
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `);
+
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS admin_sessions (
+      id SERIAL PRIMARY KEY,
+      token TEXT UNIQUE NOT NULL,
+      expires_at TIMESTAMPTZ NOT NULL,
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `);
+
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS site_settings (
+      key TEXT PRIMARY KEY,
+      value TEXT,
+      updated_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `);
+
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS contact_messages (
+      id SERIAL PRIMARY KEY,
+      form_type TEXT DEFAULT 'contact',
+      name TEXT,
+      email TEXT,
+      shade TEXT,
+      message TEXT,
+      read BOOLEAN DEFAULT FALSE,
+      replied BOOLEAN DEFAULT FALSE,
+      reply_text TEXT,
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `);
+
+  // ── Seed products ──
+  const productCount = await pool.query('SELECT COUNT(*) FROM products');
+  if (parseInt(productCount.rows[0].count) === 0) {
+    await pool.query(
+      `INSERT INTO products (name, slug, description, category, image_url, active, visible)
+       VALUES ($1,$2,$3,$4,$5,TRUE,TRUE)`,
+      [
+        'AA Signature Body Wave',
+        '22-swiss-hd-body-wave',
+        '100% Virgin Human Hair · 13x6 Swiss HD Lace · 180% Density · Pre-plucked Hairline · Glueless Adjustable Band · Heat Safe up to 392°F',
+        'wigs',
+        '/assets/og-image.jpg'
+      ]
+    );
+    console.log('[DB] Seeded products table');
+  }
+
+  // ── Seed site_settings ──
+  const settingsCount = await pool.query('SELECT COUNT(*) FROM site_settings');
+  if (parseInt(settingsCount.rows[0].count) === 0) {
+    const defaults = [
+      ['store_name', 'AA Wigs'],
+      ['store_email', 'hello@aawigs.com'],
+      ['store_instagram', 'https://instagram.com/aawigshair'],
+      ['store_tiktok', ''],
+      ['announcement_bar_active', 'true'],
+      ['announcement_bar_text', 'FREE U.S. SHIPPING ON ALL ORDERS · LIMITED STOCK AVAILABLE'],
+      ['hero_title', 'Where Luxury Meets Confidence'],
+      ['hero_subtitle', 'Premium Swiss HD Lace · 180% Density · Free U.S. Shipping'],
+      ['shipping_policy', ''],
+      ['return_policy', ''],
+      ['faq_content', ''],
+    ];
+    for (const [key, value] of defaults) {
+      await pool.query(
+        'INSERT INTO site_settings (key, value) VALUES ($1,$2) ON CONFLICT (key) DO NOTHING',
+        [key, value]
+      );
+    }
+    console.log('[DB] Seeded site_settings table');
+  }
+
+  // ── Seed inventory ──
+  const invCount = await pool.query('SELECT COUNT(*) FROM inventory');
+  if (parseInt(invCount.rows[0].count) === 0) {
+    const product = await pool.query('SELECT id FROM products WHERE slug=$1', ['22-swiss-hd-body-wave']);
+    const productId = product.rows[0]?.id;
+
+    const colors = [
+      { code: '1b',  name: '1B Natural Black' },
+      { code: '2',   name: '2 Dark Brown'      },
+      { code: '4',   name: '4 Medium Brown'    },
+      { code: '27',  name: '27 Honey Blonde'   },
+      { code: '613', name: '613 Blonde'        },
+      { code: '99j', name: '99J Burgundy'      },
+    ];
+    const lengths = [
+      { len: 18, price: 185.99 },
+      { len: 20, price: 199.99 },
+      { len: 22, price: 219.99 },
+      { len: 24, price: 239.99 },
+      { len: 26, price: 259.99 },
+    ];
+
+    for (const color of colors) {
+      for (const { len, price } of lengths) {
+        const variantKey = `body-wave-${color.code}-${len}`;
+        await pool.query(
+          `INSERT INTO inventory (product_id, variant_key, color_code, color_name, length, price, stock, active)
+           VALUES ($1,$2,$3,$4,$5,$6,20,TRUE)
+           ON CONFLICT (variant_key) DO NOTHING`,
+          [productId, variantKey, color.code, color.name, len, price]
+        );
+      }
+    }
+    console.log('[DB] Seeded inventory table with 30 variants');
+  }
+}
+
 app.use(express.static(path.join(__dirname), {
   extensions: ['html'],
   index: 'index.html'
@@ -791,6 +984,13 @@ app.get(/.*/, (req, res) => {
   }
 });
 
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`AA Wigs server running on port ${PORT}`);
-});
+initDatabase()
+  .then(() => {
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`AA Wigs server running on port ${PORT}`);
+    });
+  })
+  .catch(err => {
+    console.error('[DB] initDatabase failed:', err.message);
+    process.exit(1);
+  });
