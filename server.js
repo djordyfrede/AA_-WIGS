@@ -89,10 +89,12 @@ async function initDatabase() {
       id SERIAL PRIMARY KEY,
       variant_key TEXT NOT NULL,
       stripe_session_id TEXT,
+      confirmed BOOLEAN DEFAULT FALSE,
       expires_at TIMESTAMPTZ NOT NULL,
       created_at TIMESTAMPTZ DEFAULT NOW()
     )
   `);
+  await pool.query(`ALTER TABLE reservations ADD COLUMN IF NOT EXISTS confirmed BOOLEAN DEFAULT FALSE`);
 
   await pool.query(`
     CREATE TABLE IF NOT EXISTS admin_sessions (
@@ -276,10 +278,8 @@ app.get('/api/admin/stats', requireAdmin, async (req, res) => {
       pool.query('SELECT COUNT(*) as total FROM orders'),
       pool.query("SELECT COALESCE(SUM(amount_total), 0) as total FROM orders WHERE payment_status = 'paid'"),
       pool.query('SELECT COUNT(*) as total FROM products WHERE active = TRUE'),
-      pool.query(`SELECT COUNT(*) as total FROM inventory i WHERE active = TRUE
-        AND GREATEST(i.stock - COALESCE((SELECT COUNT(*) FROM reservations r WHERE r.variant_key = i.variant_key AND r.expires_at > NOW()),0),0) BETWEEN 1 AND 5`),
-      pool.query(`SELECT COUNT(*) as total FROM inventory i WHERE active = TRUE
-        AND GREATEST(i.stock - COALESCE((SELECT COUNT(*) FROM reservations r WHERE r.variant_key = i.variant_key AND r.expires_at > NOW()),0),0) = 0`)
+      pool.query(`SELECT COUNT(*) as total FROM inventory WHERE active = TRUE AND stock BETWEEN 1 AND 5`),
+      pool.query(`SELECT COUNT(*) as total FROM inventory WHERE active = TRUE AND stock = 0`)
     ]);
     res.json({
       success: true,
@@ -535,17 +535,15 @@ app.delete('/api/admin/messages/:id', requireAdmin, async (req, res) => {
 
 app.get('/api/inventory', async (req, res) => {
   try {
+    // Stock is decremented immediately when checkout is created and restored on
+    // abandonment — so stock IS the available count. No reservation subtraction needed.
     const result = await pool.query(`
       SELECT i.variant_key, i.color_code, i.color_name, i.length, i.stock, i.price,
              i.compare_at_price, i.sku, i.active, i.low_stock_threshold,
         COALESCE((
           SELECT COUNT(*) FROM reservations r
-          WHERE r.variant_key = i.variant_key AND r.expires_at > NOW()
-        ), 0)::int AS reserved,
-        GREATEST(i.stock - COALESCE((
-          SELECT COUNT(*) FROM reservations r
-          WHERE r.variant_key = i.variant_key AND r.expires_at > NOW()
-        ), 0), 0)::int AS available
+          WHERE r.variant_key = i.variant_key AND r.expires_at > NOW() AND r.confirmed = FALSE
+        ), 0)::int AS in_checkout
       FROM inventory i
       ORDER BY i.color_code, i.length
     `);
@@ -556,8 +554,8 @@ app.get('/api/inventory', async (req, res) => {
         colorName: row.color_name,
         length: row.length,
         stock: parseInt(row.stock),
-        reserved: parseInt(row.reserved),
-        available: parseInt(row.available),
+        reserved: parseInt(row.in_checkout),
+        available: parseInt(row.stock),
         price: row.price,
         compareAtPrice: row.compare_at_price,
         lowStockThreshold: row.low_stock_threshold || 5,
@@ -575,15 +573,11 @@ app.get('/api/inventory', async (req, res) => {
 app.get('/api/inventory/:variantKey', async (req, res) => {
   try {
     const result = await pool.query(`
-      SELECT i.*,
+      SELECT i.*, i.stock AS available,
         COALESCE((
           SELECT COUNT(*) FROM reservations r
-          WHERE r.variant_key = i.variant_key AND r.expires_at > NOW()
-        ), 0)::int AS reserved,
-        GREATEST(i.stock - COALESCE((
-          SELECT COUNT(*) FROM reservations r
-          WHERE r.variant_key = i.variant_key AND r.expires_at > NOW()
-        ), 0), 0)::int AS available
+          WHERE r.variant_key = i.variant_key AND r.expires_at > NOW() AND r.confirmed = FALSE
+        ), 0)::int AS in_checkout
       FROM inventory i
       WHERE i.variant_key = $1
     `, [req.params.variantKey]);
@@ -740,25 +734,27 @@ app.post('/api/checkout', async (req, res) => {
 
     if (!active) {
       await client.query('ROLLBACK');
+      client.release();
       return res.status(400).json({ success: false, error: 'This variant is no longer available' });
     }
 
-    // Count active (non-expired) reservations for this variant
-    const resCount = await client.query(
-      'SELECT COUNT(*) AS cnt FROM reservations WHERE variant_key = $1 AND expires_at > NOW()',
-      [resolvedKey]
-    );
-    const reserved = parseInt(resCount.rows[0].cnt);
-    const available = parseInt(stock) - reserved;
-
-    if (available <= 0) {
+    // Stock > 0 means physically available (already accounts for in-checkout holds)
+    if (parseInt(stock) <= 0) {
       await client.query('ROLLBACK');
+      client.release();
       return res.status(409).json({ success: false, error: 'Sorry, this variant just sold out. Please refresh and try again.' });
     }
 
-    // Create the reservation (15-minute hold)
+    // Decrement stock immediately — this is the authoritative hold.
+    // If payment fails/expires, the cleanup job restores +1.
+    await client.query(
+      'UPDATE inventory SET stock = stock - 1, updated_at = NOW() WHERE variant_key = $1',
+      [resolvedKey]
+    );
+
+    // Create the reservation (15-minute hold, for tracking + expiry restore)
     const resResult = await client.query(
-      'INSERT INTO reservations (variant_key, expires_at) VALUES ($1, NOW() + INTERVAL \'15 minutes\') RETURNING id',
+      'INSERT INTO reservations (variant_key, expires_at, confirmed) VALUES ($1, NOW() + INTERVAL \'15 minutes\', FALSE) RETURNING id',
       [resolvedKey]
     );
     reservationId = resResult.rows[0].id;
@@ -806,8 +802,9 @@ app.post('/api/checkout', async (req, res) => {
         cancel_url:  `${origin}/products/22-swiss-hd-body-wave/?order=cancelled`,
       });
     } catch (stripeErr) {
-      // Stripe failed — release the reservation immediately
+      // Stripe failed — release the reservation and restore the stock immediately
       await pool.query('DELETE FROM reservations WHERE id = $1', [reservationId]);
+      await pool.query('UPDATE inventory SET stock = stock + 1, updated_at = NOW() WHERE variant_key = $1', [resolvedKey]);
       console.error('Stripe session error:', stripeErr.message);
       return res.status(500).json({ success: false, error: 'Could not create checkout session' });
     }
@@ -858,15 +855,18 @@ async function handleStripeEvent(event) {
   const sessionId = session.id;
   const metadata = session.metadata || {};
 
-  // ── CHECKOUT EXPIRED: release the reservation ──────────────────────────────
+  // ── CHECKOUT EXPIRED: session expired without payment — restore stock ────────
   if (event.type === 'checkout.session.expired') {
     try {
+      // Only restore stock for reservations that were NOT confirmed (no payment)
       const del = await pool.query(
-        'DELETE FROM reservations WHERE stripe_session_id = $1 RETURNING id, variant_key',
+        'DELETE FROM reservations WHERE stripe_session_id = $1 AND confirmed = FALSE RETURNING id, variant_key',
         [sessionId]
       );
       if (del.rows.length > 0) {
-        console.log(`Reservation released (session expired): ${del.rows[0].variant_key} — res #${del.rows[0].id}`);
+        const { variant_key, id } = del.rows[0];
+        await pool.query('UPDATE inventory SET stock = stock + 1, updated_at = NOW() WHERE variant_key = $1', [variant_key]);
+        console.log(`Stock restored (session expired): ${variant_key} — res #${id}`);
       }
     } catch (err) {
       console.error('Reservation release error:', err.message);
@@ -876,7 +876,7 @@ async function handleStripeEvent(event) {
 
   if (event.type !== 'checkout.session.completed') return;
 
-  // ── CHECKOUT COMPLETED: confirm sale atomically ────────────────────────────
+  // ── CHECKOUT COMPLETED: record sale (stock already decremented at checkout) ─
   const variantKey = metadata.variant_key || null;
   const reservationId = metadata.reservation_id ? parseInt(metadata.reservation_id) : null;
   const customerName = session.customer_details?.name || 'Guest';
@@ -907,24 +907,23 @@ async function handleStripeEvent(event) {
   try {
     await client.query('BEGIN');
 
-    // Delete the reservation (whether found or not, the sale still records)
+    // Mark confirmed first so cleanup job won't restore stock if it runs now
+    await client.query(
+      'UPDATE reservations SET confirmed = TRUE WHERE stripe_session_id = $1 OR id = $2',
+      [sessionId, reservationId]
+    );
+    // Then delete — sale is now permanently recorded
     const delRes = await client.query(
       'DELETE FROM reservations WHERE stripe_session_id = $1 OR id = $2 RETURNING id',
       [sessionId, reservationId]
     );
-    if (delRes.rows.length > 0) {
-      console.log(`Reservation #${delRes.rows[0].id} confirmed — converting to sale`);
-    }
+    console.log(`Payment confirmed — sale locked for ${variantKey} (res deleted: ${delRes.rowCount})`);
 
-    // Atomically decrement stock (never below 0)
+    // NOTE: stock was already decremented when checkout session was created.
+    // Do NOT decrement again here.
     if (variantKey) {
-      const stockResult = await client.query(
-        'UPDATE inventory SET stock = GREATEST(stock - 1, 0), updated_at = NOW() WHERE variant_key = $1 RETURNING variant_key, stock',
-        [variantKey]
-      );
-      if (stockResult.rows.length > 0) {
-        console.log(`Stock: ${variantKey} → ${stockResult.rows[0].stock} remaining`);
-      }
+      const cur = await client.query('SELECT stock FROM inventory WHERE variant_key = $1', [variantKey]);
+      if (cur.rows.length > 0) console.log(`Stock: ${variantKey} → ${cur.rows[0].stock} remaining`);
     }
 
     // Record the order
@@ -947,14 +946,21 @@ async function handleStripeEvent(event) {
 }
 
 // ─── RESERVATION CLEANUP JOB ──────────────────────────────────────────────────
-// Runs every 5 minutes to release any reservations that expired without payment
+// Runs every 5 minutes. Deletes expired reservations that were NOT confirmed
+// (i.e. the customer never completed payment) and restores stock for each.
 setInterval(async () => {
   try {
     const result = await pool.query(
-      'DELETE FROM reservations WHERE expires_at < NOW() RETURNING id, variant_key'
+      'DELETE FROM reservations WHERE expires_at < NOW() AND confirmed = FALSE RETURNING id, variant_key'
     );
     if (result.rows.length > 0) {
-      console.log(`Cleanup: released ${result.rows.length} expired reservation(s):`, result.rows.map(r => `${r.variant_key}#${r.id}`).join(', '));
+      for (const row of result.rows) {
+        await pool.query(
+          'UPDATE inventory SET stock = stock + 1, updated_at = NOW() WHERE variant_key = $1',
+          [row.variant_key]
+        );
+      }
+      console.log(`Cleanup: restored stock for ${result.rows.length} abandoned checkout(s):`, result.rows.map(r => `${r.variant_key}#${r.id}`).join(', '));
     }
   } catch (err) {
     console.error('Cleanup error:', err.message);
