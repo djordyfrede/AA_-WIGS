@@ -185,11 +185,11 @@ async function initDatabase() {
       { code: '99j', name: '99J Burgundy'      },
     ];
     const lengths = [
-      { len: 18, price: 199.99 },
-      { len: 20, price: 209.99 },
-      { len: 22, price: 229.99 },
-      { len: 24, price: 249.99 },
-      { len: 26, price: 269.99 },
+      { len: 18, price: 289.00 },
+      { len: 20, price: 339.00 },
+      { len: 22, price: 379.00 },
+      { len: 24, price: 399.00 },
+      { len: 26, price: 479.00 },
     ];
 
     for (const color of colors) {

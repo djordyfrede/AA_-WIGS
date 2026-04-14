@@ -11,8 +11,8 @@ var AAChat = {
       lengths: ['18"', '20"', '22"', '24"', '26"'],
       colors: ['1B Natural Black', 'Soft Black', 'Chocolate Brown', 'Honey Highlight', 'Burgundy Wine', 'Platinum Blonde'],
       features: ['Glueless adjustable band', 'Pre-plucked hairline', 'Heat safe up to 392F', 'Swiss HD lace'],
-      priceRange: '$185.99 - $259.99',
-      defaultPrice: '$199.99',
+      priceRange: '$289 - $479',
+      defaultPrice: '$379',
       url: '/products/22-swiss-hd-body-wave/'
     },
     shipping: {
