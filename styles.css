@@ -1536,7 +1536,14 @@ p {
   color: #888;
 }
 
-/* ── Durability Badge ─────────────────────────────────────────────── */
+/* ── Durability / Premium Badges ──────────────────────────────────── */
+.premium-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 4px 0 20px;
+}
+
 .durability-badge {
   display: inline-flex;
   flex-direction: column;
@@ -1545,9 +1552,65 @@ p {
   background: linear-gradient(135deg, rgba(197,163,85,0.07) 0%, rgba(197,163,85,0.14) 100%);
   border: 1px solid rgba(197,163,85,0.35);
   border-radius: 100px;
-  margin: 4px 0 12px;
   text-decoration: none;
   cursor: default;
+}
+
+/* ── Price value line ─────────────────────────────────────────────── */
+.price-value-line {
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  color: var(--gold-dark);
+  margin: -6px 0 18px;
+}
+
+/* ── Premium feature list ─────────────────────────────────────────── */
+.premium-feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(197,163,85,0.12);
+}
+
+.premium-feature-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.premium-feature-check {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(197,163,85,0.15);
+  border-radius: 50%;
+  font-size: 0.65rem;
+  color: var(--gold-dark);
+  font-weight: 700;
+  margin-top: 1px;
+}
+
+.premium-feature-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.premium-feature-text strong {
+  font-size: 0.83rem;
+  font-weight: 600;
+  color: #2a2a2a;
+  letter-spacing: 0.01em;
+}
+
+.premium-feature-text span {
+  font-size: 0.74rem;
+  color: var(--gray-500);
+  letter-spacing: 0.02em;
 }
 
 .durability-badge-main {
@@ -2852,9 +2915,8 @@ button.btn-disabled {
 }
 
 .product-quick-specs {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  display: flex;
+  flex-direction: column;
   margin-bottom: 32px;
   padding: 20px 24px;
   background: var(--champagne);
