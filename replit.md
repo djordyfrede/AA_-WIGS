@@ -40,6 +40,7 @@ Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vani
   - `site_settings` — key/value store for all CMS content (announcement bar, hero text, policies, etc.)
   - `admin_sessions` — admin auth tokens
   - `contact_messages` — contact form submissions and waitlist sign-ups (inbox)
+  - `reviews` — customer reviews (customer_name, rating 1–5, review_text, wig_length, wig_texture, verified_purchase, featured, approved, show_on_homepage, show_on_product, photo_urls JSONB)
 
 ## Admin Dashboard
 - **URL**: `/admin/`
@@ -52,6 +53,7 @@ Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vani
   - **Products** — edit product details, visibility, badge flags (best_seller, new_arrival, on_sale, badge_text), compare-at price
   - **Inventory** — per-variant stock editor, compare-at price, low_stock_threshold, bulk enable/disable
   - **Homepage** — announcement bar toggle + text, hero title/subtitle, store info, policies
+  - **Reviews** — full review CRUD: approve/reject, toggle featured/homepage/product visibility, add photos, delete; filter by All/Pending/Approved/Homepage/Featured; inline quick-approve button
   - **Settings** — site info display
 
 ## API Endpoints
@@ -73,6 +75,14 @@ Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vani
 - `GET /api/admin/messages` — admin: all messages
 - `DELETE /api/admin/messages/:id` — admin: delete message
 - `GET /api/admin/stats` — admin: overview stats
+- `GET /api/reviews` — public: approved reviews (query: `?page=homepage` or `?page=product`)
+- `POST /api/reviews` — public: submit review (goes to pending; supports photo upload via multipart)
+- `GET /api/admin/reviews` — admin: all reviews (pending + approved)
+- `POST /api/admin/reviews` — admin: create review with photos
+- `PUT /api/admin/reviews/:id` — admin: update any review field
+- `POST /api/admin/reviews/:id/photos` — admin: upload photos to existing review
+- `DELETE /api/admin/reviews/:id/photos` — admin: remove a photo (body: {url})
+- `DELETE /api/admin/reviews/:id` — admin: delete review + its photo files
 
 ## Stripe Integration
 - **Mode**: LIVE
@@ -104,6 +114,7 @@ The product page reads live data from the database on every page load:
 /waitlist.html       — Waitlist form (saves to DB messages table)
 /about.html          — Brand story
 /care.html           — Full care guide (printable)
+/reviews.html        — Public reviews page: aggregate rating, all approved reviews grid, write-a-review form with photo upload
 /contact.html        — Contact form (saves to DB messages table), FAQ accordion
 /success.html        — Thank-you page after form submission
 /shipping.html       — Shipping policy

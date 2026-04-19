@@ -1,8 +1,30 @@
 const express = require('express');
 const path = require('path');
 const crypto = require('crypto');
+const fs = require('fs');
 const { Pool } = require('pg');
 const Stripe = require('stripe');
+const multer = require('multer');
+
+const reviewStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const dir = path.join(__dirname, 'uploads', 'reviews');
+    fs.mkdirSync(dir, { recursive: true });
+    cb(null, dir);
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname).toLowerCase();
+    cb(null, `rev-${Date.now()}-${Math.random().toString(36).slice(2)}${ext}`);
+  }
+});
+const uploadReview = multer({
+  storage: reviewStorage,
+  limits: { fileSize: 8 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    if (/^image\/(jpeg|png|webp|gif)$/.test(file.mimetype)) cb(null, true);
+    else cb(new Error('Images only'));
+  }
+});
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -128,6 +150,24 @@ async function initDatabase() {
     )
   `);
 
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS reviews (
+      id SERIAL PRIMARY KEY,
+      customer_name TEXT NOT NULL,
+      rating INTEGER NOT NULL CHECK (rating BETWEEN 1 AND 5),
+      review_text TEXT NOT NULL,
+      wig_length TEXT,
+      wig_texture TEXT,
+      verified_purchase BOOLEAN DEFAULT FALSE,
+      featured BOOLEAN DEFAULT FALSE,
+      approved BOOLEAN DEFAULT FALSE,
+      show_on_homepage BOOLEAN DEFAULT FALSE,
+      show_on_product BOOLEAN DEFAULT TRUE,
+      photo_urls JSONB DEFAULT '[]'::jsonb,
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `);
+
   // ── Seed products ──
   const productCount = await pool.query('SELECT COUNT(*) FROM products');
   if (parseInt(productCount.rows[0].count) === 0) {
@@ -210,6 +250,10 @@ async function initDatabase() {
 app.use(express.static(path.join(__dirname), {
   extensions: ['html'],
   index: 'index.html'
+}));
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
+  maxAge: '7d'
 }));
 
 app.use('/api/webhook/stripe', express.raw({ type: 'application/json' }));
@@ -528,6 +572,171 @@ app.delete('/api/admin/messages/:id', requireAdmin, async (req, res) => {
     res.json({ success: true });
   } catch (err) {
     res.status(500).json({ success: false, error: 'Failed to delete message' });
+  }
+});
+
+// ─── REVIEWS API ─────────────────────────────────────────────────────────────
+
+// Public: get approved reviews
+app.get('/api/reviews', async (req, res) => {
+  try {
+    const { page } = req.query;
+    const filter = page === 'homepage'
+      ? 'WHERE approved = TRUE AND show_on_homepage = TRUE'
+      : page === 'product'
+      ? 'WHERE approved = TRUE AND show_on_product = TRUE'
+      : 'WHERE approved = TRUE';
+    const result = await pool.query(
+      `SELECT id, customer_name, rating, review_text, wig_length, wig_texture,
+              verified_purchase, featured, photo_urls, created_at
+       FROM reviews ${filter}
+       ORDER BY featured DESC, created_at DESC`
+    );
+    res.json({ success: true, reviews: result.rows });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Failed to load reviews' });
+  }
+});
+
+// Public: submit a new review (goes to pending)
+app.post('/api/reviews', uploadReview.array('photos', 5), async (req, res) => {
+  try {
+    const { customer_name, rating, review_text, wig_length, wig_texture } = req.body;
+    if (!customer_name || !rating || !review_text) {
+      return res.status(400).json({ success: false, error: 'Name, rating, and review are required' });
+    }
+    const ratingNum = parseInt(rating);
+    if (isNaN(ratingNum) || ratingNum < 1 || ratingNum > 5) {
+      return res.status(400).json({ success: false, error: 'Rating must be 1–5' });
+    }
+    const photoUrls = (req.files || []).map(f => `/uploads/reviews/${f.filename}`);
+    await pool.query(
+      `INSERT INTO reviews (customer_name, rating, review_text, wig_length, wig_texture, photo_urls, approved)
+       VALUES ($1,$2,$3,$4,$5,$6,FALSE)`,
+      [customer_name.trim(), ratingNum, review_text.trim(), wig_length || null, wig_texture || null, JSON.stringify(photoUrls)]
+    );
+    res.json({ success: true, message: 'Review submitted! It will appear once approved.' });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Failed to submit review' });
+  }
+});
+
+// Admin: get all reviews
+app.get('/api/admin/reviews', requireAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT * FROM reviews ORDER BY approved ASC, created_at DESC`
+    );
+    res.json({ success: true, reviews: result.rows });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Failed to load reviews' });
+  }
+});
+
+// Admin: create review manually
+app.post('/api/admin/reviews', requireAdmin, uploadReview.array('photos', 5), async (req, res) => {
+  try {
+    const { customer_name, rating, review_text, wig_length, wig_texture,
+            verified_purchase, featured, approved, show_on_homepage, show_on_product } = req.body;
+    if (!customer_name || !rating || !review_text) {
+      return res.status(400).json({ success: false, error: 'Name, rating, and review are required' });
+    }
+    const photoUrls = (req.files || []).map(f => `/uploads/reviews/${f.filename}`);
+    const result = await pool.query(
+      `INSERT INTO reviews (customer_name, rating, review_text, wig_length, wig_texture,
+                            verified_purchase, featured, approved, show_on_homepage, show_on_product, photo_urls)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING *`,
+      [customer_name.trim(), parseInt(rating), review_text.trim(),
+       wig_length || null, wig_texture || null,
+       verified_purchase === 'true', featured === 'true',
+       approved !== 'false', show_on_homepage === 'true', show_on_product !== 'false',
+       JSON.stringify(photoUrls)]
+    );
+    res.json({ success: true, review: result.rows[0] });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Failed to create review' });
+  }
+});
+
+// Admin: update review
+app.put('/api/admin/reviews/:id', requireAdmin, async (req, res) => {
+  try {
+    const { customer_name, rating, review_text, wig_length, wig_texture,
+            verified_purchase, featured, approved, show_on_homepage, show_on_product } = req.body;
+    const result = await pool.query(
+      `UPDATE reviews SET
+        customer_name = COALESCE($1, customer_name),
+        rating = COALESCE($2, rating),
+        review_text = COALESCE($3, review_text),
+        wig_length = $4,
+        wig_texture = $5,
+        verified_purchase = COALESCE($6, verified_purchase),
+        featured = COALESCE($7, featured),
+        approved = COALESCE($8, approved),
+        show_on_homepage = COALESCE($9, show_on_homepage),
+        show_on_product = COALESCE($10, show_on_product)
+       WHERE id = $11 RETURNING *`,
+      [customer_name || null, rating ? parseInt(rating) : null, review_text || null,
+       wig_length || null, wig_texture || null,
+       verified_purchase != null ? (verified_purchase === true || verified_purchase === 'true') : null,
+       featured != null ? (featured === true || featured === 'true') : null,
+       approved != null ? (approved === true || approved === 'true') : null,
+       show_on_homepage != null ? (show_on_homepage === true || show_on_homepage === 'true') : null,
+       show_on_product != null ? (show_on_product === true || show_on_product === 'true') : null,
+       req.params.id]
+    );
+    if (result.rows.length === 0) return res.status(404).json({ success: false, error: 'Review not found' });
+    res.json({ success: true, review: result.rows[0] });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Failed to update review' });
+  }
+});
+
+// Admin: upload photos to existing review
+app.post('/api/admin/reviews/:id/photos', requireAdmin, uploadReview.array('photos', 5), async (req, res) => {
+  try {
+    const { rows } = await pool.query('SELECT photo_urls FROM reviews WHERE id = $1', [req.params.id]);
+    if (rows.length === 0) return res.status(404).json({ success: false, error: 'Review not found' });
+    const existing = rows[0].photo_urls || [];
+    const newUrls = (req.files || []).map(f => `/uploads/reviews/${f.filename}`);
+    const merged = [...existing, ...newUrls];
+    await pool.query('UPDATE reviews SET photo_urls = $1 WHERE id = $2', [JSON.stringify(merged), req.params.id]);
+    res.json({ success: true, photo_urls: merged });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Failed to upload photos' });
+  }
+});
+
+// Admin: delete a photo from a review
+app.delete('/api/admin/reviews/:id/photos', requireAdmin, async (req, res) => {
+  try {
+    const { url } = req.body;
+    const { rows } = await pool.query('SELECT photo_urls FROM reviews WHERE id = $1', [req.params.id]);
+    if (rows.length === 0) return res.status(404).json({ success: false, error: 'Review not found' });
+    const filtered = (rows[0].photo_urls || []).filter(u => u !== url);
+    await pool.query('UPDATE reviews SET photo_urls = $1 WHERE id = $2', [JSON.stringify(filtered), req.params.id]);
+    const filename = path.basename(url);
+    const filepath = path.join(__dirname, 'uploads', 'reviews', filename);
+    if (fs.existsSync(filepath)) fs.unlinkSync(filepath);
+    res.json({ success: true, photo_urls: filtered });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Failed to delete photo' });
+  }
+});
+
+// Admin: delete review
+app.delete('/api/admin/reviews/:id', requireAdmin, async (req, res) => {
+  try {
+    const { rows } = await pool.query('DELETE FROM reviews WHERE id = $1 RETURNING photo_urls', [req.params.id]);
+    if (rows.length > 0) {
+      (rows[0].photo_urls || []).forEach(url => {
+        const filepath = path.join(__dirname, 'uploads', 'reviews', path.basename(url));
+        if (fs.existsSync(filepath)) fs.unlinkSync(filepath);
+      });
+    }
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Failed to delete review' });
   }
 });
 

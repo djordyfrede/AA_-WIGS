@@ -220,22 +220,11 @@
         <h2>Client Reviews</h2>
         <p>Real reviews from real women who invested in themselves.</p>
       </div>
-      <div class="review-grid fade-in">
-        <div class="review">
-          <p class="stars">★★★★★</p>
-          <p>"The hairline looks so natural — everyone thinks it's my real hair. The lace melts perfectly. Worth every penny."</p>
-          <span>— Aisha M. · Verified Buyer</span>
-        </div>
-        <div class="review">
-          <p class="stars">★★★★★</p>
-          <p>"Soft, zero shedding, full ends. And the packaging? I felt like I was unboxing jewelry. This is luxury."</p>
-          <span>— Destiny R. · Verified Buyer</span>
-        </div>
-        <div class="review">
-          <p class="stars">★★★★★</p>
-          <p>"The glueless fit is so secure I wore it to the gym. I feel expensive every time I put it on."</p>
-          <span>— Keisha T. · Verified Buyer</span>
-        </div>
+      <div class="review-grid fade-in" id="homepageReviewGrid">
+        <div class="review"><p class="stars">★★★★★</p><p>Loading reviews…</p></div>
+      </div>
+      <div style="text-align:center;margin-top:32px">
+        <a href="reviews.html" style="display:inline-block;padding:12px 28px;border:1px solid var(--gold);color:var(--gold);text-decoration:none;font-size:0.9rem;letter-spacing:0.06em;text-transform:uppercase;transition:all .2s" onmouseover="this.style.background='var(--gold)';this.style.color='#111'" onmouseout="this.style.background='transparent';this.style.color='var(--gold)'">Write a Review</a>
       </div>
     </div>
   </section>
@@ -304,5 +293,28 @@
   <script src="app.js?v=20260308a"></script>
   <script src="cart.js?v=20260308a"></script>
   <script src="chat.js?v=20260308a"></script>
+  <script>
+  (function(){
+    var grid = document.getElementById('homepageReviewGrid');
+    if (!grid) return;
+    fetch('/api/reviews?page=homepage')
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        var reviews = data.reviews || [];
+        if (!reviews.length) {
+          grid.innerHTML = '<div class="review"><p class="stars">★★★★★</p><p>"The hairline looks so natural — everyone thinks it\'s my real hair. Worth every penny."</p><span>— Aisha M. · Verified Buyer</span></div><div class="review"><p class="stars">★★★★★</p><p>"Soft, zero shedding, full ends. The packaging felt like unboxing jewelry. Pure luxury."</p><span>— Destiny R. · Verified Buyer</span></div><div class="review"><p class="stars">★★★★★</p><p>"The glueless fit is so secure I wore it to the gym. I feel expensive every time I put it on."</p><span>— Keisha T. · Verified Buyer</span></div>';
+          return;
+        }
+        grid.innerHTML = reviews.slice(0,6).map(function(r){
+          var stars = '★'.repeat(r.rating)+'☆'.repeat(5-r.rating);
+          var badge = r.verified_purchase ? ' · <span style="color:var(--gold);font-size:0.75rem">✓ Verified</span>' : '';
+          return '<div class="review"><p class="stars">'+stars+'</p><p>"'+escHtml(r.review_text)+'"</p><span>— '+escHtml(r.customer_name)+badge+'</span></div>';
+        }).join('');
+      })
+      .catch(function(){});
+
+    function escHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  })();
+  </script>
 </body>
 </html>

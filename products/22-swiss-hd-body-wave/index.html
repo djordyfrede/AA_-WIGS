@@ -372,22 +372,11 @@
               <span class="rating-text">4.9/5 based on customer reviews</span>
             </div>
 
-            <div class="review-snippets">
-              <div class="review-card">
-                <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-                <p class="review-text">"The lace melts perfectly and the hair is incredibly soft. I've gotten so many compliments already."</p>
-                <p class="review-author">Ashley R. <span class="review-location">Miami, FL</span></p>
-              </div>
-              <div class="review-card">
-                <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-                <p class="review-text">"The density is perfect and the color looks so natural. Best wig I've ever owned, hands down."</p>
-                <p class="review-author">Tiffany J. <span class="review-location">Atlanta, GA</span></p>
-              </div>
-              <div class="review-card">
-                <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-                <p class="review-text">"The packaging alone made me feel like I was unboxing something special. The quality is unmatched."</p>
-                <p class="review-author">Jasmine L. <span class="review-location">Houston, TX</span></p>
-              </div>
+            <div class="review-snippets" id="productReviewSnippets">
+              <div class="review-card"><div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="review-text">Loading reviews…</p></div>
+            </div>
+            <div style="text-align:center;margin-top:8px">
+              <a href="../../reviews.html" class="btn-link-subtle">View all reviews &rarr;</a>
             </div>
 
             <div class="trust-badges">
@@ -996,6 +985,37 @@
 
     setTimeout(showNotification, 8000);
     scheduleNext();
+  })();
+  </script>
+  <script>
+  (function(){
+    var el = document.getElementById('productReviewSnippets');
+    if (!el) return;
+    function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+    fetch('/api/reviews?page=product')
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        var reviews = data.reviews || [];
+        if (!reviews.length) {
+          el.innerHTML = '<div class="review-card"><div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="review-text">"The lace melts perfectly and the hair is incredibly soft. I\'ve gotten so many compliments already."</p><p class="review-author">Ashley R.</p></div><div class="review-card"><div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="review-text">"The density is perfect and the color looks so natural. Best wig I\'ve ever owned."</p><p class="review-author">Tiffany J.</p></div><div class="review-card"><div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="review-text">"The packaging alone made me feel like I was unboxing something special. Unmatched quality."</p><p class="review-author">Jasmine L.</p></div>';
+          return;
+        }
+        el.innerHTML = reviews.slice(0,3).map(function(r){
+          var stars = '&#9733;'.repeat(r.rating) + '&#9734;'.repeat(5-r.rating);
+          var vb = r.verified_purchase ? '<span class="review-verified-badge">✓ Verified</span>' : '';
+          var photos = (r.photo_urls||[]).slice(0,2).map(function(u){
+            return '<img src="'+esc(u)+'" class="review-photo-thumb" onclick="window.open(this.src)">';
+          }).join('');
+          return '<div class="review-card">'+
+            '<div class="review-stars">'+stars+'</div>'+
+            (photos?'<div class="review-photos-row">'+photos+'</div>':'')+
+            '<p class="review-text">"'+esc(r.review_text)+'"</p>'+
+            '<p class="review-author">'+esc(r.customer_name)+vb+
+              (r.wig_length?'<span class="review-location"> · '+esc(r.wig_length)+'</span>':'')+
+            '</p>'+
+          '</div>';
+        }).join('');
+      }).catch(function(){});
   })();
   </script>
 </body>

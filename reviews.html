@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#7C0832">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Reviews | AA Wigs Luxury Hair</title>
+  <link rel="stylesheet" href="styles.css?v=20260308a">
+  <meta name="description" content="Read real customer reviews of AA Wigs luxury human hair wigs. See what women love about our Swiss HD lace, glueless installation, and premium quality hair.">
+  <style>
+    .reviews-hero {
+      background: #0f0a07;
+      padding: 80px 0 56px;
+      text-align: center;
+      border-bottom: 1px solid rgba(197,163,85,.15);
+    }
+    .reviews-hero .eyebrow {
+      font-size: 0.72rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--gold, #C5A355);
+      margin-bottom: 12px;
+    }
+    .reviews-hero h1 {
+      font-family: var(--font-serif, 'Playfair Display', serif);
+      font-size: clamp(2rem,5vw,3rem);
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .reviews-hero p {
+      color: #a0957f;
+      font-size: 1rem;
+      margin-bottom: 28px;
+    }
+    .reviews-aggregate {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .agg-stars { font-size: 1.6rem; color: #C5A355; letter-spacing: 2px; }
+    .agg-score { font-size: 2rem; font-weight: 700; color: #fff; }
+    .agg-count { color: #a0957f; font-size: 0.9rem; }
+
+    .reviews-page-body { background: #0c0805; min-height: 60vh; padding: 56px 0; }
+    .reviews-layout { display: grid; grid-template-columns: 1fr 340px; gap: 48px; align-items: start; }
+    @media (max-width: 900px) { .reviews-layout { grid-template-columns: 1fr; } }
+
+    .review-full-list { display: flex; flex-direction: column; gap: 24px; }
+    .review-full-card {
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(197,163,85,.12);
+      border-radius: 10px;
+      padding: 24px;
+    }
+    .review-full-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+    .review-full-name { font-weight: 600; color: #f0e8d8; font-size: 0.95rem; }
+    .review-full-meta { font-size: 0.78rem; color: #a0957f; margin-top: 2px; }
+    .review-full-stars { color: #C5A355; font-size: 1.1rem; letter-spacing: 2px; }
+    .review-full-text { color: #c8bba5; font-size: 0.93rem; line-height: 1.65; margin-bottom: 14px; }
+    .review-full-photos { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .review-full-photos img {
+      width: 80px; height: 80px; object-fit: cover; border-radius: 6px; cursor: pointer;
+      border: 1px solid rgba(197,163,85,.2); transition: transform .2s;
+    }
+    .review-full-photos img:hover { transform: scale(1.04); }
+    .review-ver-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: rgba(197,163,85,.1); border: 1px solid rgba(197,163,85,.3);
+      color: #C5A355; font-size: 0.7rem; letter-spacing: .06em;
+      text-transform: uppercase; padding: 2px 8px; border-radius: 20px;
+    }
+    .review-length-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
+      color: #a0957f; font-size: 0.7rem; padding: 2px 8px; border-radius: 20px;
+    }
+
+    .write-review-box {
+      position: sticky; top: 24px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(197,163,85,.2);
+      border-radius: 12px;
+      padding: 28px 24px;
+    }
+    .write-review-box h3 {
+      font-family: var(--font-serif, 'Playfair Display', serif);
+      color: #f0e8d8; font-size: 1.2rem; margin-bottom: 4px;
+    }
+    .write-review-box .sub { color: #a0957f; font-size: 0.83rem; margin-bottom: 20px; }
+    .wr-label { color: #b5a485; font-size: 0.8rem; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; margin-bottom: 5px; display: block; }
+    .wr-input {
+      width: 100%; background: rgba(255,255,255,.05); border: 1px solid rgba(197,163,85,.2);
+      color: #f0e8d8; font-size: 0.88rem; padding: 10px 12px; border-radius: 6px;
+      margin-bottom: 14px; font-family: inherit; transition: border-color .2s;
+      box-sizing: border-box;
+    }
+    .wr-input:focus { outline: none; border-color: #C5A355; }
+    .wr-input::placeholder { color: #6a5e4a; }
+    .star-selector { display: flex; gap: 6px; margin-bottom: 14px; }
+    .star-selector span {
+      font-size: 1.6rem; cursor: pointer; color: #3a3025; transition: color .15s; line-height: 1;
+      -webkit-user-select: none; user-select: none;
+    }
+    .star-selector span.active, .star-selector span:hover, .star-selector span:hover ~ span { color: #C5A355; }
+    .star-selector span.active ~ span { color: #3a3025; }
+    .wr-file-label {
+      display: block; border: 1px dashed rgba(197,163,85,.3); border-radius: 6px;
+      padding: 14px; text-align: center; cursor: pointer; color: #a0957f;
+      font-size: 0.82rem; margin-bottom: 14px; transition: border-color .2s;
+    }
+    .wr-file-label:hover { border-color: #C5A355; color: #C5A355; }
+    .wr-submit {
+      width: 100%; background: #C5A355; color: #111; border: none; padding: 13px;
+      font-size: 0.88rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+      border-radius: 6px; cursor: pointer; transition: background .2s;
+    }
+    .wr-submit:hover { background: #b08f3e; }
+    .wr-success { text-align: center; padding: 24px 0; }
+    .wr-success .icon { font-size: 2.4rem; margin-bottom: 8px; }
+    .wr-success p { color: #a0957f; font-size: 0.88rem; }
+    .wr-photo-previews { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .wr-photo-previews img { width: 56px; height: 56px; object-fit: cover; border-radius: 4px; }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <span>Swiss HD Lace · Glueless Ready · Premium Packaging</span>
+  </div>
+
+  <header class="header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">AA WIGS</a>
+      <nav class="nav">
+        <a href="collection.html">Shop</a>
+        <a href="index.html#experience">Experience</a>
+        <a href="reviews.html" class="active">Reviews</a>
+        <a href="care.html">Care</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+      <div class="header-actions">
+        <button class="cart-icon" id="cartToggle" aria-label="Cart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22" height="22"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          <span class="cart-badge" id="cartCount" style="display:none">0</span>
+        </button>
+        <a class="btn btn-outline" href="products/22-swiss-hd-body-wave/">Shop Now</a>
+      </div>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+    <nav class="mobile-nav" id="mobileNav">
+      <a href="collection.html">Shop</a>
+      <a href="index.html#experience">Experience</a>
+      <a href="reviews.html">Reviews</a>
+      <a href="care.html">Care</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <section class="reviews-hero">
+    <div class="container">
+      <p class="eyebrow">Customer Reviews</p>
+      <h1>What Our Clients Say</h1>
+      <p>Real reviews from real women who chose luxury.</p>
+      <div class="reviews-aggregate">
+        <div class="agg-stars" id="aggStars">★★★★★</div>
+        <div class="agg-score" id="aggScore">4.9</div>
+        <div class="agg-count" id="aggCount">based on customer reviews</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reviews-page-body">
+    <div class="container">
+      <div class="reviews-layout">
+        <div>
+          <div class="review-full-list" id="reviewFullList">
+            <div style="text-align:center;padding:60px 0;color:#a0957f">Loading reviews…</div>
+          </div>
+          <div id="reviewsEmpty" style="display:none;text-align:center;padding:60px 0">
+            <p style="color:#a0957f;font-size:1rem">No approved reviews yet. Be the first to share your experience!</p>
+          </div>
+        </div>
+
+        <div>
+          <div class="write-review-box" id="writeReviewBox">
+            <h3>Share Your Experience</h3>
+            <p class="sub">Your review helps other women make confident decisions.</p>
+
+            <div id="writeReviewForm">
+              <label class="wr-label">Your Name *</label>
+              <input type="text" id="wrName" class="wr-input" placeholder="e.g. Ashley R.">
+
+              <label class="wr-label">Rating *</label>
+              <div class="star-selector" id="starSelector">
+                <span data-val="1">★</span>
+                <span data-val="2">★</span>
+                <span data-val="3">★</span>
+                <span data-val="4">★</span>
+                <span data-val="5">★</span>
+              </div>
+              <input type="hidden" id="wrRating" value="5">
+
+              <label class="wr-label">Your Review *</label>
+              <textarea id="wrText" class="wr-input" rows="4" placeholder="Tell us about the quality, fit, and your overall experience…"></textarea>
+
+              <label class="wr-label">Wig Length (optional)</label>
+              <select id="wrLength" class="wr-input">
+                <option value="">— Select length —</option>
+                <option value='18"'>18"</option>
+                <option value='20"'>20"</option>
+                <option value='22"'>22"</option>
+                <option value='24"'>24"</option>
+                <option value='26"'>26"</option>
+              </select>
+
+              <label class="wr-label">Add Photos (optional, up to 5)</label>
+              <label class="wr-file-label" for="wrPhotos">
+                <span id="wrPhotoLabel">📷 Choose photos (JPG, PNG, WebP · max 8MB each)</span>
+              </label>
+              <input type="file" id="wrPhotos" multiple accept="image/*" style="display:none" onchange="previewPhotos(this)">
+              <div class="wr-photo-previews" id="wrPhotoPreviews"></div>
+
+              <p id="wrError" style="color:#c06070;font-size:0.83rem;margin-bottom:12px;display:none"></p>
+              <button class="wr-submit" onclick="submitReview()">Submit Review</button>
+              <p style="color:#6a5e4a;font-size:0.75rem;text-align:center;margin-top:10px">Reviews are reviewed before publishing.</p>
+            </div>
+
+            <div id="writeReviewSuccess" class="wr-success" style="display:none">
+              <div class="icon">✦</div>
+              <h3 style="color:#f0e8d8;margin-bottom:8px">Thank You!</h3>
+              <p>Your review has been submitted and will appear once approved.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner container">
+      <div class="footer-brand">
+        <div class="brand">AA WIGS</div>
+        <p>Premium Swiss HD Lace Wigs.<br>Crafted for women who demand the best.</p>
+      </div>
+      <div class="footer-links">
+        <a href="collection.html">Shop</a>
+        <a href="care.html">Care Guide</a>
+        <a href="reviews.html">Reviews</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="footer-links">
+        <a href="guides/wig-length-guide/">Wig Length Guide</a>
+        <a href="guides/hd-lace-wigs/">HD Lace Wigs</a>
+        <a href="guides/wig-care-guide/">Wig Care Guide</a>
+      </div>
+      <div class="footer-links">
+        <a href="shipping.html">Shipping</a>
+        <a href="returns.html">Returns</a>
+        <a href="https://instagram.com/aawigshair" target="_blank" rel="noreferrer">@aawigshair</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 AA WIGS. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="app.js?v=20260308a"></script>
+  <script src="cart.js?v=20260308a"></script>
+  <script src="chat.js?v=20260308a"></script>
+  <script>
+  (function(){
+    function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+    // ── Load Reviews ────────────────────────────────────────────────
+    var allReviews = [];
+    var list = document.getElementById('reviewFullList');
+    var emptyEl = document.getElementById('reviewsEmpty');
+
+    function loadReviews() {
+      fetch('/api/reviews')
+        .then(function(r){ return r.json(); })
+        .then(function(data){
+          allReviews = data.reviews || [];
+          updateAggregate();
+          renderAll();
+        })
+        .catch(function(){ list.innerHTML = '<div style="text-align:center;padding:40px;color:#a0957f">Could not load reviews. Please refresh.</div>'; });
+    }
+
+    function updateAggregate() {
+      var total = allReviews.length;
+      var avg = total ? (allReviews.reduce(function(s,r){ return s+r.rating; },0)/total) : 0;
+      document.getElementById('aggScore').textContent = total ? avg.toFixed(1) : '—';
+      document.getElementById('aggCount').textContent = total ? 'based on ' + total + ' review' + (total!==1?'s':'') : 'No reviews yet';
+      var rounded = Math.round(avg);
+      document.getElementById('aggStars').textContent = '★'.repeat(rounded) + '☆'.repeat(5-rounded);
+    }
+
+    function renderAll() {
+      if (!allReviews.length) {
+        list.style.display = 'none';
+        emptyEl.style.display = 'block';
+        return;
+      }
+      list.style.display = 'flex';
+      emptyEl.style.display = 'none';
+      list.innerHTML = allReviews.map(function(r){
+        var stars = '★'.repeat(r.rating) + '☆'.repeat(5-r.rating);
+        var date = r.created_at ? new Date(r.created_at).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
+        var badges = '';
+        if (r.verified_purchase) badges += '<span class="review-ver-badge">✓ Verified Purchase</span> ';
+        if (r.wig_length) badges += '<span class="review-length-badge">'+esc(r.wig_length)+'</span> ';
+        if (r.wig_texture) badges += '<span class="review-length-badge">'+esc(r.wig_texture)+'</span>';
+        var photos = (r.photo_urls||[]).map(function(u){
+          return '<img src="'+esc(u)+'" alt="Review photo" onclick="window.open(this.src)">';
+        }).join('');
+        return '<div class="review-full-card">' +
+          '<div class="review-full-header">' +
+            '<div>' +
+              '<div class="review-full-name">'+esc(r.customer_name)+'</div>' +
+              '<div class="review-full-meta">'+date+'</div>' +
+            '</div>' +
+            '<div class="review-full-stars">'+stars+'</div>' +
+          '</div>' +
+          (photos?'<div class="review-full-photos">'+photos+'</div>':'')+
+          '<p class="review-full-text">'+esc(r.review_text)+'</p>' +
+          (badges?'<div style="display:flex;gap:6px;flex-wrap:wrap">'+badges+'</div>':'')+
+        '</div>';
+      }).join('');
+    }
+
+    loadReviews();
+
+    // ── Star Selector ────────────────────────────────────────────────
+    var selectedRating = 5;
+    document.querySelectorAll('#starSelector span').forEach(function(star){
+      star.classList.toggle('active', parseInt(star.dataset.val) <= 5);
+      star.addEventListener('click', function(){
+        selectedRating = parseInt(star.dataset.val);
+        document.getElementById('wrRating').value = selectedRating;
+        document.querySelectorAll('#starSelector span').forEach(function(s){
+          s.classList.toggle('active', parseInt(s.dataset.val) <= selectedRating);
+        });
+      });
+      star.addEventListener('mouseover', function(){
+        var v = parseInt(star.dataset.val);
+        document.querySelectorAll('#starSelector span').forEach(function(s){
+          s.style.color = parseInt(s.dataset.val) <= v ? '#C5A355' : '#3a3025';
+        });
+      });
+      star.addEventListener('mouseout', function(){
+        document.querySelectorAll('#starSelector span').forEach(function(s){
+          s.style.color = '';
+        });
+      });
+    });
+
+    // ── Photo Previews ───────────────────────────────────────────────
+    window.previewPhotos = function(input) {
+      var container = document.getElementById('wrPhotoPreviews');
+      container.innerHTML = '';
+      var label = document.getElementById('wrPhotoLabel');
+      var files = input.files;
+      label.textContent = files.length ? files.length + ' photo'+(files.length>1?'s':'')+' selected' : '📷 Choose photos';
+      Array.from(files).slice(0,5).forEach(function(f){
+        var img = document.createElement('img');
+        img.src = URL.createObjectURL(f);
+        container.appendChild(img);
+      });
+    };
+
+    // ── Submit Review ────────────────────────────────────────────────
+    window.submitReview = function() {
+      var name = document.getElementById('wrName').value.trim();
+      var rating = document.getElementById('wrRating').value;
+      var text = document.getElementById('wrText').value.trim();
+      var errEl = document.getElementById('wrError');
+      errEl.style.display = 'none';
+
+      if (!name) { errEl.textContent = 'Please enter your name.'; errEl.style.display = 'block'; return; }
+      if (!text) { errEl.textContent = 'Please write your review.'; errEl.style.display = 'block'; return; }
+
+      var fd = new FormData();
+      fd.append('customer_name', name);
+      fd.append('rating', rating);
+      fd.append('review_text', text);
+      fd.append('wig_length', document.getElementById('wrLength').value);
+      var files = document.getElementById('wrPhotos').files;
+      Array.from(files).slice(0,5).forEach(function(f){ fd.append('photos', f); });
+
+      var btn = document.querySelector('.wr-submit');
+      btn.textContent = 'Submitting…';
+      btn.disabled = true;
+
+      fetch('/api/reviews', { method: 'POST', body: fd })
+        .then(function(r){ return r.json(); })
+        .then(function(data){
+          if (data.success) {
+            document.getElementById('writeReviewForm').style.display = 'none';
+            document.getElementById('writeReviewSuccess').style.display = 'block';
+          } else {
+            errEl.textContent = data.error || 'Submission failed. Please try again.';
+            errEl.style.display = 'block';
+            btn.textContent = 'Submit Review';
+            btn.disabled = false;
+          }
+        })
+        .catch(function(){
+          errEl.textContent = 'Network error. Please check your connection and try again.';
+          errEl.style.display = 'block';
+          btn.textContent = 'Submit Review';
+          btn.disabled = false;
+        });
+    };
+
+  })();
+  </script>
+</body>
+</html>
