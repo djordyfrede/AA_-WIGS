@@ -535,6 +535,18 @@
       <!-- HOMEPAGE TAB -->
       <div class="tab-panel" id="tab-homepage">
         <div class="settings-section">
+          <h3>Sticky CTA Bar (mobile homepage)</h3>
+          <div class="form-group">
+            <label>Urgency Line</label>
+            <input type="text" id="settingUrgencyText" placeholder="🔥 Only 12 units remaining">
+            <div class="form-hint">Shown above the "Secure Your Crown" button on mobile. Leave blank to hide it.</div>
+          </div>
+          <div class="toggle-row">
+            <label class="toggle"><input type="checkbox" id="settingUrgencyActive"><span class="toggle-slider"></span></label>
+            <span style="font-size:0.88rem">Show urgency line</span>
+          </div>
+        </div>
+        <div class="settings-section">
           <h3>Announcement Bar</h3>
           <div class="form-group">
             <label>Announcement Text</label>
@@ -1430,6 +1442,8 @@ function loadHomepageSettings() {
     if (!data.success) return;
     siteSettings = data.settings;
     var s = siteSettings;
+    document.getElementById('settingUrgencyText').value = s.sticky_urgency_text || '';
+    document.getElementById('settingUrgencyActive').checked = s.sticky_urgency_active !== 'false';
     document.getElementById('settingAnnouncementText').value = s.announcement_bar_text || '';
     document.getElementById('settingAnnouncementActive').checked = s.announcement_bar_active === 'true';
     document.getElementById('settingHeroTitle').value = s.hero_title || '';
@@ -1446,6 +1460,8 @@ function loadHomepageSettings() {
 
 function saveHomepageSettings() {
   var settings = {
+    sticky_urgency_text: document.getElementById('settingUrgencyText').value,
+    sticky_urgency_active: document.getElementById('settingUrgencyActive').checked ? 'true' : 'false',
     announcement_bar_text: document.getElementById('settingAnnouncementText').value,
     announcement_bar_active: document.getElementById('settingAnnouncementActive').checked ? 'true' : 'false',
     hero_title: document.getElementById('settingHeroTitle').value,

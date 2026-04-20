@@ -287,8 +287,7 @@
   </footer>
 
   <div class="mobile-shop-btn">
-    <!-- URGENCY LINE — update this number manually as needed -->
-    <p class="sticky-urgency">🔥 Only 12 units remaining</p>
+    <p class="sticky-urgency" id="stickyUrgency" style="display:none"></p>
     <a class="btn btn-solid sticky-cta-btn" href="products/22-swiss-hd-body-wave/">Secure Your Crown — From $289</a>
     <p class="sticky-trust">Free Shipping&nbsp;&nbsp;•&nbsp;&nbsp;1–2 Year Wear&nbsp;&nbsp;•&nbsp;&nbsp;Luxury Packaging Included</p>
   </div>
@@ -297,6 +296,22 @@
   <script src="cart.js?v=20260308a"></script>
   <script src="chat.js?v=20260308a"></script>
   <script>
+  (function(){
+    var urgencyEl = document.getElementById('stickyUrgency');
+    if (urgencyEl) {
+      fetch('/api/settings')
+        .then(function(r){ return r.json(); })
+        .then(function(data){
+          var s = data.settings || {};
+          if (s.sticky_urgency_active !== 'false' && s.sticky_urgency_text) {
+            urgencyEl.textContent = s.sticky_urgency_text;
+            urgencyEl.style.display = 'block';
+          }
+        })
+        .catch(function(){});
+    }
+  })();
+
   (function(){
     var grid = document.getElementById('homepageReviewGrid');
     if (!grid) return;
