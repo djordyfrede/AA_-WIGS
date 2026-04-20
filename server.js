@@ -5,6 +5,53 @@ const fs = require('fs');
 const { Pool } = require('pg');
 const Stripe = require('stripe');
 const multer = require('multer');
+const nodemailer = require('nodemailer');
+
+function createMailTransport() {
+  const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS } = process.env;
+  if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) return null;
+  return nodemailer.createTransport({
+    host: SMTP_HOST,
+    port: parseInt(SMTP_PORT || '587'),
+    secure: parseInt(SMTP_PORT || '587') === 465,
+    auth: { user: SMTP_USER, pass: SMTP_PASS }
+  });
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+async function sendReviewNotification(adminEmail, review) {
+  const transport = createMailTransport();
+  if (!transport) {
+    console.log('[email] SMTP not configured — skipping review notification');
+    return;
+  }
+  const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+  const domain = process.env.REPLIT_DEV_DOMAIN || process.env.APP_BASE_URL;
+  const adminUrl = domain
+    ? `${domain.startsWith('http') ? domain : `https://${domain}`}/admin/#reviews`
+    : 'https://yourdomain.com/admin/#reviews';
+  const submittedAt = review.created_at ? new Date(review.created_at).toLocaleString() : new Date().toLocaleString();
+  await transport.sendMail({
+    from: process.env.SMTP_USER,
+    to: adminEmail,
+    subject: `New review submitted by ${escapeHtml(review.customer_name)}`,
+    html: `
+      <h2>New Review Submitted</h2>
+      <p><strong>Customer:</strong> ${escapeHtml(review.customer_name)}</p>
+      <p><strong>Rating:</strong> ${stars} (${review.rating}/5)</p>
+      <p><strong>Review:</strong> ${escapeHtml(review.review_text)}</p>
+      <p><strong>Submitted:</strong> ${submittedAt}</p>
+      <p><a href="${adminUrl}">Review &amp; moderate in Admin Panel</a></p>
+    `
+  });
+}
 
 const reviewStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -612,12 +659,26 @@ app.post('/api/reviews', uploadReview.array('photos', 5), async (req, res) => {
       return res.status(400).json({ success: false, error: 'Rating must be 1–5' });
     }
     const photoUrls = (req.files || []).map(f => `/uploads/reviews/${f.filename}`);
-    await pool.query(
+    const insertResult = await pool.query(
       `INSERT INTO reviews (customer_name, rating, review_text, wig_length, wig_texture, photo_urls, approved)
-       VALUES ($1,$2,$3,$4,$5,$6,FALSE)`,
+       VALUES ($1,$2,$3,$4,$5,$6,FALSE) RETURNING created_at`,
       [customer_name.trim(), ratingNum, review_text.trim(), wig_length || null, wig_texture || null, JSON.stringify(photoUrls)]
     );
     res.json({ success: true, message: 'Review submitted! It will appear once approved.' });
+    try {
+      const settingsResult = await pool.query(`SELECT value FROM site_settings WHERE key = 'contact_email'`);
+      const adminEmail = settingsResult.rows[0]?.value;
+      if (adminEmail) {
+        await sendReviewNotification(adminEmail, {
+          customer_name: customer_name.trim(),
+          rating: ratingNum,
+          review_text: review_text.trim(),
+          created_at: insertResult.rows[0]?.created_at
+        });
+      }
+    } catch (emailErr) {
+      console.error('[email] Failed to send review notification:', emailErr.message);
+    }
   } catch (err) {
     res.status(500).json({ success: false, error: 'Failed to submit review' });
   }

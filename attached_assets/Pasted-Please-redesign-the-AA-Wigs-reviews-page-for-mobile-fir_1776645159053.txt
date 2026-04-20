@@ -1,0 +1,93 @@
+Please redesign the AA Wigs reviews page for mobile-first luxury UX. The current page feels visually empty, the logo breaks awkwardly on mobile, the top header is overcrowded, and the “No reviews yet” state hurts trust. I want this page to feel intentional, premium, and polished on iPhone screens.
+
+Make these exact improvements:
+
+1. Simplify the mobile header
+- Keep the AA Wigs logo on one line only
+- Reduce the logo size slightly on mobile so it does not wrap into two lines
+- Remove the large “SHOP NOW” button from the mobile header
+- Keep only:
+  - logo on the left
+  - cart icon on the right
+  - menu icon on the right
+- Make the header feel balanced, elegant, and uncluttered
+
+2. Improve the hero / intro section of the reviews page
+- Keep the luxury dark background
+- Reduce dead empty space
+- Center the content properly
+- Use this structure:
+
+Eyebrow:
+“CUSTOMER REVIEWS”
+
+Headline:
+“What Our Clients Say”
+
+Subtitle:
+“Real reactions, photos, and videos from women experiencing AA Wigs.”
+
+3. Replace the empty review state
+Remove all visible empty-state language such as:
+- “No reviews yet”
+- “No approved reviews yet. Be the first to share your experience!”
+- empty stars with dash formatting
+
+Replace it with a premium placeholder state that feels intentional, such as:
+
+Headline:
+“Client reviews are being prepared”
+
+Text:
+“We’re curating beautiful customer photo and video reviews. Be among the first to experience AA Wigs.”
+
+Optional supporting line:
+“Luxury is best seen in real life.”
+
+4. Add a polished featured placeholder/review preview block
+Instead of showing nothing, add one elegant preview card under the intro section.
+Style it like a luxury testimonial card.
+
+Use sample structure:
+- 5 gold stars
+- short quote
+- name line
+
+Example content:
+“The lace melts beautifully and the hair feels incredibly natural.”
+— Client review coming soon
+
+This should feel like a premium preview, not fake spammy reviews.
+
+5. Redesign the review submission form for mobile
+The form should feel easier and more guided on phone screens.
+Improve spacing, hierarchy, and readability.
+
+Use this section intro above the form:
+Headline:
+“Share Your Experience”
+
+Subtext:
+“Your review helps other women make confident decisions.”
+
+Then keep the fields, but improve mobile spacing and group them visually:
+
+Group 1:
+- Name
+- Rating
+
+Group 2:
+- Review text
+
+Group 3:
+- Wig length
+- Add photos
+- Add video if supported
+
+6. Improve form field styling
+- Make inputs taller and easier to tap on mobile
+- Increase padding
+- Improve contrast while keeping the luxury dark theme
+- Keep borders subtle and refined
+- Make placeholders easier to read
+- Keep typography clean and premium
