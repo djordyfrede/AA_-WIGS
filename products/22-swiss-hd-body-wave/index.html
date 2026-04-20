@@ -29,7 +29,7 @@
 
   <link rel="stylesheet" href="../../styles.css?v=20260308a">
 
-  <script type="application/ld+json">
+  <script type="application/ld+json" id="productJsonLd">
   {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -366,10 +366,10 @@
 
           <div class="social-proof">
             <div class="rating-summary">
-              <div class="stars" aria-label="4.9 out of 5 stars">
+              <div class="stars" id="productStarsEl" aria-label="4.9 out of 5 stars">
                 <span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>
               </div>
-              <span class="rating-text">4.9/5 based on customer reviews</span>
+              <span class="rating-text" id="productRatingText">4.9/5 based on customer reviews</span>
             </div>
 
             <div class="review-snippets" id="productReviewSnippets">
@@ -992,10 +992,62 @@
     var el = document.getElementById('productReviewSnippets');
     if (!el) return;
     function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+    function buildStarHTML(avg) {
+      var full = Math.max(0, Math.min(5, Math.round(avg)));
+      var html = '';
+      for (var i = 0; i < 5; i++) {
+        html += '<span class="star">' + (i < full ? '&#9733;' : '&#9734;') + '</span>';
+      }
+      return html;
+    }
+
+    function updateRatingDisplay(reviews) {
+      var count = reviews.length;
+      var rounded, avg;
+      if (count) {
+        var total = reviews.reduce(function(sum, r){ return sum + (r.rating || 0); }, 0);
+        avg = total / count;
+        rounded = Math.round(avg * 10) / 10;
+      } else {
+        avg = 0;
+        rounded = 0;
+      }
+
+      var starsEl = document.getElementById('productStarsEl');
+      if (starsEl) {
+        starsEl.innerHTML = buildStarHTML(avg);
+        starsEl.setAttribute('aria-label', rounded + ' out of 5 stars');
+      }
+
+      var ratingText = document.getElementById('productRatingText');
+      if (ratingText) {
+        if (count) {
+          ratingText.textContent = rounded + '/5 based on ' + count + ' customer review' + (count === 1 ? '' : 's');
+        } else {
+          ratingText.textContent = 'No reviews yet';
+        }
+      }
+
+      var jsonLdEl = document.getElementById('productJsonLd');
+      if (jsonLdEl) {
+        try {
+          var schema = JSON.parse(jsonLdEl.textContent);
+          if (schema.aggregateRating) {
+            schema.aggregateRating.ratingValue = String(rounded);
+            schema.aggregateRating.reviewCount = String(count);
+            schema.aggregateRating.ratingCount = String(count);
+          }
+          jsonLdEl.textContent = JSON.stringify(schema);
+        } catch(e) {}
+      }
+    }
+
     fetch('/api/reviews?page=product')
       .then(function(r){ return r.json(); })
       .then(function(data){
         var reviews = data.reviews || [];
+        updateRatingDisplay(reviews);
         if (!reviews.length) {
           el.innerHTML = '<div class="review-card"><div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="review-text">"The lace melts perfectly and the hair is incredibly soft. I\'ve gotten so many compliments already."</p><p class="review-author">Ashley R.</p></div><div class="review-card"><div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="review-text">"The density is perfect and the color looks so natural. Best wig I\'ve ever owned."</p><p class="review-author">Tiffany J.</p></div><div class="review-card"><div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="review-text">"The packaging alone made me feel like I was unboxing something special. Unmatched quality."</p><p class="review-author">Jasmine L.</p></div>';
           return;
