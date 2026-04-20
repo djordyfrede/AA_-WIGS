@@ -193,7 +193,7 @@ async function initDatabase() {
       ['store_email', 'hello@aawigs.com'],
       ['store_instagram', 'https://instagram.com/aawigshair'],
       ['store_tiktok', ''],
-      ['sticky_urgency_text', '🔥 Only 12 units remaining'],
+      ['sticky_urgency_text', '🔥 Limited stock available'],
       ['sticky_urgency_active', 'true'],
       ['announcement_bar_active', 'true'],
       ['announcement_bar_text', 'FREE U.S. SHIPPING ON ALL ORDERS · LIMITED STOCK AVAILABLE'],
