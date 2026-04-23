@@ -377,6 +377,47 @@ async function initDatabase() {
   }
 }
 
+// ─── DYNAMIC PRODUCT PAGE (inject live rating into meta tags) ─────────────────
+
+app.get(['/products/22-swiss-hd-body-wave', '/products/22-swiss-hd-body-wave/'], async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT AVG(rating)::numeric(3,1) AS avg_rating, COUNT(*) AS review_count
+       FROM reviews
+       WHERE approved = TRUE AND show_on_product = TRUE`
+    );
+    const row = result.rows[0];
+    const avg = parseFloat(row.avg_rating) || 0;
+    const count = parseInt(row.review_count) || 0;
+    const ratingStr = avg > 0 ? avg.toFixed(1) : null;
+
+    const htmlPath = path.join(__dirname, 'products', '22-swiss-hd-body-wave', 'index.html');
+    let html = fs.readFileSync(htmlPath, 'utf8');
+
+    if (ratingStr && count > 0) {
+      const reviewWord = count === 1 ? 'review' : 'reviews';
+      html = html.replace(
+        /(<meta name="description" content=")([^"]*?)(")/,
+        `$1Rated ${ratingStr}/5 by ${count} ${reviewWord}. $2$3`
+      );
+      html = html.replace(
+        /(<meta property="og:description" content=")([^"]*?)(")/,
+        `$1Rated ${ratingStr}/5 stars by ${count} ${reviewWord}. $2$3`
+      );
+      html = html.replace(
+        /(<title>)([^<]*?)(<\/title>)/,
+        `$1$2 | Rated ${ratingStr}/5$3`
+      );
+    }
+
+    res.setHeader('Content-Type', 'text/html');
+    res.send(html);
+  } catch (err) {
+    console.error('[product-page] Failed to inject rating into meta tags:', err.message);
+    res.sendFile(path.join(__dirname, 'products', '22-swiss-hd-body-wave', 'index.html'));
+  }
+});
+
 app.use(express.static(path.join(__dirname), {
   extensions: ['html'],
   index: 'index.html'
