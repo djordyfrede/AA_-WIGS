@@ -219,6 +219,11 @@
       <div class="section-head fade-in">
         <h2>Client Reviews</h2>
         <p>Real reviews from real women who invested in themselves.</p>
+        <div id="homepageAggRating" style="display:none;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px">
+          <span id="homepageAggStars" style="color:#C5A355;font-size:1.3rem;letter-spacing:2px">★★★★★</span>
+          <span id="homepageAggScore" style="color:#fff;font-size:1.5rem;font-weight:700"></span>
+          <span id="homepageAggCount" style="color:#a0957f;font-size:0.85rem"></span>
+        </div>
       </div>
       <div class="review-grid fade-in" id="homepageReviewGrid">
         <div class="review"><p class="stars">★★★★★</p><p>Loading reviews…</p></div>
@@ -315,10 +320,26 @@
   (function(){
     var grid = document.getElementById('homepageReviewGrid');
     if (!grid) return;
+
+    function escHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+    function updateAggregate(reviews) {
+      var total = reviews.length;
+      if (!total) return;
+      var avg = reviews.reduce(function(s,r){ return s+(r.rating||0); }, 0) / total;
+      var rounded = Math.round(avg);
+      var scoreText = avg.toFixed(1);
+      document.getElementById('homepageAggStars').textContent = '★'.repeat(rounded) + '☆'.repeat(5-rounded);
+      document.getElementById('homepageAggScore').textContent = scoreText;
+      document.getElementById('homepageAggCount').textContent = 'based on ' + total + ' review' + (total !== 1 ? 's' : '');
+      document.getElementById('homepageAggRating').style.display = 'flex';
+    }
+
     fetch('/api/reviews?page=homepage')
       .then(function(r){ return r.json(); })
       .then(function(data){
         var reviews = data.reviews || [];
+        updateAggregate(reviews);
         if (!reviews.length) {
           grid.innerHTML = '<div class="review"><p class="stars">★★★★★</p><p>"The hairline looks so natural — everyone thinks it\'s my real hair. Worth every penny."</p><span>— Aisha M. · Verified Buyer</span></div><div class="review"><p class="stars">★★★★★</p><p>"Soft, zero shedding, full ends. The packaging felt like unboxing jewelry. Pure luxury."</p><span>— Destiny R. · Verified Buyer</span></div><div class="review"><p class="stars">★★★★★</p><p>"The glueless fit is so secure I wore it to the gym. I feel expensive every time I put it on."</p><span>— Keisha T. · Verified Buyer</span></div>';
           return;
@@ -330,8 +351,6 @@
         }).join('');
       })
       .catch(function(){});
-
-    function escHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
   })();
   </script>
 </body>
