@@ -37,10 +37,11 @@ Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vani
   - `inventory` — per-variant stock, price, compare-at price, sku, active (30 variants seeded: 6 colors × 5 lengths)
   - `orders` — customer orders with Stripe session IDs, fulfillment_status, tracking_number, shipping address
   - `reservations` — 15-min inventory holds during checkout (cleaned up every 5 min)
-  - `site_settings` — key/value store for all CMS content (announcement bar, hero text, policies, etc.)
+  - `site_settings` — key/value store for all CMS content (announcement bar, hero text, policies, product_features JSON, product_included_items JSON, care_guide_sections JSON, etc.)
   - `admin_sessions` — admin auth tokens
   - `contact_messages` — contact form submissions and waitlist sign-ups (inbox)
   - `reviews` — customer reviews (customer_name, rating 1–5, review_text, wig_length, wig_texture, verified_purchase, featured, approved, show_on_homepage, show_on_product, photo_urls JSONB)
+  - `product_images` — product gallery images (slug, url, alt, sort_order); uploaded files stored in `uploads/products/`
 
 ## Admin Dashboard
 - **URL**: `/admin/`
@@ -54,6 +55,7 @@ Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vani
   - **Inventory** — per-variant stock editor, compare-at price, low_stock_threshold, bulk enable/disable
   - **Homepage** — announcement bar toggle + text, hero title/subtitle, store info, policies
   - **Reviews** — full review CRUD: approve/reject, toggle featured/homepage/product visibility, add photos, delete; filter by All/Pending/Approved/Homepage/Featured; inline quick-approve button
+  - **Page Content** — dashboard-editable CMS for: product feature bullets (title+subtitle pairs), What's Included list, product gallery images (upload/reorder/delete), care guide sections (title/intro/steps/tip per section)
   - **Settings** — site info display
 
 ## API Endpoints
@@ -83,6 +85,11 @@ Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vani
 - `POST /api/admin/reviews/:id/photos` — admin: upload photos to existing review
 - `DELETE /api/admin/reviews/:id/photos` — admin: remove a photo (body: {url})
 - `DELETE /api/admin/reviews/:id` — admin: delete review + its photo files
+- `GET /api/product-images/:slug` — public: ordered image list for a product slug
+- `POST /api/admin/product-images/:slug` — admin: upload image for product (multipart `image` field)
+- `PUT /api/admin/product-images/:id` — admin: update alt text for an image
+- `PUT /api/admin/product-images-reorder` — admin: reorder images (body: `{order:[{id,sort_order}]}`)
+- `DELETE /api/admin/product-images/:id` — admin: delete image + disk file
 
 ## Stripe Integration
 - **Mode**: LIVE

@@ -405,6 +405,10 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
         Reviews
       </a>
+      <a data-tab="content" onclick="switchTab('content',this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+        Page Content
+      </a>
       <div class="nav-section-label">Configuration</div>
       <a data-tab="homepage" onclick="switchTab('homepage',this)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -726,6 +730,55 @@
         </div>
       </div>
 
+      <!-- CONTENT TAB -->
+      <div class="tab-panel" id="tab-content">
+
+        <!-- Product Features -->
+        <div class="settings-section">
+          <h3>Product Feature Bullets</h3>
+          <p style="color:var(--text-muted);font-size:.85rem;margin-bottom:16px">These appear on the product page under the price. Keep it to 4 items for best layout.</p>
+          <div id="featuresEditor"></div>
+          <button class="btn-secondary" onclick="addFeatureItem()" style="margin-top:10px">+ Add Feature</button>
+          <div style="margin-top:16px">
+            <button class="btn-primary" onclick="saveFeatures()">Save Features</button>
+          </div>
+        </div>
+
+        <!-- What's Included -->
+        <div class="settings-section">
+          <h3>What's Included</h3>
+          <p style="color:var(--text-muted);font-size:.85rem;margin-bottom:16px">List each item that ships with the wig (one per line).</p>
+          <div id="includedEditor"></div>
+          <button class="btn-secondary" onclick="addIncludedItem()" style="margin-top:10px">+ Add Item</button>
+          <div style="margin-top:16px">
+            <button class="btn-primary" onclick="saveIncluded()">Save Included Items</button>
+          </div>
+        </div>
+
+        <!-- Product Images -->
+        <div class="settings-section">
+          <h3>Product Gallery Images</h3>
+          <p style="color:var(--text-muted);font-size:.85rem;margin-bottom:16px">Upload, reorder, or remove images for the product page. First image becomes the main display image.</p>
+          <div id="productImagesGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:16px"></div>
+          <div style="border:2px dashed var(--border);border-radius:8px;padding:24px;text-align:center;cursor:pointer" onclick="document.getElementById('productImgUpload').click()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="28" height="28" style="margin-bottom:8px;color:var(--text-muted)"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <p style="color:var(--text-muted);font-size:.9rem;margin:0">Click to upload image (JPG, PNG, WebP · max 12 MB)</p>
+          </div>
+          <input type="file" id="productImgUpload" accept="image/jpeg,image/png,image/webp" style="display:none" onchange="uploadProductImage(this)">
+        </div>
+
+        <!-- Care Guide -->
+        <div class="settings-section">
+          <h3>Care Guide Sections</h3>
+          <p style="color:var(--text-muted);font-size:.85rem;margin-bottom:16px">Edit the care guide content shown on <a href="/care.html" target="_blank" style="color:var(--gold)">/care.html</a>. Each section has an intro paragraph, numbered steps (one per line), and an optional pro tip.</p>
+          <div id="careEditor"></div>
+          <div style="margin-top:16px">
+            <button class="btn-primary" onclick="saveCareGuide()">Save Care Guide</button>
+          </div>
+        </div>
+
+      </div>
+
       <!-- SETTINGS TAB -->
       <div class="tab-panel" id="tab-settings">
         <div class="settings-section">
@@ -1024,7 +1077,7 @@ function showApp() {
 }
 
 // ── TABS ──────────────────────────────────────────────────────────
-var tabNames = { overview:'Overview', products:'Products', inventory:'Inventory', orders:'Orders', settings:'Settings', homepage:'Homepage', messages:'Messages', reviews:'Reviews' };
+var tabNames = { overview:'Overview', products:'Products', inventory:'Inventory', orders:'Orders', settings:'Settings', homepage:'Homepage', messages:'Messages', reviews:'Reviews', content:'Page Content' };
 function switchTab(name, el) {
   document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
   document.querySelectorAll('.sidebar-nav a').forEach(function(a) { a.classList.remove('active'); });
@@ -1039,6 +1092,7 @@ function switchTab(name, el) {
   if (name === 'messages') loadMessages();
   if (name === 'homepage') loadHomepageSettings();
   if (name === 'reviews') loadReviews();
+  if (name === 'content') loadContent();
 }
 
 // ── SIDEBAR (MOBILE) ──────────────────────────────────────────────
@@ -1747,6 +1801,236 @@ function deleteReview(id) {
     if (d.success) { toast('Review deleted'); loadReviews(); }
     else toast(d.error || 'Error', 'error');
   });
+}
+
+// ── PAGE CONTENT TAB ──────────────────────────────────────────────
+
+var _productImgSlug = '22-swiss-hd-body-wave';
+
+function loadContent() {
+  api('GET', '/api/admin/settings').then(function(data) {
+    if (!data.success) return;
+    var s = data.settings;
+    var features = [];
+    var included = [];
+    try { features = JSON.parse(s.product_features || '[]'); } catch(e) {}
+    try { included = JSON.parse(s.product_included_items || '[]'); } catch(e) {}
+    renderFeaturesEditor(features);
+    renderIncludedEditor(included);
+    loadCareEditor(s.care_guide_sections);
+  });
+  loadProductImages();
+}
+
+// ── FEATURES EDITOR ─────────────────────────────────────────────
+
+function renderFeaturesEditor(features) {
+  var el = document.getElementById('featuresEditor');
+  if (!el) return;
+  el.innerHTML = features.map(function(f, i) {
+    return '<div class="feat-row" data-i="'+i+'" style="display:grid;grid-template-columns:1fr 1fr auto;gap:8px;margin-bottom:8px;align-items:center">' +
+      '<input type="text" placeholder="Title (e.g. HD Lace)" value="'+esc(f.title)+'" onchange="updateFeature('+i+',\'title\',this.value)" style="padding:8px 10px;border:1px solid var(--border);border-radius:6px;font-size:.9rem">' +
+      '<input type="text" placeholder="Subtitle (e.g. Invisible Melt)" value="'+esc(f.subtitle)+'" onchange="updateFeature('+i+',\'subtitle\',this.value)" style="padding:8px 10px;border:1px solid var(--border);border-radius:6px;font-size:.9rem">' +
+      '<button onclick="removeFeature('+i+')" style="background:none;border:none;cursor:pointer;color:#e74c3c;font-size:1.2rem;padding:4px 8px" title="Remove">✕</button>' +
+      '</div>';
+  }).join('');
+}
+
+var _features = [];
+function loadFeaturesState() {
+  _features = [];
+  document.querySelectorAll('#featuresEditor .feat-row').forEach(function(row, i) {
+    var inputs = row.querySelectorAll('input');
+    _features.push({ title: inputs[0].value, subtitle: inputs[1].value });
+  });
+}
+function updateFeature(i, field, val) {
+  loadFeaturesState();
+  if (_features[i]) _features[i][field] = val;
+}
+function addFeatureItem() {
+  loadFeaturesState();
+  _features.push({ title: '', subtitle: '' });
+  renderFeaturesEditor(_features);
+}
+function removeFeature(i) {
+  loadFeaturesState();
+  _features.splice(i, 1);
+  renderFeaturesEditor(_features);
+}
+function saveFeatures() {
+  loadFeaturesState();
+  api('POST', '/api/admin/settings', { product_features: JSON.stringify(_features) }).then(function(d) {
+    if (d.success) toast('Features saved');
+    else toast(d.error || 'Error saving', 'error');
+  });
+}
+
+// ── INCLUDED EDITOR ─────────────────────────────────────────────
+
+function renderIncludedEditor(items) {
+  var el = document.getElementById('includedEditor');
+  if (!el) return;
+  el.innerHTML = items.map(function(item, i) {
+    return '<div class="inc-row" data-i="'+i+'" style="display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:8px;align-items:center">' +
+      '<input type="text" placeholder="Item description" value="'+esc(item)+'" style="padding:8px 10px;border:1px solid var(--border);border-radius:6px;font-size:.9rem">' +
+      '<button onclick="removeIncluded('+i+')" style="background:none;border:none;cursor:pointer;color:#e74c3c;font-size:1.2rem;padding:4px 8px" title="Remove">✕</button>' +
+      '</div>';
+  }).join('');
+}
+function getIncludedState() {
+  var vals = [];
+  document.querySelectorAll('#includedEditor .inc-row input').forEach(function(inp) { vals.push(inp.value); });
+  return vals;
+}
+function addIncludedItem() {
+  renderIncludedEditor(getIncludedState().concat(['']));
+}
+function removeIncluded(i) {
+  var items = getIncludedState();
+  items.splice(i, 1);
+  renderIncludedEditor(items);
+}
+function saveIncluded() {
+  var items = getIncludedState();
+  api('POST', '/api/admin/settings', { product_included_items: JSON.stringify(items) }).then(function(d) {
+    if (d.success) toast('Included items saved');
+    else toast(d.error || 'Error saving', 'error');
+  });
+}
+
+// ── PRODUCT IMAGES ──────────────────────────────────────────────
+
+var _productImages = [];
+
+function loadProductImages() {
+  fetch('/api/product-images/'+_productImgSlug).then(function(r){return r.json();}).then(function(d){
+    _productImages = d.images || [];
+    renderProductImagesGrid();
+  });
+}
+
+function renderProductImagesGrid() {
+  var grid = document.getElementById('productImagesGrid');
+  if (!grid) return;
+  if (!_productImages.length) {
+    grid.innerHTML = '<p style="color:var(--text-muted);font-size:.85rem;grid-column:1/-1">No images uploaded yet. Add the first image above.</p>';
+    return;
+  }
+  grid.innerHTML = _productImages.map(function(img, i) {
+    var isFirst = i === 0;
+    return '<div style="position:relative;border:2px solid '+(isFirst?'var(--gold)':'var(--border)')+';border-radius:8px;overflow:hidden;background:#f5f5f5">' +
+      '<img src="'+esc(img.url)+'" alt="'+esc(img.alt)+'" style="width:100%;aspect-ratio:3/4;object-fit:cover;display:block">' +
+      (isFirst ? '<div style="position:absolute;top:0;left:0;right:0;background:var(--gold);color:#fff;font-size:.65rem;text-align:center;padding:2px;font-weight:700;letter-spacing:.5px">MAIN</div>' : '') +
+      '<div style="display:flex;justify-content:space-between;padding:4px;background:rgba(255,255,255,.95)">' +
+        (i>0?'<button onclick="moveProductImg('+img.id+',-1)" style="border:none;background:none;cursor:pointer;font-size:.9rem;padding:2px 6px" title="Move left">◀</button>':'<span style="width:28px"></span>') +
+        '<button onclick="deleteProductImg('+img.id+')" style="border:none;background:none;cursor:pointer;color:#e74c3c;font-size:.85rem;padding:2px 6px" title="Delete">✕</button>' +
+        (i<_productImages.length-1?'<button onclick="moveProductImg('+img.id+',1)" style="border:none;background:none;cursor:pointer;font-size:.9rem;padding:2px 6px" title="Move right">▶</button>':'<span style="width:28px"></span>') +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function uploadProductImage(input) {
+  var file = input.files[0];
+  if (!file) return;
+  var fd = new FormData();
+  fd.append('image', file);
+  toast('Uploading…');
+  fetch('/api/admin/product-images/'+_productImgSlug, {
+    method: 'POST',
+    headers: { 'x-admin-token': adminToken },
+    body: fd
+  }).then(function(r){return r.json();}).then(function(d){
+    if (d.success) { toast('Image uploaded'); loadProductImages(); }
+    else toast(d.error || 'Upload failed', 'error');
+    input.value = '';
+  });
+}
+
+function deleteProductImg(id) {
+  if (!confirm('Remove this image?')) return;
+  fetch('/api/admin/product-images/'+id, {
+    method: 'DELETE',
+    headers: { 'x-admin-token': adminToken }
+  }).then(function(r){return r.json();}).then(function(d){
+    if (d.success) { toast('Image removed'); loadProductImages(); }
+    else toast(d.error || 'Error', 'error');
+  });
+}
+
+function moveProductImg(id, dir) {
+  var idx = _productImages.findIndex(function(img){ return img.id === id; });
+  if (idx < 0) return;
+  var newIdx = idx + dir;
+  if (newIdx < 0 || newIdx >= _productImages.length) return;
+  var arr = _productImages.slice();
+  var tmp = arr[idx]; arr[idx] = arr[newIdx]; arr[newIdx] = tmp;
+  var order = arr.map(function(img, i){ return { id: img.id, sort_order: i }; });
+  fetch('/api/admin/product-images-reorder', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', 'x-admin-token': adminToken },
+    body: JSON.stringify({ order: order })
+  }).then(function(r){return r.json();}).then(function(d){
+    if (d.success) loadProductImages();
+    else toast(d.error || 'Error', 'error');
+  });
+}
+
+// ── CARE GUIDE EDITOR ───────────────────────────────────────────
+
+function loadCareEditor(rawJson) {
+  var sections = [];
+  try { sections = JSON.parse(rawJson || '[]'); } catch(e) {}
+  renderCareEditor(sections);
+}
+
+function renderCareEditor(sections) {
+  var el = document.getElementById('careEditor');
+  if (!el) return;
+  el.innerHTML = sections.map(function(sec, i) {
+    return '<details style="border:1px solid var(--border);border-radius:8px;margin-bottom:10px;overflow:hidden">' +
+      '<summary style="padding:12px 16px;font-weight:600;cursor:pointer;background:var(--bg-light);list-style:none;display:flex;justify-content:space-between;align-items:center">' +
+        '<span>' + esc(sec.title) + '</span>' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 12 15 18 9"/></svg>' +
+      '</summary>' +
+      '<div style="padding:16px;display:grid;gap:12px">' +
+        '<div><label style="font-size:.8rem;font-weight:600;color:var(--text-muted);display:block;margin-bottom:4px">SECTION TITLE</label>' +
+          '<input type="text" value="'+esc(sec.title)+'" id="care_title_'+i+'" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:6px;font-size:.9rem;box-sizing:border-box"></div>' +
+        '<div><label style="font-size:.8rem;font-weight:600;color:var(--text-muted);display:block;margin-bottom:4px">INTRO PARAGRAPH</label>' +
+          '<textarea rows="2" id="care_intro_'+i+'" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:6px;font-size:.9rem;resize:vertical;box-sizing:border-box">'+esc(sec.intro || '')+'</textarea></div>' +
+        '<div><label style="font-size:.8rem;font-weight:600;color:var(--text-muted);display:block;margin-bottom:4px">STEPS (one per line)</label>' +
+          '<textarea rows="6" id="care_steps_'+i+'" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:6px;font-size:.9rem;resize:vertical;box-sizing:border-box">'+esc((sec.steps||[]).join('\n'))+'</textarea></div>' +
+        '<div><label style="font-size:.8rem;font-weight:600;color:var(--text-muted);display:block;margin-bottom:4px">PRO TIP (optional)</label>' +
+          '<input type="text" value="'+esc(sec.tip || '')+'" id="care_tip_'+i+'" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:6px;font-size:.9rem;box-sizing:border-box"></div>' +
+      '</div>' +
+    '</details>';
+  }).join('');
+}
+
+function getCareState() {
+  var sections = [];
+  document.querySelectorAll('#careEditor details').forEach(function(det, i) {
+    sections.push({
+      title: (document.getElementById('care_title_'+i) || {}).value || '',
+      intro: (document.getElementById('care_intro_'+i) || {}).value || '',
+      steps: ((document.getElementById('care_steps_'+i) || {}).value || '').split('\n').filter(function(s){ return s.trim(); }),
+      tip: (document.getElementById('care_tip_'+i) || {}).value || ''
+    });
+  });
+  return sections;
+}
+
+function saveCareGuide() {
+  var sections = getCareState();
+  api('POST', '/api/admin/settings', { care_guide_sections: JSON.stringify(sections) }).then(function(d) {
+    if (d.success) toast('Care guide saved');
+    else toast(d.error || 'Error saving', 'error');
+  });
+}
+
+function esc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 </script>
 </body>

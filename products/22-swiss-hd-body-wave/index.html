@@ -251,10 +251,11 @@
 
       <div class="product-detail-grid">
         <div class="product-gallery">
-          <div class="img-placeholder product-main-img" id="productMainImg">
+          <div class="img-placeholder product-main-img" id="productMainImg" style="position:relative;overflow:hidden">
+            <img id="productMainImgEl" src="" alt="AA WIGS Body Wave" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;inset:0">
             <span class="placeholder-text" id="productImgLabel">1B Natural Black</span>
           </div>
-          <div class="product-gallery-thumbs">
+          <div class="product-gallery-thumbs" id="productGalleryThumbs">
             <div class="thumb active">1</div>
             <div class="thumb">2</div>
             <div class="thumb">3</div>
@@ -306,7 +307,7 @@
             </div>
           </div>
 
-          <div class="product-quick-specs fade-in">
+          <div class="product-quick-specs fade-in" id="productFeaturesGrid">
             <div class="premium-feature-item">
               <span class="premium-feature-check">✔</span>
               <div class="premium-feature-text">
@@ -395,7 +396,7 @@
             </div>
           </div>
 
-          <div class="included-list fade-in">
+          <div class="included-list fade-in" id="productIncludedList">
             <h3 class="product-section-title">What's Included</h3>
             <div class="included-item">
               <span class="included-icon">✦</span>
@@ -808,8 +809,80 @@
               }
             }
           }
+          if (s.product_features) {
+            try {
+              var features = JSON.parse(s.product_features);
+              if (Array.isArray(features) && features.length) {
+                var grid = document.getElementById('productFeaturesGrid');
+                if (grid) {
+                  grid.innerHTML = features.map(function(f) {
+                    return '<div class="premium-feature-item">' +
+                      '<span class="premium-feature-check">✔</span>' +
+                      '<div class="premium-feature-text">' +
+                        '<strong>' + escHtmlP(f.title) + '</strong>' +
+                        '<span>' + escHtmlP(f.subtitle) + '</span>' +
+                      '</div>' +
+                    '</div>';
+                  }).join('');
+                }
+              }
+            } catch(e) {}
+          }
+          if (s.product_included_items) {
+            try {
+              var items = JSON.parse(s.product_included_items);
+              if (Array.isArray(items) && items.length) {
+                var list = document.getElementById('productIncludedList');
+                if (list) {
+                  list.innerHTML = '<h3 class="product-section-title">What\'s Included</h3>' +
+                    items.map(function(item) {
+                      return '<div class="included-item"><span class="included-icon">✦</span>' + escHtmlP(item) + '</div>';
+                    }).join('');
+                }
+              }
+            } catch(e) {}
+          }
         })
         .catch(function() {});
+    }
+
+    function escHtmlP(str) {
+      return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    // ── PRODUCT GALLERY FROM DB ────────────────────────────────────
+    var _galleryImages = [];
+    var _galleryActive = 0;
+    function loadProductImages() {
+      fetch('/api/product-images/22-swiss-hd-body-wave')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (!data.success || !data.images || !data.images.length) return;
+          _galleryImages = data.images;
+          _galleryActive = 0;
+          var thumbsEl = document.getElementById('productGalleryThumbs');
+          var mainImg = document.getElementById('productMainImgEl');
+          var mainLabel = document.getElementById('productImgLabel');
+          if (!thumbsEl || !mainImg) return;
+          thumbsEl.innerHTML = data.images.map(function(img, i) {
+            return '<div class="thumb' + (i === 0 ? ' active' : '') + '" data-gi="' + i + '" onclick="selectGalleryImg(' + i + ')" style="overflow:hidden;padding:0">' +
+              '<img src="' + escHtmlP(img.url) + '" alt="' + escHtmlP(img.alt) + '" style="width:100%;height:100%;object-fit:cover;display:block">' +
+            '</div>';
+          }).join('');
+          mainImg.src = data.images[0].url;
+          mainImg.style.display = 'block';
+          if (mainLabel) mainLabel.style.display = 'none';
+        })
+        .catch(function() {});
+    }
+    function selectGalleryImg(i) {
+      if (!_galleryImages[i]) return;
+      _galleryActive = i;
+      var mainImg = document.getElementById('productMainImgEl');
+      if (mainImg) { mainImg.src = _galleryImages[i].url; mainImg.style.display = 'block'; }
+      document.querySelectorAll('#productGalleryThumbs .thumb').forEach(function(t, idx) {
+        t.classList.toggle('active', idx === i);
+      });
     }
 
     // ── PRODUCT BADGES FROM DB ─────────────────────────────────────
@@ -853,6 +926,7 @@
     loadInventory();
     loadSiteSettings();
     loadProductData();
+    loadProductImages();
 
     // ── ORDER STATUS BANNER ────────────────────────────────────────
     (function() {

@@ -73,6 +73,26 @@ const uploadReview = multer({
   }
 });
 
+const productImgStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const dir = path.join(__dirname, 'uploads', 'products');
+    fs.mkdirSync(dir, { recursive: true });
+    cb(null, dir);
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname).toLowerCase();
+    cb(null, `prod-${Date.now()}-${Math.random().toString(36).slice(2)}${ext}`);
+  }
+});
+const uploadProductImg = multer({
+  storage: productImgStorage,
+  limits: { fileSize: 12 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    if (/^image\/(jpeg|png|webp)$/.test(file.mimetype)) cb(null, true);
+    else cb(new Error('Images only (JPG, PNG, WebP)'));
+  }
+});
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -215,6 +235,17 @@ async function initDatabase() {
     )
   `);
 
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS product_images (
+      id SERIAL PRIMARY KEY,
+      slug TEXT NOT NULL,
+      url TEXT NOT NULL,
+      alt TEXT DEFAULT '',
+      sort_order INTEGER DEFAULT 0,
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `);
+
   // ── Seed products ──
   const productCount = await pool.query('SELECT COUNT(*) FROM products');
   if (parseInt(productCount.rows[0].count) === 0) {
@@ -242,6 +273,26 @@ async function initDatabase() {
       ['store_tiktok', ''],
       ['sticky_urgency_text', '🔥 Limited stock available'],
       ['sticky_urgency_active', 'true'],
+      ['product_features', JSON.stringify([
+        {"title":"100% Virgin Human Hair","subtitle":"Soft, Full & Natural"},
+        {"title":"HD Lace","subtitle":"Invisible Melt Finish"},
+        {"title":"180% Density","subtitle":"Full Volume Look"},
+        {"title":"Pre-Plucked Hairline","subtitle":"Ready to Wear"}
+      ])],
+      ['product_included_items', JSON.stringify([
+        "Luxury magnetic box (burgundy with gold foil logo)",
+        "Champagne satin interior lining",
+        "Care guide card",
+        "Thank-you / confidence card",
+        "Protective satin storage bag"
+      ])],
+      ['care_guide_sections', JSON.stringify([
+        {"title":"Washing","intro":"Wash your wig every 7–10 wears, or when product build-up becomes noticeable.","steps":["Gently detangle with a wide-tooth comb before wetting. Start from the ends and work up.","Rinse with lukewarm water — never hot. Hot water damages the cuticle and loosens knots.","Apply a sulfate-free shampoo. Work it through gently — avoid rubbing or twisting the hair.","Rinse thoroughly, then apply a moisturizing conditioner from mid-length to ends.","Leave conditioner for 5–10 minutes, then rinse with cool water to seal the cuticle.","Pat dry with a microfiber towel. Never wring or twist.","Allow to air dry on a wig stand whenever possible."],"tip":"A leave-in conditioner or argan oil on the ends helps maintain softness and shine between washes."},
+        {"title":"Detangling","intro":"Gentle detangling prevents shedding and extends the life of your unit.","steps":["Always detangle before washing — wet tangling causes breakage.","Use a wide-tooth comb or detangling brush designed for wigs.","Start at the ends and work your way up to the roots. Never pull from the top down.","Apply a lightweight detangling spray for stubborn knots.","Finger-combing is the gentlest method — use it daily to maintain the body wave pattern."],"tip":"Finger-combing instead of brushing helps reduce shedding and preserves the natural wave pattern."},
+        {"title":"Heat Styling","intro":"Our units are heat-safe up to 200°C (392°F), but we recommend using heat sparingly.","steps":["Always apply a heat protectant spray before using any hot tools.","Keep flat iron or curling iron temperatures at or below 180°C (350°F) for regular use.","Avoid applying heat directly to the lace — this can warp or damage the base.","For heatless styles, try flexi rods, braids, or bantu knots overnight.","Limit heat styling to 2–3 times per week maximum."],"tip":"To restore the body wave pattern after straightening, wet the hair and braid it overnight."},
+        {"title":"Storage","intro":"Proper storage is essential to maintaining your wig's shape, softness, and longevity.","steps":["Store your wig on a mannequin head or wig stand to maintain its shape.","When traveling, use the satin storage bag included with your order.","Keep your unit away from direct sunlight to prevent color fading.","Wrap or braid loosely before storing to avoid tangling.","Store in a cool, dry place — avoid humid environments."],"tip":"A silk or satin pillowcase reduces friction while sleeping in your unit and helps maintain the style."},
+        {"title":"Lace Care","intro":"The lace is the most delicate part of your wig. Handle it with intention.","steps":["When cutting lace, use sharp scissors and follow your natural hairline.","If using adhesive, choose a gentle formula designed for HD lace.","Remove adhesive residue with a lace-safe solvent — never pull or peel aggressively.","Clean the lace area after each wear to keep it clear and re-applicable."],"tip":""}
+      ])],
       ['announcement_bar_active', 'true'],
       ['announcement_bar_text', 'FREE U.S. SHIPPING ON ALL ORDERS · LIMITED STOCK AVAILABLE'],
       ['hero_title', 'Where Luxury Meets Confidence'],
@@ -257,6 +308,36 @@ async function initDatabase() {
       );
     }
     console.log('[DB] Seeded site_settings table');
+  }
+
+  // ── Always ensure new keys exist (idempotent migration) ──
+  const newKeys = [
+    ['product_features', JSON.stringify([
+      {"title":"100% Virgin Human Hair","subtitle":"Soft, Full & Natural"},
+      {"title":"HD Lace","subtitle":"Invisible Melt Finish"},
+      {"title":"180% Density","subtitle":"Full Volume Look"},
+      {"title":"Pre-Plucked Hairline","subtitle":"Ready to Wear"}
+    ])],
+    ['product_included_items', JSON.stringify([
+      "Luxury magnetic box (burgundy with gold foil logo)",
+      "Champagne satin interior lining",
+      "Care guide card",
+      "Thank-you / confidence card",
+      "Protective satin storage bag"
+    ])],
+    ['care_guide_sections', JSON.stringify([
+      {"title":"Washing","intro":"Wash your wig every 7–10 wears, or when product build-up becomes noticeable.","steps":["Gently detangle with a wide-tooth comb before wetting. Start from the ends and work up.","Rinse with lukewarm water — never hot. Hot water damages the cuticle and loosens knots.","Apply a sulfate-free shampoo. Work it through gently — avoid rubbing or twisting the hair.","Rinse thoroughly, then apply a moisturizing conditioner from mid-length to ends.","Leave conditioner for 5–10 minutes, then rinse with cool water to seal the cuticle.","Pat dry with a microfiber towel. Never wring or twist.","Allow to air dry on a wig stand whenever possible."],"tip":"A leave-in conditioner or argan oil on the ends helps maintain softness and shine between washes."},
+      {"title":"Detangling","intro":"Gentle detangling prevents shedding and extends the life of your unit.","steps":["Always detangle before washing — wet tangling causes breakage.","Use a wide-tooth comb or detangling brush designed for wigs.","Start at the ends and work your way up to the roots. Never pull from the top down.","Apply a lightweight detangling spray for stubborn knots.","Finger-combing is the gentlest method — use it daily to maintain the body wave pattern."],"tip":"Finger-combing instead of brushing helps reduce shedding and preserves the natural wave pattern."},
+      {"title":"Heat Styling","intro":"Our units are heat-safe up to 200°C (392°F), but we recommend using heat sparingly.","steps":["Always apply a heat protectant spray before using any hot tools.","Keep flat iron or curling iron temperatures at or below 180°C (350°F) for regular use.","Avoid applying heat directly to the lace — this can warp or damage the base.","For heatless styles, try flexi rods, braids, or bantu knots overnight.","Limit heat styling to 2–3 times per week maximum."],"tip":"To restore the body wave pattern after straightening, wet the hair and braid it overnight."},
+      {"title":"Storage","intro":"Proper storage is essential to maintaining your wig's shape, softness, and longevity.","steps":["Store your wig on a mannequin head or wig stand to maintain its shape.","When traveling, use the satin storage bag included with your order.","Keep your unit away from direct sunlight to prevent color fading.","Wrap or braid loosely before storing to avoid tangling.","Store in a cool, dry place — avoid humid environments."],"tip":"A silk or satin pillowcase reduces friction while sleeping in your unit and helps maintain the style."},
+      {"title":"Lace Care","intro":"The lace is the most delicate part of your wig. Handle it with intention.","steps":["When cutting lace, use sharp scissors and follow your natural hairline.","If using adhesive, choose a gentle formula designed for HD lace.","Remove adhesive residue with a lace-safe solvent — never pull or peel aggressively.","Clean the lace area after each wear to keep it clear and re-applicable."],"tip":""}
+    ])]
+  ];
+  for (const [key, value] of newKeys) {
+    await pool.query(
+      'INSERT INTO site_settings (key, value) VALUES ($1,$2) ON CONFLICT (key) DO NOTHING',
+      [key, value]
+    );
   }
 
   // ── Seed inventory ──
@@ -800,6 +881,80 @@ app.delete('/api/admin/reviews/:id', requireAdmin, async (req, res) => {
     res.json({ success: true });
   } catch (err) {
     res.status(500).json({ success: false, error: 'Failed to delete review' });
+  }
+});
+
+// ─── PRODUCT IMAGES API ──────────────────────────────────────────────────────
+
+app.get('/api/product-images/:slug', async (req, res) => {
+  try {
+    const { rows } = await pool.query(
+      'SELECT id, url, alt, sort_order FROM product_images WHERE slug = $1 ORDER BY sort_order ASC, id ASC',
+      [req.params.slug]
+    );
+    res.json({ success: true, images: rows });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Failed to load images' });
+  }
+});
+
+app.post('/api/admin/product-images/:slug', requireAdmin, uploadProductImg.single('image'), async (req, res) => {
+  try {
+    if (!req.file) return res.status(400).json({ success: false, error: 'No image uploaded' });
+    const url = `/uploads/products/${req.file.filename}`;
+    const alt = req.body.alt || '';
+    const { rows: countRows } = await pool.query(
+      'SELECT COALESCE(MAX(sort_order),0)+1 AS next FROM product_images WHERE slug = $1',
+      [req.params.slug]
+    );
+    const sort_order = countRows[0].next;
+    const { rows } = await pool.query(
+      'INSERT INTO product_images (slug, url, alt, sort_order) VALUES ($1,$2,$3,$4) RETURNING *',
+      [req.params.slug, url, alt, sort_order]
+    );
+    res.json({ success: true, image: rows[0] });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Failed to upload image' });
+  }
+});
+
+app.put('/api/admin/product-images/:id', requireAdmin, async (req, res) => {
+  try {
+    const { alt } = req.body;
+    const { rows } = await pool.query(
+      'UPDATE product_images SET alt = $1 WHERE id = $2 RETURNING *',
+      [alt || '', req.params.id]
+    );
+    if (!rows.length) return res.status(404).json({ success: false, error: 'Not found' });
+    res.json({ success: true, image: rows[0] });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Failed to update image' });
+  }
+});
+
+app.put('/api/admin/product-images-reorder', requireAdmin, async (req, res) => {
+  try {
+    const { order } = req.body;
+    if (!Array.isArray(order)) return res.status(400).json({ success: false, error: 'order must be array' });
+    for (const { id, sort_order } of order) {
+      await pool.query('UPDATE product_images SET sort_order = $1 WHERE id = $2', [sort_order, id]);
+    }
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Failed to reorder images' });
+  }
+});
+
+app.delete('/api/admin/product-images/:id', requireAdmin, async (req, res) => {
+  try {
+    const { rows } = await pool.query('DELETE FROM product_images WHERE id = $1 RETURNING url', [req.params.id]);
+    if (rows.length > 0) {
+      const filepath = path.join(__dirname, 'uploads', 'products', path.basename(rows[0].url));
+      if (fs.existsSync(filepath)) fs.unlinkSync(filepath);
+    }
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Failed to delete image' });
   }
 });
 
