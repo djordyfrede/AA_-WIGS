@@ -232,7 +232,7 @@
         container.innerHTML = sections.map(function(sec) {
           var stepsHtml = (sec.steps || []).map(function(s) { return '<li>' + escHtml(s) + '</li>'; }).join('');
           var tipHtml = sec.tip ? '<div class="care-tip"><p><strong>Pro tip:</strong> ' + escHtml(sec.tip) + '</p></div>' : '';
-          return '<div class="care-block fade-in">' +
+          return '<div class="care-block fade-in visible">' +
             '<h2>' + escHtml(sec.title) + '</h2>' +
             (sec.intro ? '<p>' + escHtml(sec.intro) + '</p>' : '') +
             (stepsHtml ? '<ol>' + stepsHtml + '</ol>' : '') +
