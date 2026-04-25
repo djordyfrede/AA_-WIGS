@@ -1,0 +1,70 @@
+I need a complete approved-reviews system for AA WIGS that updates the website and Google structured data correctly.
+
+Build it this way:
+
+1. Reviews can be added from:
+- Customer review form
+- Admin dashboard
+
+2. Every new review must start as:
+- Pending
+
+3. Reviews must only appear publicly after admin approval.
+
+4. Only approved reviews should count toward:
+- Product page visible star rating
+- Review count
+- Average rating
+- Aggregate rating
+- Google Product schema
+
+5. If a product has 0 approved reviews:
+- Do NOT output AggregateRating schema
+- Do NOT output Review schema
+- Only keep Product + Offer schema active
+
+6. If a product has 1 or more approved reviews:
+- Output AggregateRating inside the Product JSON-LD schema
+- ratingValue = real average rating from approved reviews
+- reviewCount = approved review count
+- ratingCount = approved review count
+- bestRating = 5
+- worstRating = 1
+
+7. Add individual Review schema for approved reviews only, including:
+- Author name
+- Rating
+- Review text/body
+- Date published
+- Product reviewed
+
+8. Prevent duplicate schema:
+- Only one Product schema per product page
+- Only one AggregateRating inside that Product schema
+- Approved reviews must be nested or connected correctly
+- No duplicate JSON-LD blocks for the same product
+
+9. Admin dashboard review controls:
+- Approve review
+- Reject review
+- Hide review
+- Edit review text
+- Upload review photo
+- Mark as Verified Purchase
+- Assign review to product
+- Assign review to homepage featured section
+- Toggle whether review appears in Google schema
+
+10. After approval, the review must update live on:
+- Product page
+- Homepage if marked as featured
+- Visible star rating
+- Review count
+- Average rating
+- Google structured data JSON-LD
+
+Important:
+Do not use fake review values. Do not output ratingValue: 0, reviewCount: 0, or ratingCount: 0. If there are no approved reviews, remove AggregateRating and Review schema completely.
+
+Goal:
+Every approved review should appear on the website and produce valid Google rich results without schema errors in Google Search Console.

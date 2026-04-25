@@ -97,59 +97,7 @@
         "returnMethod": "https://schema.org/ReturnByMail",
         "returnFees": "https://schema.org/FreeReturn"
       }
-    },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "reviewCount": "3",
-      "ratingCount": "3",
-      "bestRating": "5",
-      "worstRating": "1"
-    },
-    "review": [
-      {
-        "@type": "Review",
-        "reviewRating": {
-          "@type": "Rating",
-          "ratingValue": "5",
-          "bestRating": "5"
-        },
-        "author": {
-          "@type": "Person",
-          "name": "Ashley R."
-        },
-        "datePublished": "2025-12-10",
-        "reviewBody": "The lace melts perfectly and the hair is incredibly soft. I've gotten so many compliments already."
-      },
-      {
-        "@type": "Review",
-        "reviewRating": {
-          "@type": "Rating",
-          "ratingValue": "5",
-          "bestRating": "5"
-        },
-        "author": {
-          "@type": "Person",
-          "name": "Tiffany J."
-        },
-        "datePublished": "2026-01-05",
-        "reviewBody": "The density is perfect and the color looks so natural. Best wig I've ever owned, hands down."
-      },
-      {
-        "@type": "Review",
-        "reviewRating": {
-          "@type": "Rating",
-          "ratingValue": "5",
-          "bestRating": "5"
-        },
-        "author": {
-          "@type": "Person",
-          "name": "Jasmine L."
-        },
-        "datePublished": "2026-02-14",
-        "reviewBody": "The packaging alone made me feel like I was unboxing something special. The quality is unmatched."
-      }
-    ]
+    }__REVIEWS_INJECT__
   }
   </script>
   <script type="application/ld+json">
@@ -1103,18 +1051,6 @@
         }
       }
 
-      var jsonLdEl = document.getElementById('productJsonLd');
-      if (jsonLdEl) {
-        try {
-          var schema = JSON.parse(jsonLdEl.textContent);
-          if (schema.aggregateRating) {
-            schema.aggregateRating.ratingValue = String(rounded);
-            schema.aggregateRating.reviewCount = String(count);
-            schema.aggregateRating.ratingCount = String(count);
-          }
-          jsonLdEl.textContent = JSON.stringify(schema);
-        } catch(e) {}
-      }
     }
 
     fetch('/api/reviews?page=product')

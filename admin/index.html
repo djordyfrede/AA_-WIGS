@@ -714,6 +714,12 @@
                 <input type="checkbox" id="reviewProduct" checked> Show on Product Page
               </label>
             </div>
+            <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px;background:rgba(197,163,85,0.08);border:1px solid rgba(197,163,85,0.25);border-radius:6px;padding:10px 14px">
+              <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:0.85rem">
+                <input type="checkbox" id="reviewSchema" checked>
+                <span>Include in Google structured data schema <span style="font-size:0.75rem;color:var(--text-muted)">(affects rich results in Search)</span></span>
+              </label>
+            </div>
 
             <div class="form-group">
               <label>Customer Photos</label>
@@ -1690,6 +1696,7 @@ function openReviewModal() {
   document.getElementById('reviewApproved').checked = true;
   document.getElementById('reviewHomepage').checked = false;
   document.getElementById('reviewProduct').checked = true;
+  document.getElementById('reviewSchema').checked = true;
   document.getElementById('reviewPhotos').value = '';
   document.getElementById('reviewExistingPhotos').innerHTML = '';
   openModal('reviewModal');
@@ -1710,6 +1717,7 @@ function editReview(id) {
   document.getElementById('reviewApproved').checked = !!r.approved;
   document.getElementById('reviewHomepage').checked = !!r.show_on_homepage;
   document.getElementById('reviewProduct').checked = r.show_on_product !== false;
+  document.getElementById('reviewSchema').checked = r.include_in_schema !== false;
   document.getElementById('reviewPhotos').value = '';
   var photosEl = document.getElementById('reviewExistingPhotos');
   photosEl.innerHTML = (r.photo_urls || []).map(function(u) {
@@ -1751,6 +1759,7 @@ async function saveReview() {
   fd.append('approved', document.getElementById('reviewApproved').checked);
   fd.append('show_on_homepage', document.getElementById('reviewHomepage').checked);
   fd.append('show_on_product', document.getElementById('reviewProduct').checked);
+  fd.append('include_in_schema', document.getElementById('reviewSchema').checked);
   var files = document.getElementById('reviewPhotos').files;
   for (var i = 0; i < files.length; i++) fd.append('photos', files[i]);
 
@@ -1770,7 +1779,8 @@ async function saveReview() {
         featured: document.getElementById('reviewFeatured').checked,
         approved: document.getElementById('reviewApproved').checked,
         show_on_homepage: document.getElementById('reviewHomepage').checked,
-        show_on_product: document.getElementById('reviewProduct').checked
+        show_on_product: document.getElementById('reviewProduct').checked,
+        include_in_schema: document.getElementById('reviewSchema').checked
       })
     });
     var d = await res.json();

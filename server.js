@@ -235,6 +235,8 @@ async function initDatabase() {
     )
   `);
 
+  await pool.query(`ALTER TABLE reviews ADD COLUMN IF NOT EXISTS include_in_schema BOOLEAN DEFAULT TRUE`);
+
   await pool.query(`
     CREATE TABLE IF NOT EXISTS product_images (
       id SERIAL PRIMARY KEY,
@@ -381,40 +383,83 @@ async function initDatabase() {
 
 app.get(['/products/22-swiss-hd-body-wave', '/products/22-swiss-hd-body-wave/'], async (req, res) => {
   try {
-    const result = await pool.query(
-      `SELECT AVG(rating)::numeric(3,1) AS avg_rating, COUNT(*) AS review_count
-       FROM reviews
-       WHERE approved = TRUE AND show_on_product = TRUE`
-    );
-    const row = result.rows[0];
-    const avg = parseFloat(row.avg_rating) || 0;
-    const count = parseInt(row.review_count) || 0;
-    const ratingStr = avg > 0 ? avg.toFixed(1) : null;
-
     const htmlPath = path.join(__dirname, 'products', '22-swiss-hd-body-wave', 'index.html');
     let html = fs.readFileSync(htmlPath, 'utf8');
 
-    if (ratingStr && count > 0) {
-      const reviewWord = count === 1 ? 'review' : 'reviews';
-      html = html.replace(
-        /(<meta name="description" content=")([^"]*?)(")/,
-        `$1Rated ${ratingStr}/5 by ${count} ${reviewWord}. $2$3`
+    // ── Aggregate rating from ALL approved product reviews ──────────
+    const aggResult = await pool.query(
+      `SELECT AVG(rating)::numeric(3,1) AS avg_rating, COUNT(*) AS review_count
+       FROM reviews WHERE approved = TRUE AND show_on_product = TRUE`
+    );
+    const aggRow = aggResult.rows[0];
+    const avg   = parseFloat(aggRow.avg_rating) || 0;
+    const count = parseInt(aggRow.review_count)  || 0;
+
+    // ── Individual reviews for Google schema (include_in_schema = TRUE) ──
+    let schemaReviews = [];
+    if (count > 0) {
+      const revResult = await pool.query(
+        `SELECT customer_name, rating, review_text, created_at
+         FROM reviews
+         WHERE approved = TRUE AND show_on_product = TRUE AND include_in_schema = TRUE
+         ORDER BY created_at DESC LIMIT 20`
       );
-      html = html.replace(
-        /(<meta property="og:description" content=")([^"]*?)(")/,
-        `$1Rated ${ratingStr}/5 stars by ${count} ${reviewWord}. $2$3`
-      );
-      html = html.replace(
-        /(<title>)([^<]*?)(<\/title>)/,
-        `$1$2 | Rated ${ratingStr}/5$3`
-      );
+      schemaReviews = revResult.rows;
     }
+
+    // ── 1. Inject meta tag ratings ───────────────────────────────────
+    if (avg > 0 && count > 0) {
+      const rStr      = avg.toFixed(1);
+      const rWord     = count === 1 ? 'review' : 'reviews';
+      html = html.replace(/(<meta name="description" content=")([^"]*?)(")/, `$1Rated ${rStr}/5 by ${count} ${rWord}. $2$3`);
+      html = html.replace(/(<meta property="og:description" content=")([^"]*?)(")/, `$1Rated ${rStr}/5 stars by ${count} ${rWord}. $2$3`);
+      html = html.replace(/(<title>)([^<]*?)(<\/title>)/, `$1$2 | Rated ${rStr}/5$3`);
+    }
+
+    // ── 2. Inject structured data into JSON-LD ───────────────────────
+    let schemaInject = '';
+    if (avg > 0 && count > 0) {
+      const rStr = avg.toFixed(1);
+      const aggSchema = {
+        '@type': 'AggregateRating',
+        ratingValue: rStr,
+        reviewCount: String(count),
+        ratingCount: String(count),
+        bestRating: '5',
+        worstRating: '1'
+      };
+      schemaInject = `,\n    "aggregateRating": ${JSON.stringify(aggSchema, null, 4).split('\n').map((l, i) => i === 0 ? l : '    ' + l).join('\n')}`;
+
+      if (schemaReviews.length > 0) {
+        const reviewObjs = schemaReviews.map(function(r) {
+          const date = new Date(r.created_at).toISOString().split('T')[0];
+          return {
+            '@type': 'Review',
+            reviewRating: { '@type': 'Rating', ratingValue: String(r.rating), bestRating: '5', worstRating: '1' },
+            author: { '@type': 'Person', name: r.customer_name },
+            datePublished: date,
+            reviewBody: r.review_text.slice(0, 500)
+          };
+        });
+        schemaInject += `,\n    "review": ${JSON.stringify(reviewObjs, null, 4).split('\n').map((l, i) => i === 0 ? l : '    ' + l).join('\n')}`;
+      }
+    }
+    html = html.replace('__REVIEWS_INJECT__', schemaInject);
 
     res.setHeader('Content-Type', 'text/html');
     res.send(html);
   } catch (err) {
-    console.error('[product-page] Failed to inject rating into meta tags:', err.message);
-    res.sendFile(path.join(__dirname, 'products', '22-swiss-hd-body-wave', 'index.html'));
+    console.error('[product-page] schema injection error:', err.message);
+    // Fallback: serve static file with placeholder removed
+    try {
+      const htmlPath = path.join(__dirname, 'products', '22-swiss-hd-body-wave', 'index.html');
+      let html = fs.readFileSync(htmlPath, 'utf8');
+      html = html.replace('__REVIEWS_INJECT__', '');
+      res.setHeader('Content-Type', 'text/html');
+      res.send(html);
+    } catch(e) {
+      res.sendFile(path.join(__dirname, 'products', '22-swiss-hd-body-wave', 'index.html'));
+    }
   }
 });
 
@@ -822,19 +867,22 @@ app.get('/api/admin/reviews', requireAdmin, async (req, res) => {
 app.post('/api/admin/reviews', requireAdmin, uploadReview.array('photos', 5), async (req, res) => {
   try {
     const { customer_name, rating, review_text, wig_length, wig_texture,
-            verified_purchase, featured, approved, show_on_homepage, show_on_product } = req.body;
+            verified_purchase, featured, approved, show_on_homepage, show_on_product,
+            include_in_schema } = req.body;
     if (!customer_name || !rating || !review_text) {
       return res.status(400).json({ success: false, error: 'Name, rating, and review are required' });
     }
     const photoUrls = (req.files || []).map(f => `/uploads/reviews/${f.filename}`);
     const result = await pool.query(
       `INSERT INTO reviews (customer_name, rating, review_text, wig_length, wig_texture,
-                            verified_purchase, featured, approved, show_on_homepage, show_on_product, photo_urls)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING *`,
+                            verified_purchase, featured, approved, show_on_homepage, show_on_product,
+                            include_in_schema, photo_urls)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNING *`,
       [customer_name.trim(), parseInt(rating), review_text.trim(),
        wig_length || null, wig_texture || null,
        verified_purchase === 'true', featured === 'true',
        approved !== 'false', show_on_homepage === 'true', show_on_product !== 'false',
+       include_in_schema !== 'false',
        JSON.stringify(photoUrls)]
     );
     res.json({ success: true, review: result.rows[0] });
@@ -847,7 +895,9 @@ app.post('/api/admin/reviews', requireAdmin, uploadReview.array('photos', 5), as
 app.put('/api/admin/reviews/:id', requireAdmin, async (req, res) => {
   try {
     const { customer_name, rating, review_text, wig_length, wig_texture,
-            verified_purchase, featured, approved, show_on_homepage, show_on_product } = req.body;
+            verified_purchase, featured, approved, show_on_homepage, show_on_product,
+            include_in_schema } = req.body;
+    const toBool = (v) => v != null ? (v === true || v === 'true') : null;
     const result = await pool.query(
       `UPDATE reviews SET
         customer_name = COALESCE($1, customer_name),
@@ -859,15 +909,13 @@ app.put('/api/admin/reviews/:id', requireAdmin, async (req, res) => {
         featured = COALESCE($7, featured),
         approved = COALESCE($8, approved),
         show_on_homepage = COALESCE($9, show_on_homepage),
-        show_on_product = COALESCE($10, show_on_product)
-       WHERE id = $11 RETURNING *`,
+        show_on_product = COALESCE($10, show_on_product),
+        include_in_schema = COALESCE($11, include_in_schema)
+       WHERE id = $12 RETURNING *`,
       [customer_name || null, rating ? parseInt(rating) : null, review_text || null,
        wig_length || null, wig_texture || null,
-       verified_purchase != null ? (verified_purchase === true || verified_purchase === 'true') : null,
-       featured != null ? (featured === true || featured === 'true') : null,
-       approved != null ? (approved === true || approved === 'true') : null,
-       show_on_homepage != null ? (show_on_homepage === true || show_on_homepage === 'true') : null,
-       show_on_product != null ? (show_on_product === true || show_on_product === 'true') : null,
+       toBool(verified_purchase), toBool(featured), toBool(approved),
+       toBool(show_on_homepage), toBool(show_on_product), toBool(include_in_schema),
        req.params.id]
     );
     if (result.rows.length === 0) return res.status(404).json({ success: false, error: 'Review not found' });
