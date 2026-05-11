@@ -185,6 +185,11 @@ async function initDatabase() {
   `);
   await pool.query(`ALTER TABLE reservations ADD COLUMN IF NOT EXISTS confirmed BOOLEAN DEFAULT FALSE`);
 
+  // Idempotent: add checkout_enabled key to any existing DB (dev + production)
+  await pool.query(
+    "INSERT INTO site_settings (key, value) VALUES ('checkout_enabled', 'true') ON CONFLICT (key) DO NOTHING"
+  );
+
   await pool.query(`
     CREATE TABLE IF NOT EXISTS admin_sessions (
       id SERIAL PRIMARY KEY,
@@ -1187,6 +1192,22 @@ app.post('/api/checkout', async (req, res) => {
   const stripeKey = process.env.STRIPE_SECRET_KEY;
   if (!stripeKey) {
     return res.status(503).json({ success: false, error: 'Stripe not configured' });
+  }
+
+  // ── GLOBAL CHECKOUT GATE ──────────────────────────────────────────────────
+  try {
+    const gateRow = await pool.query(
+      "SELECT value FROM site_settings WHERE key = 'checkout_enabled' LIMIT 1"
+    );
+    const enabled = gateRow.rows.length === 0 || gateRow.rows[0].value !== 'false';
+    if (!enabled) {
+      return res.status(503).json({
+        success: false,
+        error: 'Checkout is temporarily paused. Please check back soon.'
+      });
+    }
+  } catch (gateErr) {
+    console.error('[CHECKOUT] Gate check error:', gateErr.message);
   }
 
   const { variantKey, colorName, length } = req.body;

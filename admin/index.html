@@ -787,6 +787,33 @@
 
       <!-- SETTINGS TAB -->
       <div class="tab-panel" id="tab-settings">
+
+        <div class="settings-section" style="border:2px solid #c00;border-radius:10px;padding:20px 24px;background:rgba(200,0,0,0.04)">
+          <h3 style="color:#c00;margin-bottom:6px">&#9888; Checkout Control</h3>
+          <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:16px">
+            This switch immediately blocks <strong>all purchases</strong> on the live site — no customer can check out until you turn it back on.
+            Use this to pause sales instantly without changing any stock numbers.
+            <br><strong style="color:#c00">This applies to the current environment (production or dev) where you are logged in.</strong>
+          </p>
+          <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+            <label style="display:flex;align-items:center;gap:10px;cursor:pointer;font-size:1rem;font-weight:600">
+              <input type="checkbox" id="checkoutEnabledToggle" checked style="width:18px;height:18px;cursor:pointer;accent-color:var(--burgundy)">
+              <span id="checkoutEnabledLabel">Checkout is OPEN — customers can purchase</span>
+            </label>
+            <button class="btn btn-primary btn-sm" onclick="saveCheckoutEnabled()" style="background:#c00;border-color:#c00">Save</button>
+          </div>
+          <div id="checkoutStatusBadge" style="margin-top:12px;display:none;padding:8px 14px;border-radius:6px;font-size:0.85rem;font-weight:600"></div>
+        </div>
+
+        <div class="settings-section" style="background:rgba(197,163,85,0.07);border:1px solid rgba(197,163,85,0.3);border-radius:10px;padding:18px 24px;margin-top:0">
+          <h3 style="color:var(--gold);margin-bottom:6px">&#9432; Dev vs. Production — Important</h3>
+          <p style="font-size:0.84rem;color:var(--text-muted);line-height:1.6;margin:0">
+            Your <strong>dev admin</strong> (this Replit workspace) and your <strong>live site admin</strong> (<a href="https://aawigs.com/admin/" target="_blank" style="color:var(--gold)">aawigs.com/admin/</a>) each have their own <strong>separate database</strong>.
+            Stock changes, pausing checkout, and all inventory edits you make here <strong>do not automatically apply to the live site</strong>.
+            To control what customers see on <strong>aawigs.com</strong>, log in to <a href="https://aawigs.com/admin/" target="_blank" style="color:var(--gold)">aawigs.com/admin/</a> and make your changes there.
+          </p>
+        </div>
+
         <div class="settings-section">
           <h3>Store Information</h3>
           <div class="info-grid">
@@ -1099,6 +1126,7 @@ function switchTab(name, el) {
   if (name === 'homepage') loadHomepageSettings();
   if (name === 'reviews') loadReviews();
   if (name === 'content') loadContent();
+  if (name === 'settings') loadCheckoutStatus();
 }
 
 // ── SIDEBAR (MOBILE) ──────────────────────────────────────────────
@@ -1541,6 +1569,54 @@ function saveHomepageSettings() {
 }
 
 // ── SETTINGS ─────────────────────────────────────────────────────
+function loadCheckoutStatus() {
+  api('GET', '/api/admin/settings').then(function(data) {
+    if (!data.success) return;
+    var enabled = data.settings.checkout_enabled !== 'false';
+    var toggle = document.getElementById('checkoutEnabledToggle');
+    var label  = document.getElementById('checkoutEnabledLabel');
+    var badge  = document.getElementById('checkoutStatusBadge');
+    if (!toggle) return;
+    toggle.checked = enabled;
+    if (enabled) {
+      label.textContent = 'Checkout is OPEN — customers can purchase';
+      badge.style.display = 'none';
+    } else {
+      label.textContent = 'Checkout is PAUSED — customers CANNOT purchase';
+      badge.style.display = 'block';
+      badge.style.background = '#c00';
+      badge.style.color = '#fff';
+      badge.textContent = '⛔ CHECKOUT IS CURRENTLY PAUSED — customers will see an error if they try to buy';
+    }
+    toggle.onchange = function() {
+      label.textContent = toggle.checked
+        ? 'Checkout is OPEN — customers can purchase'
+        : 'Checkout is PAUSED — customers CANNOT purchase';
+    };
+  });
+}
+
+function saveCheckoutEnabled() {
+  var enabled = document.getElementById('checkoutEnabledToggle').checked;
+  var badge = document.getElementById('checkoutStatusBadge');
+  api('PUT', '/api/admin/settings', { checkout_enabled: enabled ? 'true' : 'false' }).then(function(data) {
+    if (data.success) {
+      if (enabled) {
+        badge.style.display = 'none';
+        toast('Checkout is now OPEN. Customers can purchase.', 'success');
+      } else {
+        badge.style.display = 'block';
+        badge.style.background = '#c00';
+        badge.style.color = '#fff';
+        badge.textContent = '⛔ CHECKOUT IS CURRENTLY PAUSED — customers will see an error if they try to buy';
+        toast('Checkout PAUSED. No purchases can be made.', 'error');
+      }
+    } else {
+      toast(data.error || 'Save failed', 'error');
+    }
+  });
+}
+
 function changePassword() {
   var pw = document.getElementById('newPassword').value;
   if (pw.length < 6) return toast('Password must be at least 6 characters', 'error');
