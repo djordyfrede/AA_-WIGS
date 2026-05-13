@@ -1,0 +1,86 @@
+Please improve ONLY the About page packaging media section. Do not refactor the site, do not change routes, do not touch product pages, checkout, reviews, schema, cart, admin dashboard, or unrelated CSS/JS.
+
+Goal:
+Make the About page packaging section feel more luxury, cleaner, and more intentional on mobile and desktop.
+
+Current section:
+It already shows:
+- large packaging image
+- 3 small gallery images
+- text underneath saying: “BURGUNDY MAGNETIC BOX · GOLD FOIL LOGO · CHAMPAGNE SATIN INTERIOR”
+
+Please update it like this:
+
+1. Add the slow rotation packaging video ABOVE the main image
+- Video must be muted, autoplay, loop, playsinline.
+- Keep it responsive.
+- Use rounded corners.
+- Add subtle luxury shadow.
+- If video does not load, show the closed box image as fallback.
+- Do not make the video too tall on mobile.
+
+2. Keep the large closed box image under the video
+- Make it slightly taller and more premium-looking.
+- Use object-fit: cover.
+- Keep rounded corners.
+- Keep mobile spacing clean.
+
+3. Keep the 3-image gallery under the main image
+Use:
+- satin top-down image
+- open box satin image
+- angled closed box image
+Make the gallery clean, equal size, rounded corners, no overflow on mobile.
+
+4. Replace the current technical caption:
+“BURGUNDY MAGNETIC BOX · GOLD FOIL LOGO · CHAMPAGNE SATIN INTERIOR”
+
+With a cleaner luxury caption:
+“Luxury Packaging Experience”
+
+Then add a smaller subtext under it:
+“Burgundy presentation box. Champagne satin interior. Designed to make every reveal feel intentional.”
+
+5. Design style:
+- ivory background
+- burgundy text accents
+- gold detail accents
+- soft shadow
+- luxury spacing
+- minimal text
+- mobile-first
+- clean and premium
+
+6. Add a small section label above the media:
+“THE EXPERIENCE”
+
+7. Keep the About page copy unchanged:
+- The Vision
+- The Standard
+- The Quality Promise
+Do not delete or rewrite those sections.
+
+8. Performance:
+- Optimize video tag with preload="metadata"
+- Do not autoplay with sound
+- Do not add heavy libraries
+- Do not create layout shift
+- Keep images responsive
+
+9. Safety:
+Before editing, identify the exact file(s) controlling the About page and CSS.
+Make only the minimum necessary changes.
+Preserve existing class names when possible.
+Create new class names only for this packaging media block.
+
+10. After changes:
+- Test on mobile width
+- Test desktop width
+- Confirm no horizontal overflow
+- Confirm no console errors
+- Confirm the navigation still works
+- Confirm floating AA button still works
+- Confirm video and images load correctly
+
+Important:
+If the video file is not already uploaded in the project, create the video path placeholder and tell me exactly what file name and folder I should upload it to.
