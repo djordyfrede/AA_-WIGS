@@ -1998,6 +1998,84 @@ p {
   aspect-ratio: 16/9;
 }
 
+/* ── About page: real packaging media ─────────────────────────────── */
+.about-packaging-label {
+  font-family: var(--font-serif);
+  font-size: 0.78rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-align: center;
+  margin-bottom: 20px;
+  opacity: 0.85;
+}
+
+.pkg-video-wrap {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #1a0a10;
+  box-shadow: 0 8px 32px rgba(124,8,50,0.18);
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.pkg-video {
+  width: 100%;
+  display: block;
+  max-height: 520px;
+  object-fit: cover;
+}
+
+.pkg-video-fallback {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.pkg-photo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.pkg-photo-item {
+  border-radius: 8px;
+  overflow: hidden;
+  background: #1a0a10;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+  aspect-ratio: 3/4;
+}
+
+.pkg-photo-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.pkg-photo-item:hover img {
+  transform: scale(1.03);
+}
+
+.pkg-caption {
+  font-size: 0.72rem;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  text-align: center;
+  opacity: 0.6;
+  margin: 0;
+}
+
+@media (max-width: 480px) {
+  .pkg-video { max-height: 320px; }
+  .pkg-photo-grid { gap: 7px; }
+  .pkg-photo-item { border-radius: 6px; }
+}
+
 .about-values {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
