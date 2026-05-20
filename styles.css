@@ -85,9 +85,8 @@ body.curtain-active {
   font-weight: 700;
   letter-spacing: 6px;
   color: var(--gold-light);
-  opacity: 0;
   transform: translateY(10px) scale(0.95);
-  animation: curtainLogoIn 0.6s 0.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: curtainLogoIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   text-shadow: 0 0 40px rgba(197, 163, 85, 0.3);
 }
 
