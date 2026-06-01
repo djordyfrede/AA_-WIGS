@@ -1,0 +1,165 @@
+Upgrade AA WIGS into a fully SEO-optimized luxury educational hair brand without breaking any existing code, layout, checkout, Stripe integration, cart system, product pages, or mobile responsiveness.
+
+IMPORTANT RULES:
+
+- Preserve the entire current design system
+
+- Keep burgundy + champagne luxury aesthetic
+
+- Do NOT remove or rewrite current sections unless enhancing
+
+- Maintain full mobile-first responsiveness
+
+- Keep all current animations and navigation functionality
+
+- Do not break any JavaScript
+
+- Add only clean production-ready code
+
+- Improve Google indexing and organic search visibility
+
+MISSION:
+
+Turn AA WIGS into an educational luxury authority so Google can rank multiple pages and customers discover our expertise.
+
+ADD THESE NEW SEO EDUCATIONAL PAGES:
+
+1. /hd-lace-guide
+
+Title:
+
+What Is 13x6 HD Lace? | AA WIGS Luxury Guide
+
+Include:
+
+- What HD lace means
+
+- Why 13x6 is premium
+
+- Benefits of invisible melt
+
+- Why AA WIGS uses HD lace
+
+- FAQ section
+
+2. /body-wave-guide
+
+Title:
+
+Why Body Wave Wigs Are the Ultimate Luxury Choice
+
+Include:
+
+- Why body wave is timeless
+
+- Why AA WIGS sells body wave only
+
+- Styling versatility
+
+- Luxury movement explanation
+
+3. /wig-length-guide
+
+Title:
+
+Luxury Wig Length Guide | AA WIGS
+
+Include:
+
+18, 20, 22, 24, 26 inch comparison
+
+Luxury recommendations
+
+Who each length is best for
+
+4. /luxury-packaging
+
+Title:
+
+The AA WIGS Luxury Packaging Experience
+
+Include:
+
+- Large packaging hero section
+
+- Box photos
+
+- Rotation video embed
+
+- Burgundy magnetic box explanation
+
+- Champagne satin interior explanation
+
+- Authenticity presentation
+
+- Why packaging builds trust
+
+5. /wig-care
+
+Title:
+
+How To Maintain Your Luxury Body Wave Wig
+
+Include:
+
+care instructions
+
+washing guide
+
+storage
+
+longevity tips
+
+ADD SEO FEATURES TO ALL PAGES:
+
+- Proper H1 hierarchy
+
+- Meta titles
+
+- Meta descriptions
+
+- Open Graph tags
+
+- Canonical URLs
+
+- Internal linking
+
+- Structured FAQ sections
+
+- Alt text for all images
+
+- Lazy loading
+
+- Optimized image rendering
+
+ADD SCHEMA MARKUP:
+
+- Organization schema
+
+- Product schema
+
+- FAQ schema
+
+- Breadcrumb schema
+
+- VideoObject schema
+
+- ImageObject schema
+
+ADD GOOGLE INDEXING SUPPORT:
+
+Generate:
+
+- sitemap.xml
+
+- robots.txt
+
+- proper crawl structure
+
+LUXURY BOX SECTION IMPROVEMENT:
+
+Upgrade current about/luxury packaging section into a premium editorial experience:
+
+Top:
+
+Large cinematic rotating box vide

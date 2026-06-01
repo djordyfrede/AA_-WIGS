@@ -1,0 +1,167 @@
+- Styling versatility
+
+- Luxury movement explanation
+
+3. /wig-length-guide
+
+Title:
+
+Luxury Wig Length Guide | AA WIGS
+
+Include:
+
+18, 20, 22, 24, 26 inch comparison
+
+Luxury recommendations
+
+Who each length is best for
+
+4. /luxury-packaging
+
+Title:
+
+The AA WIGS Luxury Packaging Experience
+
+Include:
+
+- Large packaging hero section
+
+- Box photos
+
+- Rotation video embed
+
+- Burgundy magnetic box explanation
+
+- Champagne satin interior explanation
+
+- Authenticity presentation
+
+- Why packaging builds trust
+
+5. /wig-care
+
+Title:
+
+How To Maintain Your Luxury Body Wave Wig
+
+Include:
+
+care instructions
+
+washing guide
+
+storage
+
+longevity tips
+
+ADD SEO FEATURES TO ALL PAGES:
+
+- Proper H1 hierarchy
+
+- Meta titles
+
+- Meta descriptions
+
+- Open Graph tags
+
+- Canonical URLs
+
+- Internal linking
+
+- Structured FAQ sections
+
+- Alt text for all images
+
+- Lazy loading
+
+- Optimized image rendering
+
+ADD SCHEMA MARKUP:
+
+- Organization schema
+
+- Product schema
+
+- FAQ schema
+
+- Breadcrumb schema
+
+- VideoObject schema
+
+- ImageObject schema
+
+ADD GOOGLE INDEXING SUPPORT:
+
+Generate:
+
+- sitemap.xml
+
+- robots.txt
+
+- proper crawl structure
+
+LUXURY BOX SECTION IMPROVEMENT:
+
+Upgrade current about/luxury packaging section into a premium editorial experience:
+
+Top:
+
+Large cinematic rotating box video
+
+Below:
+
+Luxury image gallery
+
+Add elegant copy:
+
+"Luxury Packaging Experience"
+
+“Every AA WIGS unit arrives inside our signature deep burgundy magnetic presentation box, lined with champagne satin for a reveal designed to feel intentional.”
+
+Include hover zoom effects
+
+smooth transitions
+
+premium card shadows
+
+ADD EDUCATIONAL INTERNAL LINKS:
+
+Every product page should link to:
+
+- HD Lace Guide
+
+- Length Guide
+
+- Packaging Experience
+
+- Wig Care Guide
+
+GOOGLE DISCOVERY GOAL:
+
+Make AA WIGS discoverable for searches like:
+
+- 13x6 HD lace wigs
+
+- luxury body wave wigs
+
+- body wave wig guide
+
+- premium wig packaging
+
+- glueless body wave wigs
+
+FINAL STEP:
+
+Audit entire codebase after implementation.
+
+Fix any broken layout.
+
+Test all mobile pages.
+
+Ensure lighthouse SEO optimization.
+
+Ensure pages load fast.
+
+Do not redesign the brand.
+
+Elevate and optimize only.
