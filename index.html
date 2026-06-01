@@ -244,6 +244,153 @@
     </div>
   </section>
 
+  <div class="luxury-divider" aria-hidden="true"><span>✦</span></div>
+
+  <section class="section edu-series fade-in" id="education">
+    <style>
+      .edu-series { background: var(--cream); }
+      .edu-series .section-head h2 { color: var(--burgundy); }
+      .edu-series .section-head p { color: var(--gray-500); }
+      .edu-track {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 18px;
+        margin-top: 40px;
+      }
+      .edu-card {
+        display: flex;
+        flex-direction: column;
+        background: var(--champagne);
+        border: 1px solid rgba(197,163,85,0.20);
+        border-radius: 14px;
+        padding: 28px 22px 22px;
+        text-decoration: none;
+        color: inherit;
+        box-shadow: 0 2px 10px rgba(124,8,50,0.06);
+        transition: transform 0.32s ease, box-shadow 0.32s ease;
+        scroll-snap-align: start;
+        flex-shrink: 0;
+      }
+      .edu-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 14px 36px rgba(124,8,50,0.13);
+      }
+      .edu-card-eyebrow {
+        font-family: var(--font-sans);
+        font-size: 0.62rem;
+        letter-spacing: 2.8px;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 10px;
+        opacity: 0.9;
+      }
+      .edu-card-title {
+        font-family: var(--font-serif);
+        font-size: 1.05rem;
+        color: var(--burgundy);
+        margin-bottom: 10px;
+        line-height: 1.35;
+      }
+      .edu-card-desc {
+        font-size: 0.78rem;
+        color: var(--gray-500);
+        line-height: 1.6;
+        flex: 1;
+        margin-bottom: 18px;
+      }
+      .edu-card-cta {
+        font-family: var(--font-sans);
+        font-size: 0.72rem;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--burgundy);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 600;
+      }
+      .edu-card-cta::after {
+        content: '→';
+        transition: transform 0.2s ease;
+      }
+      .edu-card:hover .edu-card-cta::after { transform: translateX(4px); }
+
+      /* Mobile: horizontal swipe */
+      @media (max-width: 900px) {
+        .edu-track {
+          display: flex;
+          overflow-x: auto;
+          scroll-snap-type: x mandatory;
+          -webkit-overflow-scrolling: touch;
+          scrollbar-width: none;
+          gap: 14px;
+          padding-bottom: 12px;
+          margin-left: -4px;
+          margin-right: -4px;
+          padding-left: 4px;
+          padding-right: 4px;
+        }
+        .edu-track::-webkit-scrollbar { display: none; }
+        .edu-card {
+          min-width: 240px;
+          max-width: 260px;
+        }
+      }
+      @media (max-width: 600px) {
+        .edu-card { min-width: 210px; max-width: 230px; }
+        .edu-series .section-head h2 { font-size: 1.6rem; }
+      }
+    </style>
+    <div class="container">
+      <div class="section-head fade-in">
+        <p class="eyebrow" style="color: var(--gold);">Become an Expert</p>
+        <h2>The AA WIGS Education Series</h2>
+        <p>Everything you need to know — from lace technology to length selection to lifelong care.</p>
+      </div>
+
+      <div class="edu-track">
+
+        <a class="edu-card" href="/hd-lace-guide/">
+          <p class="edu-card-eyebrow">Lace Technology</p>
+          <p class="edu-card-title">What Is 13×6 HD Lace?</p>
+          <p class="edu-card-desc">Why Swiss HD lace creates a completely invisible hairline — and why we use it in every unit we make.</p>
+          <span class="edu-card-cta">Read the Guide</span>
+        </a>
+
+        <a class="edu-card" href="/body-wave-guide/">
+          <p class="edu-card-eyebrow">Signature Texture</p>
+          <p class="edu-card-title">Why Body Wave?</p>
+          <p class="edu-card-desc">Timeless movement, effortless versatility. The guide to the only texture AA WIGS offers — and why.</p>
+          <span class="edu-card-cta">Read the Guide</span>
+        </a>
+
+        <a class="edu-card" href="/wig-length-guide/">
+          <p class="edu-card-eyebrow">Find Your Fit</p>
+          <p class="edu-card-title">Luxury Length Guide</p>
+          <p class="edu-card-desc">Compare 18″ to 26″ — where each length falls, who it suits, and our recommendation for your style.</p>
+          <span class="edu-card-cta">Find Your Length</span>
+        </a>
+
+        <a class="edu-card" href="/luxury-packaging/">
+          <p class="edu-card-eyebrow">The Unboxing</p>
+          <p class="edu-card-title">Luxury Packaging Experience</p>
+          <p class="edu-card-desc">Burgundy magnetic box. Champagne satin interior. Every AA WIGS reveal is designed to feel intentional.</p>
+          <span class="edu-card-cta">See the Box</span>
+        </a>
+
+        <a class="edu-card" href="/wig-care/">
+          <p class="edu-card-eyebrow">Long-Term Care</p>
+          <p class="edu-card-title">How to Maintain Your Wig</p>
+          <p class="edu-card-desc">Washing, drying, storage, and daily habits that keep your body wave looking perfect for 1–2+ years.</p>
+          <span class="edu-card-cta">Read the Guide</span>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="luxury-divider" aria-hidden="true"><span>✦</span></div>
+
   <section class="waitlist-teaser fade-in" id="waitlist">
     <div class="container">
       <div class="section-head">
