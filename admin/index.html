@@ -1146,7 +1146,7 @@ function showApp() {
 }
 
 // ── TABS ──────────────────────────────────────────────────────────
-var tabNames = { overview:'Overview', products:'Products', inventory:'Inventory', orders:'Orders', settings:'Settings', homepage:'Homepage', messages:'Messages', reviews:'Reviews', content:'Page Content' };
+var tabNames = { overview:'Overview', products:'Products', inventory:'Inventory', orders:'Orders', settings:'Settings', homepage:'Homepage', messages:'Messages', reviews:'Reviews', content:'Page Content', vip:'VIP Leads' };
 function switchTab(name, el) {
   document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
   document.querySelectorAll('.sidebar-nav a').forEach(function(a) { a.classList.remove('active'); });
@@ -2160,7 +2160,7 @@ function esc(s) {
 var _vipAllLeads = [];
 
 function loadVipLeads() {
-  var token = sessionStorage.getItem('adminToken');
+  var token = localStorage.getItem('aa_admin_token');
   fetch('/api/admin/vip-leads', { headers: { 'x-admin-token': token } })
     .then(function(r) { return r.json(); })
     .then(function(data) {
@@ -2208,7 +2208,7 @@ function filterVipLeads() {
 
 function deleteVipLead(id) {
   if (!confirm('Remove this VIP lead? This cannot be undone.')) return;
-  var token = sessionStorage.getItem('adminToken');
+  var token = localStorage.getItem('aa_admin_token');
   fetch('/api/admin/vip-leads/' + id, { method: 'DELETE', headers: { 'x-admin-token': token } })
     .then(function(r) { return r.json(); })
     .then(function(d) {
@@ -2219,7 +2219,7 @@ function deleteVipLead(id) {
 }
 
 function exportVipCsv() {
-  var token = sessionStorage.getItem('adminToken');
+  var token = localStorage.getItem('aa_admin_token');
   fetch('/api/admin/vip-leads/export.csv', { headers: { 'x-admin-token': token } })
     .then(function(r) {
       if (!r.ok) throw new Error('Export failed');
