@@ -253,6 +253,18 @@ async function initDatabase() {
     )
   `);
 
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS vip_leads (
+      id SERIAL PRIMARY KEY,
+      first_name TEXT NOT NULL,
+      email TEXT NOT NULL UNIQUE,
+      phone TEXT DEFAULT '',
+      source TEXT DEFAULT 'homepage',
+      gdpr_consent BOOLEAN DEFAULT FALSE,
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `);
+
   // ── Seed products ──
   const productCount = await pool.query('SELECT COUNT(*) FROM products');
   if (parseInt(productCount.rows[0].count) === 0) {
@@ -1509,6 +1521,33 @@ setInterval(async () => {
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'admin', 'index.html')));
 app.get('/admin/', (req, res) => res.sendFile(path.join(__dirname, 'admin', 'index.html')));
 
+// ── VIP Leads (GET routes must be before the wildcard) ─────────────────────
+
+app.get('/api/admin/vip-leads', requireAdmin, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM vip_leads ORDER BY created_at DESC');
+    res.json({ success: true, leads: result.rows });
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Failed to load leads.' });
+  }
+});
+
+app.get('/api/admin/vip-leads/export.csv', requireAdmin, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT id, first_name, email, phone, source, gdpr_consent, created_at FROM vip_leads ORDER BY created_at DESC');
+    const esc = v => '"' + String(v||'').replace(/"/g, '""') + '"';
+    const header = 'ID,First Name,Email,Phone,Source,GDPR Consent,Date Joined\n';
+    const rows = result.rows.map(r =>
+      [r.id, esc(r.first_name), esc(r.email), esc(r.phone), esc(r.source), r.gdpr_consent, esc(new Date(r.created_at).toLocaleString())].join(',')
+    ).join('\n');
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    res.setHeader('Content-Disposition', 'attachment; filename="aa-wigs-vip-leads.csv"');
+    res.send(header + rows);
+  } catch (err) {
+    res.status(500).json({ success: false, error: 'Failed to export.' });
+  }
+});
+
 // ─── CATCH-ALL ────────────────────────────────────────────────────────────────
 
 app.get(/.*/, (req, res) => {
@@ -1524,6 +1563,26 @@ app.get(/.*/, (req, res) => {
     });
   } else {
     res.status(404).send('Not found');
+  }
+});
+
+// ── VIP Leads ──────────────────────────────────────────────────────────────
+
+app.post('/api/vip-signup', async (req, res) => {
+  const { firstName, email, phone, gdprConsent, source } = req.body;
+  if (!firstName || !email) return res.status(400).json({ success: false, error: 'Name and email are required.' });
+  if (!gdprConsent) return res.status(400).json({ success: false, error: 'Consent is required.' });
+  try {
+    const existing = await pool.query('SELECT id FROM vip_leads WHERE email = $1', [email.toLowerCase().trim()]);
+    if (existing.rows.length > 0) return res.json({ success: true, alreadyExists: true });
+    await pool.query(
+      'INSERT INTO vip_leads (first_name, email, phone, source, gdpr_consent) VALUES ($1,$2,$3,$4,$5)',
+      [firstName.trim(), email.toLowerCase().trim(), (phone||'').trim(), source||'homepage', true]
+    );
+    res.json({ success: true });
+  } catch (err) {
+    console.error('[VIP]', err.message);
+    res.status(500).json({ success: false, error: 'Failed to save. Please try again.' });
   }
 });
 

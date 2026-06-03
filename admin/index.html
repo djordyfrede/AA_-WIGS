@@ -414,6 +414,10 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
         Homepage
       </a>
+      <a data-tab="vip" onclick="switchTab('vip',this);loadVipLeads()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        VIP Leads
+      </a>
       <a data-tab="settings" onclick="switchTab('settings',this)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
         Settings
@@ -850,6 +854,38 @@
               <input type="number" id="restockQty" value="20" min="0" style="width:100px;margin-top:6px">
             </div>
             <button class="btn btn-primary btn-sm" onclick="restockAll()">Apply Restock</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIP LEADS TAB -->
+      <div class="tab-panel" id="tab-vip">
+        <div class="card" style="margin-bottom:20px">
+          <div class="card-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+            <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+              <span class="card-title">VIP Leads</span>
+              <span id="vipLeadCount" style="background:var(--burgundy);color:#fff;font-size:0.72rem;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:0.5px">0 leads</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+              <input class="search-input" type="text" placeholder="Search by name or email…" id="vipSearch" oninput="filterVipLeads()" style="width:220px">
+              <button class="btn btn-secondary btn-sm" onclick="loadVipLeads()">↻ Refresh</button>
+              <button class="btn btn-primary btn-sm" onclick="exportVipCsv()" style="background:var(--burgundy);border-color:var(--burgundy)">⬇ Export CSV</button>
+            </div>
+          </div>
+          <div style="overflow-x:auto">
+            <table id="vipLeadsTable">
+              <thead><tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Source</th>
+                <th>Date Joined</th>
+                <th>Action</th>
+              </tr></thead>
+              <tbody id="vipLeadsBody">
+                <tr><td colspan="6"><div class="empty-state"><div class="empty-state-icon">⭐</div><p>No VIP leads yet. Leads appear here after signup.</p></div></td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -2117,6 +2153,89 @@ function saveCareGuide() {
 
 function esc(s) {
   return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+<script>
+/* ── VIP Leads ───────────────────────────────────────────────── */
+var _vipAllLeads = [];
+
+function loadVipLeads() {
+  var token = sessionStorage.getItem('adminToken');
+  fetch('/api/admin/vip-leads', { headers: { 'x-admin-token': token } })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      _vipAllLeads = data.leads || [];
+      var count = _vipAllLeads.length;
+      var countEl = document.getElementById('vipLeadCount');
+      if (countEl) countEl.textContent = count + ' lead' + (count !== 1 ? 's' : '');
+      renderVipLeads(_vipAllLeads);
+    })
+    .catch(function() { showToast('Failed to load VIP leads', 'error'); });
+}
+
+function renderVipLeads(leads) {
+  var tbody = document.getElementById('vipLeadsBody');
+  if (!tbody) return;
+  if (!leads.length) {
+    tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><div class="empty-state-icon">⭐</div><p>No VIP leads yet.</p></div></td></tr>';
+    return;
+  }
+  tbody.innerHTML = leads.map(function(l) {
+    var date = new Date(l.created_at);
+    var dateStr = date.toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' });
+    var source = (l.source||'homepage').replace(/-/g,' ').replace(/\b\w/g, function(c){ return c.toUpperCase(); });
+    return '<tr>' +
+      '<td style="font-weight:500">' + esc(l.first_name) + '</td>' +
+      '<td>' + esc(l.email) + '</td>' +
+      '<td>' + (l.phone ? esc(l.phone) : '<span style="color:var(--text-muted);font-size:0.8rem">—</span>') + '</td>' +
+      '<td><span style="background:rgba(197,163,85,0.15);color:#8a6e2e;font-size:0.72rem;font-weight:600;padding:2px 8px;border-radius:4px;letter-spacing:0.5px">' + esc(source) + '</span></td>' +
+      '<td style="color:var(--text-muted);font-size:0.83rem">' + dateStr + '</td>' +
+      '<td><button class="btn btn-secondary btn-sm" style="color:#c00;border-color:#c00" onclick="deleteVipLead(' + l.id + ')">Delete</button></td>' +
+      '</tr>';
+  }).join('');
+}
+
+function filterVipLeads() {
+  var q = (document.getElementById('vipSearch').value || '').toLowerCase();
+  if (!q) { renderVipLeads(_vipAllLeads); return; }
+  var filtered = _vipAllLeads.filter(function(l) {
+    return (l.first_name||'').toLowerCase().includes(q) ||
+           (l.email||'').toLowerCase().includes(q) ||
+           (l.phone||'').toLowerCase().includes(q);
+  });
+  renderVipLeads(filtered);
+}
+
+function deleteVipLead(id) {
+  if (!confirm('Remove this VIP lead? This cannot be undone.')) return;
+  var token = sessionStorage.getItem('adminToken');
+  fetch('/api/admin/vip-leads/' + id, { method: 'DELETE', headers: { 'x-admin-token': token } })
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      if (d.success) { showToast('Lead removed'); loadVipLeads(); }
+      else showToast(d.error || 'Error', 'error');
+    })
+    .catch(function() { showToast('Error deleting lead', 'error'); });
+}
+
+function exportVipCsv() {
+  var token = sessionStorage.getItem('adminToken');
+  fetch('/api/admin/vip-leads/export.csv', { headers: { 'x-admin-token': token } })
+    .then(function(r) {
+      if (!r.ok) throw new Error('Export failed');
+      return r.blob();
+    })
+    .then(function(blob) {
+      var url = URL.createObjectURL(blob);
+      var link = document.createElement('a');
+      link.href = url;
+      link.download = 'aa-wigs-vip-leads.csv';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+    })
+    .catch(function() { showToast('Export failed', 'error'); });
 }
 </script>
 </body>

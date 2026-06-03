@@ -31,7 +31,7 @@ Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vani
 ## Database
 - **Engine**: PostgreSQL (via `DATABASE_URL` env var)
 - **ORM**: Raw `pg` Pool queries
-- **IMPORTANT**: Production deployment has its own separate PostgreSQL instance from development. The `initDatabase()` function at server startup handles CREATE TABLE IF NOT EXISTS for all 7 tables AND seeds them with default data if empty. This ensures production works on first deploy without manual setup.
+- **IMPORTANT**: Production deployment has its own separate PostgreSQL instance from development. The `initDatabase()` function at server startup handles CREATE TABLE IF NOT EXISTS for all tables AND seeds them with default data if empty. This ensures production works on first deploy without manual setup.
 - **Tables**:
   - `products` — catalog with visibility flags, badges, compare-at price, sort order
   - `inventory` — per-variant stock, price, compare-at price, sku, active (30 variants seeded: 6 colors × 5 lengths)
@@ -42,6 +42,7 @@ Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vani
   - `contact_messages` — contact form submissions and waitlist sign-ups (inbox)
   - `reviews` — customer reviews (customer_name, rating 1–5, review_text, wig_length, wig_texture, verified_purchase, featured, approved, show_on_homepage, show_on_product, photo_urls JSONB)
   - `product_images` — product gallery images (slug, url, alt, sort_order); uploaded files stored in `uploads/products/`
+  - `vip_leads` — VIP email list signups (first_name, email UNIQUE, phone, source, gdpr_consent, created_at)
 
 ## Admin Dashboard
 - **URL**: `/admin/`
@@ -56,6 +57,7 @@ Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vani
   - **Homepage** — announcement bar toggle + text, hero title/subtitle, store info, policies
   - **Reviews** — full review CRUD: approve/reject, toggle featured/homepage/product visibility, add photos, delete; filter by All/Pending/Approved/Homepage/Featured; inline quick-approve button
   - **Page Content** — dashboard-editable CMS for: product feature bullets (title+subtitle pairs), What's Included list, product gallery images (upload/reorder/delete), care guide sections (title/intro/steps/tip per section)
+  - **VIP Leads** — VIP email list: all signups, search by name/email, CSV export, delete; lead count badge
   - **Settings** — site info display
 
 ## API Endpoints
@@ -90,6 +92,10 @@ Mobile-first luxury eCommerce website for the AA WIGS wig brand. Built with vani
 - `PUT /api/admin/product-images/:id` — admin: update alt text for an image
 - `PUT /api/admin/product-images-reorder` — admin: reorder images (body: `{order:[{id,sort_order}]}`)
 - `DELETE /api/admin/product-images/:id` — admin: delete image + disk file
+- `POST /api/vip-signup` — public: submit VIP lead (firstName, email, phone, gdprConsent, source); deduplicates by email
+- `GET /api/admin/vip-leads` — admin: all VIP leads ordered by newest first
+- `DELETE /api/admin/vip-leads/:id` — admin: delete a VIP lead
+- `GET /api/admin/vip-leads/export.csv` — admin: download all leads as CSV (must fetch with x-admin-token header)
 
 ## Stripe Integration
 - **Mode**: LIVE
