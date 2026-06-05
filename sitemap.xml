@@ -76,6 +76,34 @@
     <changefreq>monthly</changefreq>
   </url>
 
+  <!-- Knowledge Center hub -->
+  <url>
+    <loc>https://aawigs.com/knowledge-center/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <lastmod>2026-06-05</lastmod>
+  </url>
+
+  <!-- Featured articles (placeholder destinations) -->
+  <url>
+    <loc>https://aawigs.com/why-women-choose-wigs/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.60</priority>
+    <lastmod>2026-06-05</lastmod>
+  </url>
+  <url>
+    <loc>https://aawigs.com/psychology-of-luxury-hair/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.60</priority>
+    <lastmod>2026-06-05</lastmod>
+  </url>
+  <url>
+    <loc>https://aawigs.com/22-vs-24-inch-guide/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.60</priority>
+    <lastmod>2026-06-05</lastmod>
+  </url>
+
   <!-- Brand & info pages -->
   <url>
     <loc>https://aawigs.com/about.html</loc>
