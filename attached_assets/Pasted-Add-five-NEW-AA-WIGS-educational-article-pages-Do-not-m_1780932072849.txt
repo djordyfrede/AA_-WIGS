@@ -1,0 +1,66 @@
+Add five NEW AA WIGS educational article pages. Do not modify or break any existing working pages, checkout, cart, dashboard, reviews, VIP leads, product pages, or current Knowledge Center layout.
+
+Use the existing AA WIGS luxury article template and design system.
+
+Create these new pages:
+
+1. /hd-lace-vs-transparent-lace/
+    Title: HD Lace vs Transparent Lace: Which Is Better For A Natural Wig Install?
+    Category: Lace Education
+    Focus keyword: HD lace vs transparent lace
+2. /how-long-does-a-body-wave-wig-last/
+    Title: How Long Does A Luxury Body Wave Wig Last?
+    Category: Wig Care
+    Focus keyword: how long does a body wave wig last
+3. /body-wave-vs-straight-wig/
+    Title: Body Wave vs Straight Wig: Which Luxury Style Should You Choose?
+    Category: Style Guide
+    Focus keyword: body wave vs straight wig
+4. /best-wig-length-for-beginners/
+    Title: Best Wig Length For Beginners: 18, 20, 22, 24, or 26 Inches?
+    Category: Length Guide
+    Focus keyword: best wig length for beginners
+5. /how-to-store-a-human-hair-wig/
+    Title: How To Store A Human Hair Wig To Keep It Looking Luxury
+    Category: Wig Care
+    Focus keyword: how to store a human hair wig
+
+Requirements for every article:
+
+* Use the same header and footer as the working AA WIGS article pages
+* Use root-relative paths: /styles.css, /app.js, /cart.js, /chat.js
+* Mobile-first responsive layout
+* Luxury AA WIGS styling: burgundy, champagne, ivory, gold
+* Proper H1, H2, H3 hierarchy
+* Meta title
+* Meta description
+* Canonical URL
+* Open Graph title and description
+* Article schema
+* FAQPage schema
+* BreadcrumbList schema
+* Related articles section
+* VIP email capture section
+* CTA linking to the AA Signature Body Wave product page
+* Internal links to:
+    /hd-lace-guide/
+    /body-wave-guide/
+    /wig-length-guide/
+    /wig-care/
+    /luxury-packaging/
+    /knowledge-center/
+
+Add these 5 new articles to:
+
+* Knowledge Center Featured Articles section
+* Continue Learning section where relevant
+* Sitemap.xml with correct URLs
+* Internal link grid
+
+Important:
+Do not remove existing articles.
+Do not overwrite existing guide pages.
+Do not change the Knowledge Center structure unless adding these new article cards.
+Do not change any working JavaScript functionality.
+
+After implementation, test all 5 new URLs and confirm they load with full AA WIGS styling.
