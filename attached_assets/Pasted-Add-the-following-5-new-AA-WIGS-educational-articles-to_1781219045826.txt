@@ -1,0 +1,80 @@
+Add the following 5 new AA WIGS educational articles to the Knowledge Center Featured Articles section and create full article pages using the existing AA WIGS luxury article template.
+
+Do not modify existing pages or break any functionality.
+
+Articles:
+
+1. How To Know If You're Buying A Quality Wig Or Wasting Your Money
+   URL:
+   /how-to-identify-a-quality-wig/
+
+Category:
+Buying Guide
+
+Purpose:
+Help shoppers identify premium wigs, understand lace quality, density, construction, longevity, and avoid low-quality purchases.
+
+---
+
+2. What To Look For When Buying A Wig Online So You're Never Disappointed
+   URL:
+   /buying-a-wig-online-guide/
+
+Category:
+Buying Guide
+
+Purpose:
+Help first-time buyers understand what to check before purchasing online including photos, lace type, density, reviews, return policies, and brand credibility.
+
+---
+
+3. How To Know If A Wig Will Look Natural On You Before You Buy
+   URL:
+   /how-to-choose-a-natural-looking-wig/
+
+Category:
+Beginner Guide
+
+Purpose:
+Teach customers how length, density, lace type, color, and installation affect realism.
+
+---
+
+4. Why Your Wig Never Looks The Way It Does On The Model
+   URL:
+   /why-your-wig-looks-different-than-the-model/
+
+Category:
+Education
+
+Purpose:
+Explain lighting, styling, density, installation, customization, and expectations while building trust through transparency.
+
+---
+
+5. The Hidden Cost Of Buying Cheap Wigs
+   URL:
+   /the-hidden-cost-of-cheap-wigs/
+
+Category:
+Luxury Education
+
+Purpose:
+Compare long-term value, longevity, appearance, maintenance, and overall ownership cost between premium and low-quality wigs.
+
+Requirements:
+
+• Use the existing AA WIGS article template
+• Include hero section
+• Include FAQ section
+• Include related articles
+• Include Knowledge Center links
+• Include VIP email signup section
+• Include "Shop The Signature Collection" CTA
+• Mobile optimized
+• Add to sitemap.xml
+• Add internal links throughout the Knowledge Center
+• Use proper SEO metadata and schema
+
+Do not redesign the Knowledge Center.
+Only add the new article cards and pages while preserving the current AA WIGS luxury design system.
