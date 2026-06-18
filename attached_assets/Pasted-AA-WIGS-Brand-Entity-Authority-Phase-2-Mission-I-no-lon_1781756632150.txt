@@ -1,0 +1,474 @@
+AA WIGS Brand Entity Authority – Phase 2
+
+Mission
+
+I no longer want to optimize only for SEO rankings.
+
+I want Google to understand AA WIGS as a real luxury brand entity.
+
+The objective is to build one of the strongest semantic brand entities in the luxury wig industry.
+
+Do not change the website design or functionality.
+
+Only improve SEO, structured data, internal linking, semantic architecture, and brand consistency.
+
+⸻
+
+1. Brand Consistency Audit
+
+Audit every file and ensure the brand name is written exactly as:
+
+AA WIGS
+
+Replace all variations:
+
+* AA Wigs
+* AA wigs
+* Aa Wigs
+* AAWigs
+
+Everywhere:
+
+* HTML
+* JSON-LD
+* Meta titles
+* Meta descriptions
+* Product schema
+* Website schema
+* Footer
+* Header
+* Alt attributes
+* Open Graph
+* Twitter Cards
+
+⸻
+
+2. Build Complete Organization Schema
+
+Expand Organization schema with:
+
+* name
+* legalName
+* alternateName
+* url
+* logo
+* image
+* slogan
+* description
+* email
+* telephone
+* address (if applicable)
+* foundingDate
+* founder
+* brand
+* knowsAbout
+* keywords
+* sameAs
+* hasOfferCatalog
+* subjectOf
+* mainEntityOfPage
+
+Brand description:
+
+AA WIGS is a luxury human hair wig brand specializing exclusively in premium Body Wave wigs featuring Swiss HD Lace, glueless comfort, premium packaging, and timeless elegance.
+
+⸻
+
+3. Create Brand Entity Graph
+
+Google should understand:
+
+AA WIGS
+
+↓
+
+Luxury Wig Brand
+
+↓
+
+Body Wave Specialist
+
+↓
+
+Swiss HD Lace
+
+↓
+
+Glueless Ready
+
+↓
+
+Premium Packaging
+
+↓
+
+Knowledge Center
+
+↓
+
+Luxury Wig Education
+
+↓
+
+Luxury Experience
+
+Every page should reinforce this graph.
+
+⸻
+
+4. About Page Schema
+
+Create dedicated AboutPage schema.
+
+Include:
+
+* Organization
+* Brand Story
+* Mission
+* Values
+* Luxury Positioning
+* Body Wave Specialization
+* Confidence
+* Elegance
+
+⸻
+
+5. Knowledge Center Authority
+
+Strengthen Knowledge Center.
+
+Connect:
+
+AA WIGS
+
+↓
+
+Knowledge Center
+
+↓
+
+Body Wave Education
+
+↓
+
+Length Guides
+
+↓
+
+Color Guides
+
+↓
+
+HD Lace Guides
+
+↓
+
+Care Guides
+
+↓
+
+Luxury Packaging
+
+↓
+
+Products
+
+Use CollectionPage, Article and Breadcrumb schema.
+
+⸻
+
+6. Product Entity Improvements
+
+Every product should include:
+
+Brand:
+
+AA WIGS
+
+Category:
+
+Luxury Body Wave Wig
+
+Description should naturally reinforce:
+
+Luxury Body Wave
+
+Swiss HD Lace
+
+Glueless Ready
+
+Premium Packaging
+
+Confidence
+
+Elegance
+
+Body Wave Specialist
+
+⸻
+
+7. Internal Semantic Linking
+
+Every article should link to:
+
+Homepage
+
+Knowledge Center
+
+Collection
+
+Related Guides
+
+Related Products
+
+Luxury Packaging
+
+About
+
+Care
+
+Color Guide
+
+Length Guide
+
+Create a complete semantic internal linking structure.
+
+⸻
+
+8. Add FAQ Schema
+
+Homepage
+
+Knowledge Center
+
+Every Guide
+
+Every Product
+
+Generate relevant FAQ schema.
+
+⸻
+
+9. Add Breadcrumb Schema
+
+Every page should include breadcrumb structured data.
+
+⸻
+
+10. Add Speakable Schema
+
+Homepage
+
+About
+
+Knowledge Center
+
+Brand Story
+
+⸻
+
+11. Add Image SEO
+
+Optimize every image with:
+
+* descriptive filenames
+* alt text
+* title
+* captions where appropriate
+
+Always reinforce:
+
+AA WIGS
+
+Luxury Body Wave Wig
+
+Swiss HD Lace
+
+⸻
+
+12. Add Video Schema
+
+Every embedded video should include VideoObject schema.
+
+⸻
+
+13. Add SearchAction Schema
+
+Enhance Website schema with SearchAction.
+
+⸻
+
+14. Improve Collection Pages
+
+Every collection should have:
+
+CollectionPage schema
+
+ItemList schema
+
+Product relationships
+
+Brand relationships
+
+⸻
+
+15. Strengthen AI Readability
+
+Rewrite homepage copy to be extremely clear for Google AI.
+
+Always reinforce:
+
+AA WIGS
+
+Luxury Wig Brand
+
+Body Wave Specialist
+
+Swiss HD Lace
+
+Glueless Ready
+
+Premium Packaging
+
+Knowledge Center
+
+Confidence
+
+Elegance
+
+⸻
+
+16. Expand knowsAbout
+
+Include topics such as:
+
+Luxury Human Hair Wigs
+
+Body Wave Wigs
+
+Swiss HD Lace
+
+Glueless Wigs
+
+HD Lace
+
+Wig Care
+
+Luxury Packaging
+
+Wig Length Guide
+
+Wig Color Guide
+
+Human Hair Care
+
+Luxury Hair Experience
+
+Women’s Hair Fashion
+
+Luxury Beauty
+
+⸻
+
+17. Build Entity Relationships
+
+Connect:
+
+Homepage
+
+↓
+
+About
+
+↓
+
+Knowledge Center
+
+↓
+
+Guides
+
+↓
+
+Journal
+
+↓
+
+Products
+
+↓
+
+Reviews
+
+↓
+
+Packaging
+
+↓
+
+Care
+
+↓
+
+Shipping
+
+↓
+
+Returns
+
+Google should understand one complete ecosystem.
+
+⸻
+
+18. Add More Brand Signals
+
+Reinforce everywhere:
+
+Luxury Wig Brand
+
+Body Wave Specialist
+
+Swiss HD Lace
+
+Glueless Ready
+
+Premium Packaging
+
+Confidence
+
+Elegance
+
+Luxury Experience
+
+Education
+
+Expertise
+
+⸻
+
+19. Entity Validation
+
+After implementation:
+
+Validate all JSON-LD.
+
+Validate Rich Results.
+
+Check schema relationships.
+
+Ensure there are no duplicate entities.
+
+⸻
+
+20. Final Report
+
+Provide:
+
+* Every file modified
+* Every schema added
+* Every schema improved
+* Internal linking improvements
+* Brand entity improvements
+* AI Overview improvements
+* Remaining opportunities
+* Recommendations for future Knowledge Panel eligibility
