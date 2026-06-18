@@ -1115,6 +1115,14 @@ p {
   font-size: 0.75rem;
   color: var(--gray-500);
 }
+.footer-brand-statement {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.35);
+  max-width: 640px;
+  margin: 0 auto 10px;
+  line-height: 1.6;
+  letter-spacing: 0.1px;
+}
 
 .mobile-shop-btn {
   display: none;

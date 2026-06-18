@@ -1,0 +1,80 @@
+Fix AA WIGS brand entity SEO across the entire website.
+
+Goal:
+Make Google understand one consistent brand identity:
+
+Brand name: AA WIGS
+Website: https://aawigs.com
+Brand position: Luxury human hair wig brand specializing exclusively in premium Body Wave wigs.
+Core signals: Luxury Wig Brand, Body Wave Specialist, Swiss HD Lace, Glueless Ready, Premium Packaging, Confidence & Elegance.
+
+Tasks:
+
+1. Replace every inconsistent brand name with exactly:
+    AA WIGS
+
+Do not use:
+AA Wigs
+AA wigs
+Aa Wigs
+AAWigs
+
+Use AA WIGS everywhere in:
+
+* Page titles
+* Meta descriptions
+* Footer
+* Header
+* Product schema
+* Website schema
+* Open Graph tags
+* Twitter tags
+* Alt text where appropriate
+* JSON-LD structured data
+
+2. Add a complete Organization JSON-LD schema on the homepage.
+
+Include:
+
+* @type: Organization
+* name: AA WIGS
+* url: https://aawigs.com
+* logo
+* description: AA WIGS is a luxury human hair wig brand specializing exclusively in premium Body Wave wigs with Swiss HD Lace, glueless comfort, premium packaging, and timeless elegance.
+* sameAs links for Instagram, YouTube, TikTok, Pinterest, and Facebook if available.
+* brand keywords: Luxury Wig Brand, Body Wave Specialist, Swiss HD Lace, Glueless Ready, Premium Packaging, Confidence & Elegance.
+
+3. Add a complete WebSite JSON-LD schema.
+
+Use:
+
+* name: AA WIGS
+* url: https://aawigs.com
+* description matching the brand identity.
+
+4. Strengthen product schema.
+
+Every product schema should include:
+
+* brand: AA WIGS
+* product category: Luxury Body Wave Wig
+* description mentioning Swiss HD Lace, glueless ready, premium body wave texture, and luxury packaging.
+
+5. Connect the Knowledge Center to the brand.
+
+Add schema or internal linking so Google understands:
+AA WIGS → Knowledge Center → Wig Education → Body Wave Wig Guides → Wig Care → Length Guide → Color Guide.
+
+6. Add this brand statement to the footer of every page:
+
+AA WIGS is a luxury human hair wig brand specializing exclusively in premium Body Wave wigs. Every collection is crafted with Swiss HD Lace, glueless comfort, premium packaging, and timeless elegance.
+
+7. Remove or reduce confusing wording that does not match the current brand position, especially if it overemphasizes “Brazilian virgin mink hair” instead of the main identity:
+    Luxury Body Wave Wigs, Swiss HD Lace, Glueless Ready, Premium Packaging.
+8. After changes, do not break existing design, layout, product pages, cart, or checkout.
+9. Give me a summary of:
+
+* Files changed
+* Schema added
+* Brand name inconsistencies fixed
+* Any remaining SEO issues found
