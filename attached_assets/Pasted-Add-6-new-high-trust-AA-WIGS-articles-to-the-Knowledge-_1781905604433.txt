@@ -1,0 +1,74 @@
+Add 6 new high-trust AA WIGS articles to the Knowledge Center.
+
+Goal:
+Create strong educational articles that position AA WIGS as a trusted luxury wig brand and help customers avoid scams, understand quality, and choose confidently.
+
+Important:
+Do not break existing code.
+Do not modify checkout, Stripe, cart, dashboard, chatbot, reviews, SOP Library, CEO Calendar, or existing public pages.
+Only add new article pages, update the Knowledge Center article section, add internal links, and update sitemap.xml.
+
+Create these 6 articles:
+
+1. How To Avoid Wig Scams: 12 Red Flags Every Buyer Should Know Before Ordering Online
+    URL: /how-to-avoid-wig-scams/
+    Category: Buyer Protection
+    Focus keyword: how to avoid wig scams
+2. The Truth About Human Hair Wigs: What Most Sellers Won’t Tell You
+    URL: /truth-about-human-hair-wigs/
+    Category: Wig Education
+    Focus keyword: truth about human hair wigs
+3. 10 Questions You Should Ask Before Buying Any Wig Online
+    URL: /questions-before-buying-a-wig-online/
+    Category: Buying Guide
+    Focus keyword: questions before buying a wig online
+4. Why Some Human Hair Wigs Last Years While Others Last Only Months
+    URL: /why-some-human-hair-wigs-last-years/
+    Category: Wig Quality
+    Focus keyword: how long do human hair wigs last
+5. The AA WIGS Luxury Buying Guide: Choosing The Perfect Length, Color & Lace For Your Lifestyle
+    URL: /aa-wigs-luxury-buying-guide/
+    Category: Luxury Buying Guide
+    Focus keyword: luxury wig buying guide
+6. What Makes A Wig Look Expensive? 10 Details Luxury Buyers Notice Immediately
+    URL: /what-makes-a-wig-look-expensive/
+    Category: Luxury Education
+    Focus keyword: what makes a wig look expensive
+
+Requirements for every article:
+
+* Use the existing AA WIGS luxury article template.
+* Use the same header, footer, typography, colors, spacing, and mobile layout as the current working Knowledge Center articles.
+* Add a hero section.
+* Add 5–7 strong educational sections.
+* Add FAQ section with 5 questions.
+* Add Article schema.
+* Add FAQPage schema.
+* Add BreadcrumbList schema.
+* Add unique meta title.
+* Add unique meta description.
+* Add canonical URL.
+* Add Open Graph title and description.
+* Add internal links to related AA WIGS articles.
+* Add “Continue Learning” section.
+* Add VIP email signup section.
+* Add CTA: “Shop The Signature Body Wave Collection.”
+* Add placeholder image support so professional photos can be added later.
+* Add image alt text related to the article topic.
+* Add these pages to sitemap.xml.
+* Add the 6 new cards to the Knowledge Center Featured Articles section.
+
+Important content direction:
+These articles should not sound generic.
+They should sound like AA WIGS: elegant, educational, protective, premium, honest, and confidence-focused.
+
+The goal is not to scare customers. The goal is to help women shop with confidence and understand what real quality looks like.
+
+After implementation:
+
+* Test all 6 URLs.
+* Confirm status 200.
+* Confirm full styling loads.
+* Confirm mobile layout works.
+* Confirm Knowledge Center links work.
+* Confirm sitemap.xml includes all 6 URLs.

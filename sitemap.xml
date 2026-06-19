@@ -203,4 +203,43 @@
     <changefreq>monthly</changefreq>
   </url>
 
+
+  <!-- New buyer education articles -->
+  <url>
+    <loc>https://aawigs.com/how-to-avoid-wig-scams/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+    <lastmod>2026-06-18</lastmod>
+  </url>
+  <url>
+    <loc>https://aawigs.com/truth-about-human-hair-wigs/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+    <lastmod>2026-06-18</lastmod>
+  </url>
+  <url>
+    <loc>https://aawigs.com/questions-before-buying-a-wig-online/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+    <lastmod>2026-06-18</lastmod>
+  </url>
+  <url>
+    <loc>https://aawigs.com/why-some-human-hair-wigs-last-years/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+    <lastmod>2026-06-18</lastmod>
+  </url>
+  <url>
+    <loc>https://aawigs.com/aa-wigs-luxury-buying-guide/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+    <lastmod>2026-06-18</lastmod>
+  </url>
+  <url>
+    <loc>https://aawigs.com/what-makes-a-wig-look-expensive/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+    <lastmod>2026-06-18</lastmod>
+  </url>
+
 </urlset>
