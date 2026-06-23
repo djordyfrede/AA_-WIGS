@@ -1,0 +1,108 @@
+Fix AA WIGS product trust inconsistencies.
+
+Do not redesign the website. Do not modify checkout, cart, Stripe, admin dashboard, chatbot, Knowledge Center.
+
+Only fix trust-related wording on the public product pages, homepage, and any repeated product specification sections.
+
+1. Lace Type Contradiction
+
+Current issue:
+The product specification says:
+“13×6 Swiss HD Lace (transparent)”
+
+This is incorrect because HD lace and transparent lace are not the same thing. AA WIGS does not sell transparent lace.
+
+Replace everywhere with:
+
+“13×6 Swiss HD Lace”
+
+Remove:
+“transparent”
+
+Also check all product pages, metadata, descriptions, FAQ, schema, and chatbot responses for any mention of “transparent lace” and replace with “Swiss HD lace” or “HD lace” where appropriate.
+
+2. Remove Fake Urgency / Fake Social Proof
+
+Remove any unverified urgency numbers such as:
+
+* “14 people viewing this wig”
+* “23 sold this week”
+* “X people viewing”
+* “X sold”
+* Any fake live visitor counter
+* Any fake sales counter
+
+AA WIGS is a luxury brand and should not use fake scarcity or fake urgency.
+
+Replace with elegant trust copy such as:
+
+“Limited release. Prepared with intention.”
+
+or
+
+“Each unit is selected, inspected, and presented with care.”
+
+or
+
+“Luxury body wave units are released in limited quantities to maintain quality.”
+
+Do not use fake numbers.
+
+3. Lifespan Consistency
+
+Current issue:
+Some pages say “1–2 years.”
+Some pages say “1–2 years or longer.”
+Supplier claim may say 3+ years.
+
+AA WIGS official position should be:
+
+“With proper care, AA WIGS units are designed to last 1–2+ years.”
+
+Use this exact phrase consistently across:
+
+* Homepage
+* Product page
+* FAQ
+* Care page
+* Knowledge Center related sections
+* Product schema
+* Chatbot answers
+
+Do not promise 3+ years unless verified through AA WIGS customer experience over time.
+
+4. Brand Tone Standard
+
+Use honest luxury language.
+
+Avoid:
+
+* Fake urgency
+* Fake scarcity
+* Fake social proof
+* Overpromising
+* Claims that cannot be verified
+
+Use:
+
+* Transparent education
+* Premium positioning
+* Quality inspection
+* Care guidance
+* Confidence-focused wording
+
+5. Testing
+
+After changes:
+
+* Check mobile product page.
+* Check desktop product page.
+* Check homepage sections.
+* Search the codebase for:
+    “transparent”
+    “sold this week”
+    “people viewing”
+    “3+ years”
+    “1-2 years or longer”
+
+Confirm all trust contradictions are removed.

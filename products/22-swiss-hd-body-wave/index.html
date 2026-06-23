@@ -151,7 +151,7 @@
         "name": "How long does the wig last?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "With proper care, this wig can last 1–2 years or longer."
+          "text": "With proper care, AA WIGS units are designed to last 1–2+ years."
         }
       }
     ]
@@ -265,11 +265,11 @@
           <div class="social-proof-live">
             <div class="proof-pill proof-viewing">
               <span class="proof-dot"></span>
-              <span class="proof-text" id="proofViewing">14 people viewing this wig</span>
+              <span class="proof-text">Limited release. Prepared with intention.</span>
             </div>
             <div class="proof-pill proof-sold">
               <span class="proof-check">&#10003;</span>
-              <span class="proof-text" id="proofSold">23 sold this week</span>
+              <span class="proof-text">Each unit is selected, inspected, and presented with care.</span>
             </div>
           </div>
 
@@ -407,7 +407,7 @@
             <h3>Full Specifications</h3>
             <table class="specs-table">
               <tr><td>Hair Type</td><td>100% Virgin Human Hair</td></tr>
-              <tr><td>Lace Type</td><td>13x6 Swiss HD Lace (transparent)</td></tr>
+              <tr><td>Lace Type</td><td>13×6 Swiss HD Lace</td></tr>
               <tr><td>Density</td><td>180%</td></tr>
               <tr><td>Length</td><td>22 inches</td></tr>
               <tr><td>Pattern</td><td>Body Wave</td></tr>
@@ -452,7 +452,7 @@
 
           <div class="durability-info-block fade-in">
             <div class="durability-info-label">✦ Designed to Last</div>
-            <p>Crafted with high-quality human hair designed to last 1–2 years with proper care. Can be styled, dyed, and maintained like natural hair — built for those who invest in lasting quality.</p>
+            <p>Crafted with 100% virgin human hair designed to last 1–2+ years with proper care. Can be styled, dyed, and maintained like natural hair — built for those who invest in lasting quality.</p>
           </div>
         </div>
       </div>
@@ -503,7 +503,7 @@
       </div>
       <div class="faq-item">
         <h3>How long does the wig last?</h3>
-        <p>With proper care, this wig can last 1–2 years or longer.</p>
+        <p>With proper care, AA WIGS units are designed to last 1–2+ years.</p>
       </div>
     </div>
   </section>
@@ -974,47 +974,6 @@
       // Clean URL without reloading
       window.history.replaceState({}, '', window.location.pathname);
     })();
-
-    var viewingEl = document.getElementById('proofViewing');
-    var soldEl = document.getElementById('proofSold');
-
-    function randRange(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
-    function drift(current, min, max, step) {
-      var delta = randRange(-step, step);
-      return Math.max(min, Math.min(max, current + delta));
-    }
-
-    var currentViewers = randRange(9, 22);
-    var currentSold = randRange(18, 34);
-
-    function updateViewing() {
-      if (!viewingEl) return;
-      currentViewers = drift(currentViewers, 6, 28, 3);
-      viewingEl.style.opacity = '0';
-      setTimeout(function() {
-        viewingEl.textContent = currentViewers + ' people viewing this wig';
-        viewingEl.style.opacity = '1';
-      }, 500);
-    }
-
-    function updateSold() {
-      if (!soldEl) return;
-      currentSold = drift(currentSold, 14, 42, 2);
-      soldEl.style.opacity = '0';
-      setTimeout(function() {
-        soldEl.textContent = currentSold + ' sold this week';
-        soldEl.style.opacity = '1';
-      }, 500);
-    }
-
-    if (viewingEl) {
-      viewingEl.textContent = currentViewers + ' people viewing this wig';
-      setInterval(updateViewing, 25000);
-    }
-    if (soldEl) {
-      soldEl.textContent = currentSold + ' sold this week';
-      setInterval(updateSold, 45000);
-    }
 
     updateUI();
   })();
