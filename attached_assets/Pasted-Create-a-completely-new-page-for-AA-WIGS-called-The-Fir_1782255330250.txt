@@ -1,0 +1,260 @@
+Create a completely new page for AA WIGS called The First Circle.
+
+Do not redesign the rest of the website.
+
+Do not modify checkout, products, cart, Stripe, CEO Dashboard, Knowledge Center, chatbot, or any existing functionality.
+
+This page replaces the temporary Reviews page until AA WIGS has genuine customer testimonials.
+
+Brand Objective
+
+The page should never feel empty.
+
+It should feel intentional.
+
+AA WIGS is not hiding the absence of reviews—we are building a luxury brand that only publishes authentic client experiences.
+
+The tone should feel similar to luxury fashion houses:
+
+* Elegant
+* Calm
+* Premium
+* Honest
+* Confident
+* Minimal
+
+No marketing hype.
+
+No fake urgency.
+
+No fake reviews.
+
+No fake star ratings.
+
+No countdown timers.
+
+No “No reviews yet.”
+
+No placeholders.
+
+Everything should feel curated.
+
+⸻
+
+Page Name
+
+The First Circle
+
+Navigation should display:
+
+The First Circle
+
+NOT
+
+Reviews
+
+⸻
+
+Hero Section
+
+Large elegant serif heading:
+
+The First Circle
+
+Subheading:
+
+Every luxury brand begins with a first chapter.
+
+The experiences featured here will come from real women wearing real AA WIGS units. Every story, photograph, and review will be shared honestly—never manufactured.
+
+This page will grow naturally as our community grows.
+
+⸻
+
+Invitation Section
+
+Heading:
+
+Become a Founding Member
+
+Body:
+
+AA WIGS is inviting a small number of women to become part of our founding community.
+
+Founding Members receive early access to future collections, exclusive invitations to AA WIGS experiences, and the opportunity to share authentic feedback that helps shape the future of the brand.
+
+Your experience may become part of the AA WIGS story.
+
+Button:
+
+Apply to Join The First Circle
+
+The button should link to a simple interest form or email capture.
+
+Collect:
+
+* Name
+* Email
+* Instagram Handle (optional)
+
+Do not ask unnecessary questions.
+
+⸻
+
+What You’ll Experience
+
+Display four elegant cards.
+
+Luxury Presentation
+
+Every order arrives in our signature luxury packaging, thoughtfully prepared from the moment it leaves our studio.
+
+Premium Body Wave
+
+AA WIGS specializes exclusively in luxury Body Wave HD Lace Front Wigs crafted from premium 100% Virgin Human Hair.
+
+Guided Care
+
+Each order includes our signature Care Guide and premium inserts to help preserve your investment.
+
+Personal Support
+
+Questions never disappear into a ticket system. Every client receives attentive support throughout her experience.
+
+⸻
+
+Future Experience Gallery
+
+Section title:
+
+Future Client Experiences
+
+Display three elegant placeholders.
+
+Each placeholder should simply say:
+
+Reserved for a future AA WIGS client story.
+
+Do NOT use fake photos.
+
+Do NOT generate fake reviews.
+
+Do NOT generate fake names.
+
+⸻
+
+Brand Philosophy
+
+Heading:
+
+Luxury Is Earned
+
+Body:
+
+Trust is not created through inflated numbers or manufactured testimonials.
+
+AA WIGS chooses a different path.
+
+Every review published here will belong to a real client.
+
+Every photograph will represent a real experience.
+
+Every recommendation will be earned through quality, craftsmanship, and consistency.
+
+⸻
+
+Bottom Call To Action
+
+Centered.
+
+Heading:
+
+Your Story Could Be Next.
+
+Body:
+
+Become one of the first women to experience AA WIGS and help write the first chapter of our community.
+
+Button:
+
+Become a Founding Member
+
+⸻
+
+Design Direction
+
+Background:
+Deep Burgundy (#4A0E1A approximately)
+
+Typography:
+
+Elegant serif headings
+
+Minimal luxury sans-serif body text
+
+Colors:
+
+Gold
+
+Cream
+
+Soft white
+
+Subtle gold divider lines
+
+Very generous spacing
+
+No animations that feel flashy.
+
+Slow fade-ins only.
+
+⸻
+
+Mobile Optimization
+
+The page must be beautiful on mobile first.
+
+Large typography.
+
+Comfortable spacing.
+
+Buttons easy to tap.
+
+No clutter.
+
+⸻
+
+SEO
+
+URL:
+
+/the-first-circle
+
+Meta Title:
+
+The First Circle | AA WIGS
+
+Meta Description:
+
+Discover The First Circle by AA WIGS—our founding community where authentic client experiences, luxury craftsmanship, and honest reviews come together.
+
+⸻
+
+Future Ready
+
+Build this page so it can easily evolve.
+
+Later we should be able to:
+
+* Add written reviews
+* Add customer photos
+* Add customer videos
+* Add Instagram posts
+* Add before-and-after galleries
+* Add verified purchaser badges
+
+without redesigning the page.
+
+The page should grow naturally over the next several years while maintaining the same luxury aesthetic.
+
+The goal is to make visitors feel they are witnessing the beginning of an intentional luxury brand—not an unfinished website.

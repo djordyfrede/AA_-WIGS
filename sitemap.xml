@@ -241,5 +241,11 @@
     <priority>0.70</priority>
     <lastmod>2026-06-18</lastmod>
   </url>
+  <url>
+    <loc>https://aawigs.com/the-first-circle/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <lastmod>2026-06-23</lastmod>
+  </url>
 
 </urlset>
