@@ -1,0 +1,669 @@
+AA WIGS Knowledge Center Expansion — Add 5 Premium Authority Articles
+
+═══════════════════════════════════════════
+OBJECTIVE
+═══════════════════════════════════════════
+
+Expand the AA WIGS Knowledge Center by adding five new luxury editorial 
+articles that strengthen SEO, remove buying objections, build topical 
+authority, and naturally guide readers toward the Signature Body Wave 
+Collection.
+
+These articles must match the exact design, layout, branding, typography, 
+spacing, animations, schema, navigation, and editorial style already used 
+throughout the AA WIGS Knowledge Center.
+
+═══════════════════════════════════════════
+IMPORTANT — DO NOT MODIFY
+═══════════════════════════════════════════
+
+Do NOT redesign the website.
+Do NOT modify:
+
+* Homepage
+* Navigation
+* Footer
+* Product pages
+* Checkout
+* Cart
+* Stripe
+* Dashboard
+* CEO Dashboard
+* Operations Manual
+* Calendar
+* Chatbot
+* Reviews system
+* First Circle
+* Existing Knowledge Center layout
+
+Only create five new articles and connect them into the existing 
+Knowledge Center ecosystem.
+
+═══════════════════════════════════════════
+TECH STACK
+═══════════════════════════════════════════
+
+* Frontend: HTML, CSS, JavaScript — match existing files exactly
+* Do NOT introduce new dependencies or frameworks unless already 
+  used in the project
+* Match existing file naming conventions
+* Place new article files in the same directory as existing 
+  Knowledge Center articles
+* Do NOT create new folder structures
+
+═══════════════════════════════════════════
+URL STRUCTURE
+═══════════════════════════════════════════
+
+Build all five articles using this exact URL pattern 
+(match existing Knowledge Center URLs):
+
+https://aawigs.com/knowledge-center/aa-wigs-quality-standard/
+https://aawigs.com/knowledge-center/anatomy-of-a-luxury-wig/
+https://aawigs.com/knowledge-center/first-luxury-wig-without-regret/
+https://aawigs.com/knowledge-center/what-happens-before-it-reaches-you/
+https://aawigs.com/knowledge-center/why-women-are-afraid-to-buy-wigs-online/
+
+═══════════════════════════════════════════
+IMAGE PLACEHOLDERS
+═══════════════════════════════════════════
+
+* Use soft ivory/champagne gradient rectangles
+* Hero image dimensions: 1200x600px
+* Inline image dimensions: 800x500px
+* Add subtle centered text on each placeholder: "Photography Coming Soon"
+* Do NOT use stock photos
+* Do NOT use AI-generated faces or people
+* Do NOT pull images from external URLs
+* Leave all placeholders ready for future professional photography
+
+═══════════════════════════════════════════
+FAQ INSTRUCTION
+═══════════════════════════════════════════
+
+Every article requires a minimum of 5 FAQs.
+Generate all FAQs strictly based on the article content provided below.
+Do NOT invent product details, pricing, shipping timelines, or any 
+information not explicitly stated in this prompt.
+All FAQs must include FAQ Schema markup.
+
+═══════════════════════════════════════════
+VIP EMAIL SIGNUP
+═══════════════════════════════════════════
+
+Use the same form component and submission handler already used in 
+existing Knowledge Center articles.
+Do NOT create a new form or new submission logic.
+Connect to the existing VIP email signup system only.
+
+═══════════════════════════════════════════
+ARTICLE STANDARDS — APPLY TO ALL 5 ARTICLES
+═══════════════════════════════════════════
+
+Every article must include:
+
+* Luxury hero section
+* Reading time
+* Updated date
+* AA WIGS Team author credit
+* Table of contents
+* Premium typography
+* Editorial spacing
+* Fully responsive layout
+* Comparison tables where appropriate
+* FAQ section (5 questions minimum)
+* Article Schema
+* FAQ Schema
+* Breadcrumb Schema
+* Open Graph metadata
+* Canonical URL
+* Internal links
+* VIP email signup (existing component)
+* Continue Learning section (3 related articles)
+
+Article length: 1,200 words minimum. 2,000 words maximum.
+Tone: Authoritative, warm, education-first. Never salesy.
+Voice: Speak directly to one woman. Use "you" throughout.
+
+NEVER USE:
+* "ladies" / "girls" / "queens"
+* Exclamation points
+* "In today's world" or "In this article we will"
+* "click here" or "buy now" as anchor text
+* "affordable" — AA WIGS is luxury, not value
+* Competitor brand names
+* Hard sales language of any kind
+
+═══════════════════════════════════════════
+PRODUCT LINK STRATEGY
+═══════════════════════════════════════════
+
+GOLDEN RULE: Educate first. Deliver value first.
+Never place a product link in the introduction or opening sections.
+Only introduce the product after the reader fully understands 
+why it matters.
+
+PRIMARY LINK FORMAT:
+Anchor text must be natural and contextual.
+Approved examples:
+→ "Explore the AA WIGS Signature Body Wave Collection"
+→ "See the 22" Natural Black Body Wave"
+→ "Start with the wig that started it all"
+
+CONTEXTUAL LINK FORMAT:
+Used to send readers deeper into the Knowledge Center only.
+Format: "Continue reading: [Article Title] →"
+
+Maximum 2 links per article. No exceptions.
+
+═══════════════════════════════════════════
+INTERNAL LINKING STRATEGY
+═══════════════════════════════════════════
+
+Every article must include a "Continue Learning" section with 
+3 related Knowledge Center articles.
+Use only relevant links.
+Do NOT repeat the same links across every article.
+Create natural topic clusters across the five articles.
+
+═══════════════════════════════════════════
+BRAND STANDARDS
+═══════════════════════════════════════════
+
+Colors:
+* Deep Burgundy (primary)
+* Champagne Gold (accent)
+* Ivory (background)
+* White space (generous)
+
+Typography:
+* Premium serif headings
+* Clean body text
+* Large editorial spacing
+
+Feel:
+* Calm luxury
+* Elegant animations
+* No clutter
+* No aggressive sales language
+* Every article should feel like it belongs to a luxury fashion 
+  house — not a traditional ecommerce blog
+
+═══════════════════════════════════════════
+ARTICLE 1 OF 5
+═══════════════════════════════════════════
+
+TITLE:
+The AA WIGS Quality Standard: What We Check Before Every Wig Reaches You
+
+URL:
+/knowledge-center/aa-wigs-quality-standard/
+
+PRIMARY ROADBLOCK REMOVED:
+"I don't know how to tell if a wig is actually worth the money."
+
+PURPOSE:
+Position AA WIGS as the standard — not a generic checklist readers 
+take to other brands. Every section proves AA WIGS meets its own criteria.
+
+SECTIONS:
+
+H2: The Problem With Wig Shopping Today
+Explain how confusing and unregulated the market is. Misleading claims, 
+stolen photos, vague descriptions. Set up why a clear standard matters.
+
+H2: Virgin Human Hair — The Foundation of Every AA WIGS Unit
+Virgin hair only. No synthetic blend. What virgin hair means, why 
+cuticle alignment matters, and how it affects longevity and movement.
+
+H2: Body Wave Consistency
+Every unit must maintain consistent wave pattern from root to tip. 
+Explain what inconsistent body wave looks like and why AA WIGS 
+inspects for uniformity before approval.
+
+H2: Swiss HD Lace Inspection
+0.03mm thickness. Undetectable hairline. What AA WIGS checks: 
+lace integrity, knot security, hairline density, and transparency 
+against multiple skin tones.
+
+H2: Density Inspection
+What density means. How AA WIGS verifies density is accurate 
+to specification. Why too heavy or too light both fail inspection.
+
+H2: Construction Quality
+Hand-tied knots. Cap construction. Weft security. The internal 
+details most brands never discuss.
+
+H2: Shedding and Tangling Inspection
+How AA WIGS tests for shedding and tangling before approval. 
+What the acceptable standard is and why this matters for 
+long-term wear.
+
+H2: Packaging Inspection
+Deep burgundy rigid box. Gold foil. Cream satin interior. 
+Three-card insert system. Every unit is inspected inside 
+its packaging before shipment.
+
+H2: Final Quality Approval
+No unit ships without passing every inspection point. 
+This section closes the standard with the AA WIGS commitment.
+
+H2: What Happens When a Unit Meets the Standard
+Transition naturally here. This is where the reader understands 
+that every AA WIGS unit passed every step above.
+
+PRIMARY CTA:
+Place immediately after the Swiss HD Lace Inspection section.
+Anchor text: "See how AA WIGS meets every quality standard →"
+Link: Signature Body Wave Collection page.
+
+CONTEXTUAL LINK:
+At the bottom of the article.
+"Continue reading: HD Lace Guide →"
+
+FAQ TOPICS (minimum 5):
+1. What is Swiss HD lace and why does AA WIGS use it?
+2. How is virgin hair different from regular human hair?
+3. What does AA WIGS inspect before a unit is approved?
+4. How does AA WIGS ensure consistent body wave pattern?
+5. What happens if a unit does not pass the quality inspection?
+
+═══════════════════════════════════════════
+ARTICLE 2 OF 5
+═══════════════════════════════════════════
+
+TITLE:
+What You're Actually Paying For: The Anatomy of a Luxury Wig
+
+URL:
+/knowledge-center/anatomy-of-a-luxury-wig/
+
+PRIMARY ROADBLOCK REMOVED:
+"Why is this wig more expensive than another one?"
+
+PURPOSE:
+Justify AA WIGS pricing without ever mentioning a price. Make the 
+reader understand that value is built into every layer of the 
+product and experience.
+
+SECTIONS:
+
+H2: Why Two Wigs Can Look the Same and Cost Completely Different
+Open with the paradox. Same photo, same wave, wildly different prices. 
+The difference lives in what a photo cannot show.
+
+H2: Hair Sourcing and Virgin Hair Quality
+Where the hair comes from. What virgin means. Cuticle alignment. 
+Why processed hair breaks down faster. The real cost of replacing 
+cheap hair vs investing in quality once.
+
+H2: Swiss HD Lace vs Standard Lace
+The thickness difference. The undetectable hairline. Why HD lace 
+costs more to source. Why it is non-negotiable for luxury finish.
+
+H2: Density and Construction
+What density means for appearance and comfort. How construction 
+quality determines how long the unit holds its shape and integrity.
+
+H2: Longevity — The Math That Makes Luxury Worth It
+A cheaper wig replaced frequently vs one quality investment. 
+Show the math without being preachy. Let the reader draw her 
+own conclusion.
+
+H2: Quality Inspection
+How AA WIGS inspects every unit before it ships. What a proper 
+quality inspection covers. Why skipping this step is how brands 
+lose customers permanently.
+
+H2: Luxury Presentation and Packaging
+Deep burgundy, gold foil, cream satin interior. What the unboxing 
+communicates about the product inside. Why mass brands use poly bags.
+
+H2: Customer Experience After the Sale
+Knowledge Center. Care guides. Concierge support. These are part 
+of what the customer pays for. The brand continues after the sale.
+
+H2: Craftsmanship Over Price Tags
+Luxury is not about charging more. It is about building something 
+that earns the price. AA WIGS philosophy closing section.
+
+PRIMARY CTA:
+After the Swiss HD Lace section.
+Anchor text: "This is exactly what AA WIGS uses — 
+Explore the Signature Collection →"
+Link: Signature Body Wave Collection page.
+
+CONTEXTUAL LINK:
+Bottom of article.
+"Continue reading: What Happens Before An AA WIGS Unit 
+Reaches You →"
+
+FAQ TOPICS (minimum 5):
+1. Why does a luxury wig cost more than a standard wig?
+2. What is the difference between virgin hair and processed hair?
+3. How does Swiss HD lace affect the price of a wig?
+4. How long does a luxury human hair wig last with proper care?
+5. What makes the AA WIGS unboxing experience different?
+
+═══════════════════════════════════════════
+ARTICLE 3 OF 5
+═══════════════════════════════════════════
+
+TITLE:
+How To Choose Your First Luxury Wig Without Regret
+
+URL:
+/knowledge-center/first-luxury-wig-without-regret/
+
+PRIMARY ROADBLOCK REMOVED:
+"I am afraid I will choose the wrong one."
+
+PURPOSE:
+Remove fear from the first purchase. Guide the reader to a confident 
+decision. End with a direct natural recommendation for the 
+22" Natural Black Body Wave.
+
+SECTIONS:
+
+H2: The Fear That Stops Most Women Before They Start
+Name the fear directly. Spending money on the wrong wig. Not knowing 
+enough. Validate it — then promise to solve it in this article.
+
+H2: Start With Your Face Shape
+Oval, round, heart, square, oblong. One paragraph per shape. 
+What works and what to avoid. Practical, not overwhelming.
+
+H2: Consider Your Lifestyle First
+Active lifestyle vs low-maintenance needs. Work environment. 
+How often she plans to wear it. Lifestyle should drive the 
+decision more than aesthetics alone.
+
+H2: Why Beginners Should Start With Body Wave
+Versatility. Forgiveness. Natural movement. Body wave is the most 
+beginner-friendly luxury texture because it looks intentional at 
+every stage — freshly styled or days later.
+
+H2: Length — How to Choose Without Overthinking It
+18"–22" is the ideal beginner range. Why longer is not always 
+better for first-time wearers. How to visualize length before buying.
+
+H2: Color — Keep It Simple the First Time
+Natural Black as the foundation. Why starting neutral gives maximum 
+versatility. Colored units are for after she understands her preferences.
+
+H2: Lace Selection for Beginners
+Why Swiss HD lace is the right choice for a first luxury wig. 
+What to avoid. Why undetectable lace removes one of the biggest 
+first-time anxieties.
+
+H2: Maintenance Level — Be Honest With Yourself
+What realistic maintenance looks like for a body wave unit. 
+How much time is required. What happens when the wig is properly 
+cared for vs neglected.
+
+H2: Installation Options for Beginners
+Glue-free methods. Adjustable straps. Working with a stylist 
+vs self-install. What to realistically expect the first time.
+
+H2: The Ideal First AA WIGS Experience
+Transition naturally. After everything covered in this article, 
+one unit consistently checks every box for first-time luxury buyers.
+
+PRIMARY CTA:
+Inside "The Ideal First AA WIGS Experience" section.
+Write naturally: "The [22" Natural Black Body Wave →] was designed 
+with exactly this buyer in mind."
+Make the product name the clickable link to the specific product page.
+
+CONTEXTUAL LINK:
+Bottom of article.
+"Continue reading: Luxury Wig Care Guide →"
+
+FAQ TOPICS (minimum 5):
+1. What is the best wig length for a first-time buyer?
+2. Does face shape really affect how a wig looks?
+3. Why is body wave recommended for beginners?
+4. Can I install a wig myself without professional help?
+5. How do I know which color is right for my skin tone?
+
+═══════════════════════════════════════════
+ARTICLE 4 OF 5
+═══════════════════════════════════════════
+
+TITLE:
+What Happens Before An AA WIGS Unit Reaches You
+
+URL:
+/knowledge-center/what-happens-before-it-reaches-you/
+
+PRIMARY ROADBLOCK REMOVED:
+"I don't know what I am actually paying for."
+
+PURPOSE:
+This is the flagship authority article. Make the invisible journey 
+visible. Every step builds perceived value and anticipation before 
+the reader ever sees a price.
+
+DESIGN NOTE:
+This article should receive premium treatment:
+* Timeline graphic showing the full journey
+* Editorial section breaks between each step
+* Luxury typography emphasis on step titles
+* Generous white space between sections
+
+SECTIONS:
+
+H2: Most Brands Ship a Box. AA WIGS Ships an Experience.
+Open by contrasting mass fulfillment vs the AA WIGS approach. 
+Set the tone that this is a behind-the-scenes reveal.
+
+H2: Step 1 — Supplier Selection
+How AA WIGS evaluates and approves suppliers. What standards 
+must be met before a vendor is trusted. Virgin hair only. 
+Cuticle alignment. Consistency across units.
+
+H2: Step 2 — Quality Inspection
+Every unit is inspected before it moves forward. What the 
+inspection covers: lace integrity, hair density, weft quality, 
+knot security, wave consistency, overall finish.
+
+H2: Step 3 — Photography
+Why AA WIGS photographs units in controlled conditions. 
+Accurate color. No heavy filters. What you see is what arrives.
+
+H2: Step 4 — Luxury Presentation
+The unit is prepared for packaging. Tissue wrap, positioning, 
+lace protection. This step is about care, not just aesthetics.
+
+H2: Step 5 — The Packaging
+Deep burgundy rigid box. Gold foil stamping. Cream satin interior. 
+Three-card insert system: Thank You Card, Care Guide, Brand Card. 
+Explain why each element exists and what it communicates.
+
+H2: Step 6 — Final Inspection Before Shipment
+A second check before the box is sealed. The standard does not 
+drop at the last step. This is the AA WIGS commitment in action.
+
+H2: Step 7 — Shipping and Protection
+How units are packaged for transit. Protection standards. 
+Why the box arrives intact regardless of how the courier handles it.
+
+H2: Step 8 — The Unboxing Experience
+This is where the customer enters. Opening the burgundy box. 
+The cream satin. The card system. The unboxing is part of 
+the product — not an afterthought.
+
+H2: Every Step. Every Unit. Every Time.
+No exceptions. No shortcuts. Closing with the AA WIGS commitment.
+
+PRIMARY CTA:
+ONE CTA ONLY. Place at the very end after all steps are complete.
+Anchor text: "Ready to experience it for yourself? 
+Explore the Signature Body Wave Collection →"
+Link: Signature Body Wave Collection page.
+NO secondary CTA. NO contextual link. One clean exit to purchase.
+
+FAQ TOPICS (minimum 5):
+1. How does AA WIGS select its hair suppliers?
+2. What does the AA WIGS quality inspection include?
+3. What is inside the AA WIGS packaging?
+4. Why does AA WIGS inspect units twice before shipping?
+5. What should I expect when I open my AA WIGS order?
+
+═══════════════════════════════════════════
+ARTICLE 5 OF 5
+═══════════════════════════════════════════
+
+TITLE:
+Why Women Are Afraid To Buy Wigs Online — And How AA WIGS Is Different
+
+URL:
+/knowledge-center/why-women-are-afraid-to-buy-wigs-online/
+
+PRIMARY ROADBLOCK REMOVED:
+"Can I trust this company?"
+
+PURPOSE:
+Acknowledge the real fear. Name the industry problems honestly. 
+Position AA WIGS as the clear alternative without naming 
+or attacking any competitor.
+
+SECTIONS:
+
+H2: The Wig Industry Has a Trust Problem
+ONE paragraph only on the industry problem. Fake reviews. 
+Misleading photos. Disappearing brands. Name it clearly then 
+move immediately to the solution. Do NOT dwell here.
+
+H2: What Fake Luxury Looks Like
+Fake urgency. Inflated prices with permanent discounts. 
+Stolen product photos. Vague lace descriptions. 
+Poor support after purchase. Educate the reader so she 
+can spot it anywhere — not just with AA WIGS.
+
+H2: Honest Specifications — What AA WIGS Actually States
+How AA WIGS describes products. Exact lace type. Hair origin. 
+Density percentage. Correct length measurement. 
+No vague language. No exaggerated claims.
+
+H2: The AA WIGS Knowledge Center
+Why AA WIGS built an educational library before a sales funnel. 
+What the Knowledge Center covers. How it serves the reader 
+even if she never purchases.
+
+H2: The First Circle
+Explain the AA WIGS First Circle concept. Early supporters. 
+Real experiences. Genuine community. Not manufactured social 
+proof — real relationships built from the beginning.
+
+H2: Premium Support — What It Actually Means
+Responsive communication. Clear policies. Honest answers. 
+AA WIGS does not disappear after the sale.
+
+H2: Transparent Quality Standards
+AA WIGS documents its process because it has nothing to hide. 
+Reference the full journey article naturally here.
+
+H2: Trust Should Be Earned — Not Manufactured
+CLOSING SECTION. End with this exact brand statement:
+
+"We believe trust should be earned — not manufactured. 
+Every article in this Knowledge Center, every quality standard 
+we hold, and every interaction with our community exists because 
+we built AA WIGS to be a brand women can rely on — 
+not just a store they shop from once."
+
+PRIMARY CTA:
+After the Transparent Quality Standards section.
+Anchor text: "Start with the Signature Body Wave Collection →"
+Link: Signature Body Wave Collection page.
+
+CONTEXTUAL LINK:
+Bottom of article.
+"Continue reading: The First Circle →"
+
+FAQ TOPICS (minimum 5):
+1. How do I know AA WIGS uses real human hair?
+2. What makes AA WIGS different from other wig brands online?
+3. Does AA WIGS have real customer reviews?
+4. What is the AA WIGS First Circle?
+5. What is AA WIGS' return and exchange policy?
+
+═══════════════════════════════════════════
+PUBLISHING & GOOGLE INDEXING PREPARATION
+═══════════════════════════════════════════
+
+After all five articles are completed, perform the following 
+tasks automatically:
+
+1. UPDATE THE KNOWLEDGE CENTER
+
+* Add all five articles to the Featured Articles section
+* Add all five articles to the appropriate category sections
+* Verify all internal article links work correctly
+* Update all "Continue Learning" sections with the new 
+  related articles
+
+2. UPDATE SITEMAP.XML
+
+Add all five new article URLs to sitemap.xml with:
+* changefreq: monthly
+* priority: 0.65
+* Current publication date as lastmod
+
+3. VERIFY INTERNAL SEO
+
+For every article confirm:
+* Canonical URL
+* Meta title
+* Meta description
+* Open Graph tags
+* Article Schema
+* FAQ Schema
+* Breadcrumb Schema
+
+4. GENERATE GOOGLE SEARCH CONSOLE SUBMISSION LIST
+
+At the end of the task, output a checklist titled:
+
+Google Search Console — Request Indexing
+
+List every new URL individually so I can copy and submit 
+them manually:
+
+https://aawigs.com/knowledge-center/aa-wigs-quality-standard/
+https://aawigs.com/knowledge-center/anatomy-of-a-luxury-wig/
+https://aawigs.com/knowledge-center/first-luxury-wig-without-regret/
+https://aawigs.com/knowledge-center/what-happens-before-it-reaches-you/
+https://aawigs.com/knowledge-center/why-women-are-afraid-to-buy-wigs-online/
+
+5. FINAL QA
+
+Before finishing verify:
+* Every page returns HTTP 200
+* Every page appears in sitemap.xml
+* All article cards display correctly in the Knowledge Center
+* All internal links work
+* No existing functionality or styling has been modified 
+  outside these five new articles
+
+Do NOT submit anything to Google Search Console automatically.
+Only provide the complete URL list ready for manual indexing.
+
+═══════════════════════════════════════════
+FINAL QA CHECKLIST
+═══════════════════════════════════════════
+
+Before marking complete:
+
+* All five articles are fully responsive on mobile and desktop
+* All internal links resolve correctly
+* All schemas validate without errors
+* sitemap.xml includes all five new URLs
+* Featured Articles section displays all five new articles
+* Journal and Knowledge Center styling remains unchanged
+* Zero existing functionality modified outside new articles
+* All image placeholders use ivory/champagne gradient only
+* VIP email signup uses existing form component only
+* All FAQs use existing article content only — no invented details
+* Google Search Console URL list output at completion

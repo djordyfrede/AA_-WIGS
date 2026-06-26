@@ -1,0 +1,119 @@
+
+═══════════════════════════════════════════
+POST-PUBLISH SEO & AUTHORITY TASKS
+═══════════════════════════════════════════
+
+After completing all five articles, complete the following authority-building tasks without modifying any existing functionality.
+
+1. Knowledge Center Authority
+
+Update the Knowledge Center homepage statistics automatically.
+
+Increase:
+
+* Total Articles
+* Featured Articles
+* Reading Guides (if applicable)
+
+Ensure all article counts reflect the current number of published articles.
+
+⸻
+
+2. Related Articles Optimization
+
+Review every existing Knowledge Center article.
+
+Where appropriate, add natural internal links to these five new articles.
+
+Do not force links.
+
+Only add them where they improve the reader’s learning journey.
+
+⸻
+
+3. Navigation Flow
+
+Verify every article can be reached through:
+
+* Knowledge Center homepage
+* Featured Articles
+* Continue Learning sections
+* Related Articles
+* XML Sitemap
+
+No article should become an orphan page.
+
+⸻
+
+4. Crawlability
+
+Verify every article:
+
+* is indexable
+* is followable
+* has no accidental noindex tags
+* has no canonical conflicts
+* appears correctly inside sitemap.xml
+
+⸻
+
+5. Performance
+
+Do not reduce website performance.
+
+Maintain:
+
+* Lazy loading
+* Existing CSS architecture
+* Existing JavaScript architecture
+* Existing animations
+
+Avoid duplicate code whenever possible.
+
+⸻
+
+6. Structured Data Validation
+
+Confirm every article validates:
+
+✓ Article Schema
+
+✓ FAQ Schema
+
+✓ Breadcrumb Schema
+
+No schema errors or warnings.
+
+⸻
+
+7. Editorial Consistency
+
+Verify every article follows the AA WIGS editorial standard:
+
+* Calm luxury
+* Educational first
+* Elegant typography
+* Large breathing room
+* Premium spacing
+* Consistent CTA styling
+* Consistent author block
+* Consistent hero section
+
+Every article should feel like it belongs to the same luxury publication.
+
+⸻
+
+8. Final Report
+
+When the task is complete, output a final report including:
+
+* Total Knowledge Center articles
+* Total Featured Articles
+* URLs of the five new articles
+* Confirmation that sitemap.xml was updated
+* Confirmation that internal links were added
+* Confirmation that schemas validate
+* Confirmation that all pages return HTTP 200
+* Confirmation that no existing functionality outside these additions was modified
+
+Do not consider the task complete until every item above has been verified.
