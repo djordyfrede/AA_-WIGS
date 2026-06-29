@@ -365,22 +365,15 @@
     </div>
   </section>
 
-  <section class="section" id="reviews">
+  <section class="section" id="the-first-circle" style="background:var(--champagne);">
     <div class="container">
       <div class="section-head fade-in">
-        <h2>Client Reviews</h2>
-        <p>Real reviews from real women who invested in themselves.</p>
-        <div id="homepageAggRating" style="display:none;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px">
-          <span id="homepageAggStars" style="color:#C5A355;font-size:1.3rem;letter-spacing:2px">★★★★★</span>
-          <span id="homepageAggScore" style="color:#fff;font-size:1.5rem;font-weight:700"></span>
-          <span id="homepageAggCount" style="color:#a0957f;font-size:0.85rem"></span>
-        </div>
+        <p class="eyebrow">Community</p>
+        <h2>The First Circle</h2>
+        <p style="max-width:560px;margin:0 auto;">Discover the community behind AA WIGS through authentic experiences, educational content, unboxings, installations, and the journey of women who become part of our brand.</p>
       </div>
-      <div class="review-grid fade-in" id="homepageReviewGrid">
-        <div class="review"><p class="stars">★★★★★</p><p>Loading reviews…</p></div>
-      </div>
-      <div style="text-align:center;margin-top:32px">
-        <a href="/the-first-circle/" style="display:inline-block;padding:12px 28px;border:1px solid var(--gold);color:var(--gold);text-decoration:none;font-size:0.9rem;letter-spacing:0.06em;text-transform:uppercase;transition:all .2s" onmouseover="this.style.background='var(--gold)';this.style.color='#111'" onmouseout="this.style.background='transparent';this.style.color='var(--gold)'">The First Circle</a>
+      <div class="fade-in" style="text-align:center;margin-top:40px;">
+        <a href="/the-first-circle/" class="btn btn-solid" style="display:inline-block;padding:16px 40px;font-size:0.85rem;letter-spacing:0.12em;text-transform:uppercase;">Explore The First Circle</a>
       </div>
     </div>
   </section>
@@ -832,41 +825,6 @@
     }
   })();
 
-  (function(){
-    var grid = document.getElementById('homepageReviewGrid');
-    if (!grid) return;
-
-    function escHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-    function updateAggregate(reviews) {
-      var total = reviews.length;
-      if (!total) return;
-      var avg = reviews.reduce(function(s,r){ return s+(r.rating||0); }, 0) / total;
-      var rounded = Math.round(avg);
-      var scoreText = avg.toFixed(1);
-      document.getElementById('homepageAggStars').textContent = '★'.repeat(rounded) + '☆'.repeat(5-rounded);
-      document.getElementById('homepageAggScore').textContent = scoreText;
-      document.getElementById('homepageAggCount').textContent = 'based on ' + total + ' review' + (total !== 1 ? 's' : '');
-      document.getElementById('homepageAggRating').style.display = 'flex';
-    }
-
-    fetch('/api/reviews?page=homepage')
-      .then(function(r){ return r.json(); })
-      .then(function(data){
-        var reviews = data.reviews || [];
-        updateAggregate(reviews);
-        if (!reviews.length) {
-          grid.innerHTML = '<div class="review"><p class="stars">★★★★★</p><p>"The hairline looks so natural — everyone thinks it\'s my real hair. Worth every penny."</p><span>— Aisha M. · Verified Buyer</span></div><div class="review"><p class="stars">★★★★★</p><p>"Soft, zero shedding, full ends. The packaging felt like unboxing jewelry. Pure luxury."</p><span>— Destiny R. · Verified Buyer</span></div><div class="review"><p class="stars">★★★★★</p><p>"The glueless fit is so secure I wore it to the gym. I feel expensive every time I put it on."</p><span>— Keisha T. · Verified Buyer</span></div>';
-          return;
-        }
-        grid.innerHTML = reviews.slice(0,6).map(function(r){
-          var stars = '★'.repeat(r.rating)+'☆'.repeat(5-r.rating);
-          var badge = r.verified_purchase ? ' · <span style="color:var(--gold);font-size:0.75rem">✓ Verified</span>' : '';
-          return '<div class="review"><p class="stars">'+stars+'</p><p>"'+escHtml(r.review_text)+'"</p><span>— '+escHtml(r.customer_name)+badge+'</span></div>';
-        }).join('');
-      })
-      .catch(function(){});
-  })();
   </script>
 </body>
 </html>
