@@ -12,7 +12,7 @@ var AAChat = {
   // ── KNOWLEDGE BASE ────────────────────────────────────────────────────────
   knowledge: {
     product: {
-      name: 'AA Signature Body Wave',
+      name: '22" 13×6 Swiss HD Lace Body Wave',
       type: '13×6 Swiss HD Lace Frontal Wig',
       hair: '100% Virgin Human Hair',
       density: '180%',
@@ -36,8 +36,8 @@ var AAChat = {
       refundTime: '5–7 business days after approval'
     },
     packaging: {
-      box: 'Luxury magnetic burgundy box with gold foil logo',
-      interior: 'Champagne satin lining',
+      box: 'Luxury deep burgundy box with gold foil logo',
+      interior: 'Cream satin lining',
       includes: ['Care guide card', 'Confidence card', 'Protective satin storage bag']
     }
   },
@@ -45,11 +45,11 @@ var AAChat = {
   logoPath: '/assets/aa-logo.png',
 
   mainMenuReplies: [
-    'Help me choose a length',
-    'Help me choose a color',
-    'Is this good for first-time buyers?',
-    'Learn about HD lace',
-    'How do I care for my wig?',
+    'Is this my first luxury wig?',
+    'Tell me about the signature piece',
+    'What is HD lace?',
+    'How do I care for it?',
+    'Why does AA WIGS offer one product?',
     'What makes AA WIGS different?',
     'Speak with the AA WIGS team'
   ],
@@ -69,95 +69,24 @@ var AAChat = {
 
   handleFlowStep: function(input) {
     switch (this.state.flow) {
+      case 'firsttime': this.flowFirstTime(input); break;
       case 'length':    this.flowLength(input);    break;
       case 'color':     this.flowColor(input);     break;
-      case 'firsttime': this.flowFirstTime(input); break;
       case 'hdlace':    this.flowHDLace();         break;
       case 'care':      this.flowCare();           break;
       case 'different': this.flowDifferent();      break;
+      case 'oneprod':   this.flowOneProduct();     break;
       case 'speak':     this.flowSpeak();          break;
       default:          this.resetState();
     }
   },
 
-  // Flow 1 — Length Help
-  flowLength: function(input) {
-    if (this.state.step === 0) {
-      this.state.step = 1;
-      this.addBotMessage(
-        'What look are you going for?',
-        ['Natural everyday look', 'Elegant and versatile', 'Glamorous and bold', 'Statement luxury look']
-      );
-      return;
-    }
-
-    var lower = (input || '').toLowerCase();
-    var rec = '';
-
-    if (lower.indexOf('natural') !== -1 || lower.indexOf('everyday') !== -1) {
-      rec = '<strong>18" or 20"</strong> — a shorter, effortless length ideal for daily wear. Full body wave movement without the extra weight. Practical, polished, and easy to manage.';
-    } else if (lower.indexOf('elegant') !== -1 || lower.indexOf('versatile') !== -1) {
-      rec = '<strong>22"</strong> — our most popular length and our top recommendation for most lifestyles. Bra-strap length with maximum versatility and stunning natural movement.';
-    } else if (lower.indexOf('glamorous') !== -1 || lower.indexOf('bold') !== -1) {
-      rec = '<strong>24"</strong> — mid-back length with a dramatic cascade and beautiful body wave movement. A statement that is striking without being overpowering.';
-    } else if (lower.indexOf('statement') !== -1 || lower.indexOf('luxury') !== -1) {
-      rec = '<strong>26"</strong> — our longest, most striking option. Lower-back length with full glamour and a truly powerful presence.';
-    } else {
-      rec = '<strong>22"</strong> — our most popular and versatile length. A beautiful starting point for most lifestyles.';
-    }
-
-    this.addBotMessage(
-      'For your style, we recommend ' + rec +
-      '<br><br>Explore further:<br>' +
-      '<a href="/wig-length-guide/" class="chat-link">Full Length Guide →</a><br>' +
-      '<a href="/best-wig-length-for-beginners/" class="chat-link">Best Length For Beginners →</a>',
-      ['Shop The Crown', 'Help me choose a color', 'Speak with the AA WIGS team', '← See all options']
-    );
-    this.resetState();
-  },
-
-  // Flow 2 — Color Help
-  flowColor: function(input) {
-    if (this.state.step === 0) {
-      this.state.step = 1;
-      this.addBotMessage(
-        'What style feels most like you?',
-        ['Classic and natural', 'Soft brown luxury', 'Warm highlighted look', 'Bold burgundy statement', 'Blonde luxury look']
-      );
-      return;
-    }
-
-    var lower = (input || '').toLowerCase();
-    var rec = '';
-
-    if (lower.indexOf('classic') !== -1 || lower.indexOf('natural') !== -1) {
-      rec = '<strong>1B Natural Black</strong> — our bestseller and most universally flattering shade. A rich, deep natural black that works beautifully on all skin tones. The most versatile colour we offer.';
-    } else if (lower.indexOf('soft') !== -1 || lower.indexOf('brown') !== -1) {
-      rec = '<strong>Dark Brown or Medium Brown</strong> — warm, elevated, and deeply luxurious. Ideal for those who want depth without going full black. A quiet sophistication.';
-    } else if (lower.indexOf('warm') !== -1 || lower.indexOf('highlight') !== -1 || lower.indexOf('honey') !== -1) {
-      rec = '<strong>Honey Blonde (27)</strong> — a warm, golden-highlighted shade that catches light beautifully. Radiant and sun-kissed, with a natural-looking dimension.';
-    } else if (lower.indexOf('burgundy') !== -1 || lower.indexOf('bold') !== -1 || lower.indexOf('statement') !== -1) {
-      rec = '<strong>99J Burgundy</strong> — a rich, deep wine-toned shade that makes a confident and unforgettable statement. Our most distinctive colour.';
-    } else if (lower.indexOf('blonde') !== -1) {
-      rec = '<strong>613 Blonde</strong> — platinum luxury. A bright, high-impact blonde that is bold, striking, and completely premium.';
-    } else {
-      rec = '<strong>1B Natural Black</strong> — our most popular and universally flattering shade. Always a beautiful starting point.';
-    }
-
-    this.addBotMessage(
-      'Based on your style, we suggest ' + rec +
-      '<br><br><a href="/knowledge-center/" class="chat-link">Explore the Knowledge Center →</a>',
-      ['Shop The Crown', 'Help me choose a length', 'Speak with the AA WIGS team', '← See all options']
-    );
-    this.resetState();
-  },
-
-  // Flow 3 — First-Time Buyer
+  // Flow 1 — First-Time / Understand the Visitor (v3 Step 2)
   flowFirstTime: function(input) {
     if (this.state.step === 0) {
       this.state.step = 1;
       this.addBotMessage(
-        'Is this your first premium wig?',
+        'Is this your first luxury wig?',
         ["Yes — it's my first", "I've worn wigs before"]
       );
       return;
@@ -168,89 +97,162 @@ var AAChat = {
 
     if (isFirst) {
       this.addBotMessage(
-        "We're glad you're here.<br><br>" +
-        "For a first AA WIGS unit, we recommend starting with a <strong>22\" 1B Natural Black Body Wave</strong>. " +
-        "It gives a luxury look while still feeling natural, versatile, and easy to style — no salon required.<br><br>" +
-        "It is 100% glueless with an adjustable band and combs, so you can install it confidently at home in minutes.<br><br>" +
-        "We suggest reading these first:<br>" +
+        "Welcome. You are in the right place.<br><br>" +
+        "The AA WIGS signature piece is a <strong>22\" 13×6 Swiss HD Lace Body Wave</strong> — 100% virgin human hair, 180% density, completely glueless. Designed to be installed confidently at home from the very first wear, with no salon visit required.<br><br>" +
+        "Before anything else, we always recommend educating yourself on what makes a wig truly luxury. These are a good place to start:<br><br>" +
         '<a href="/hd-lace-guide/" class="chat-link">Understanding HD Lace →</a><br>' +
-        '<a href="/body-wave-guide/" class="chat-link">Why Body Wave →</a><br>' +
-        '<a href="/wig-length-guide/" class="chat-link">Choosing Your Length →</a><br>' +
-        '<a href="/wig-care/" class="chat-link">Wig Care Basics →</a>',
-        ['Shop The Crown', 'Help me choose a length', 'Speak with the AA WIGS team', '← See all options']
+        '<a href="/knowledge-center/aa-wigs-quality-standard/" class="chat-link">The AA WIGS Quality Standard →</a><br>' +
+        '<a href="/wig-care/" class="chat-link">Caring For Your Wig →</a>',
+        ['What is HD lace?', 'Tell me about the signature piece', 'Speak with the AA WIGS team', '← See all options']
       );
     } else {
       this.addBotMessage(
         "Welcome back. You already know the difference quality makes.<br><br>" +
-        "The AA WIGS Signature Body Wave offers <strong>13×6 Swiss HD lace, 180% density, 100% virgin human hair</strong> — and a glueless, adjustable fit that makes every install effortless.<br><br>" +
-        "Available in 6 colours and 5 lengths — 30 unique combinations.<br><br>" +
-        '<a href="/products/22-swiss-hd-body-wave/" class="chat-link">View the Collection →</a><br>' +
-        '<a href="/body-wave-guide/" class="chat-link">Why Body Wave →</a>',
-        ['Help me choose a length', 'Help me choose a color', 'Speak with the AA WIGS team', '← See all options']
+        "The AA WIGS signature piece offers <strong>13×6 Swiss HD lace, 180% density, 100% virgin human hair</strong> — and a glueless, adjustable fit designed for an effortless install every time.<br><br>" +
+        "If you have specific questions about fit, texture, or our quality standards, I'm here to help you evaluate whether this is the right piece for you.<br><br>" +
+        '<a href="/knowledge-center/" class="chat-link">Knowledge Center →</a>',
+        ['Tell me about the signature piece', 'What makes AA WIGS different?', 'Speak with the AA WIGS team', '← See all options']
       );
     }
     this.resetState();
   },
 
-  // Flow 4 — HD Lace
+  // Flow 2 — Length Help
+  flowLength: function(input) {
+    if (this.state.step === 0) {
+      this.state.step = 1;
+      this.addBotMessage(
+        'What kind of look are you hoping to achieve?',
+        ['Natural, effortless everyday look', 'Elegant and versatile', 'Glamorous and striking', 'Maximum luxury statement']
+      );
+      return;
+    }
+
+    var lower = (input || '').toLowerCase();
+    var rec = '';
+
+    if (lower.indexOf('natural') !== -1 || lower.indexOf('everyday') !== -1 || lower.indexOf('effortless') !== -1) {
+      rec = '<strong>18" or 20"</strong> — a practical, polished length for daily wear. Full body wave movement without excess weight. Beautiful and completely manageable.';
+    } else if (lower.indexOf('elegant') !== -1 || lower.indexOf('versatile') !== -1) {
+      rec = '<strong>22"</strong> — our most popular length. Bra-strap length with genuine versatility and natural movement. The most considered starting point for most lifestyles.';
+    } else if (lower.indexOf('glamorous') !== -1 || lower.indexOf('striking') !== -1) {
+      rec = '<strong>24"</strong> — mid-back length with a beautiful cascade. A statement that is confident without being overpowering.';
+    } else if (lower.indexOf('maximum') !== -1 || lower.indexOf('luxury') !== -1) {
+      rec = '<strong>26"</strong> — our longest option. Lower-back length with full presence and a truly powerful look.';
+    } else {
+      rec = '<strong>22"</strong> — our most popular and versatile length. A thoughtful starting point for most lifestyles.';
+    }
+
+    this.addBotMessage(
+      'Based on what you have shared, we would suggest ' + rec +
+      '<br><br>If you would like to explore further before deciding:<br>' +
+      '<a href="/wig-length-guide/" class="chat-link">Full Length Guide →</a>',
+      ['Tell me about the signature piece', 'What is HD lace?', 'Speak with the AA WIGS team', '← See all options']
+    );
+    this.resetState();
+  },
+
+  // Flow 3 — Color Help
+  flowColor: function(input) {
+    if (this.state.step === 0) {
+      this.state.step = 1;
+      this.addBotMessage(
+        'What aesthetic feels most true to your style?',
+        ['Classic and natural', 'Soft, warm brown', 'Warm highlighted look', 'Bold burgundy', 'Blonde luxury']
+      );
+      return;
+    }
+
+    var lower = (input || '').toLowerCase();
+    var rec = '';
+
+    if (lower.indexOf('classic') !== -1 || lower.indexOf('natural') !== -1) {
+      rec = '<strong>1B Natural Black</strong> — our most universally flattering shade. A deep, rich natural black that works beautifully across all skin tones and all occasions.';
+    } else if (lower.indexOf('soft') !== -1 || lower.indexOf('brown') !== -1 || lower.indexOf('warm') !== -1 && lower.indexOf('highlight') === -1) {
+      rec = '<strong>Dark Brown or Medium Brown</strong> — warm, elevated, and quietly sophisticated. Depth without going full black. A shade that reads as effortlessly luxurious.';
+    } else if (lower.indexOf('highlight') !== -1 || lower.indexOf('honey') !== -1) {
+      rec = '<strong>Honey Blonde (27)</strong> — a warm, golden-highlighted shade that catches light naturally. Radiant, sun-kissed, and deeply flattering on warm skin tones.';
+    } else if (lower.indexOf('burgundy') !== -1 || lower.indexOf('bold') !== -1) {
+      rec = '<strong>99J Burgundy</strong> — a rich, deep wine tone that makes a confident and deliberate statement. Our most distinctive shade.';
+    } else if (lower.indexOf('blonde') !== -1) {
+      rec = '<strong>613 Blonde</strong> — platinum luxury. A high-impact blonde that is bold, striking, and unmistakably premium.';
+    } else {
+      rec = '<strong>1B Natural Black</strong> — our most popular and universally flattering shade. A considered starting point.';
+    }
+
+    this.addBotMessage(
+      'Based on your style, ' + rec +
+      '<br><br><a href="/knowledge-center/" class="chat-link">Explore the Knowledge Center →</a>',
+      ['Tell me about the signature piece', 'Help me understand lengths', 'Speak with the AA WIGS team', '← See all options']
+    );
+    this.resetState();
+  },
+
+  // Flow 4 — HD Lace Education (v3 Step 3: Educate)
   flowHDLace: function() {
     this.addBotMessage(
-      "HD lace — high-definition lace — is an ultra-thin Swiss material that blends more naturally into the skin, helping create a softer, more invisible hairline.<br><br>" +
-      "Unlike standard lace, it works across <strong>all skin tones</strong> without additional tinting or makeup. The AA WIGS signature unit uses a <strong>13×6 Swiss HD lace</strong> panel — the widest, finest grade available — combined with pre-bleached knots and a pre-plucked hairline.<br><br>" +
-      "The result: a completely natural-looking install from the very first wear.<br><br>" +
+      "HD lace — high-definition lace — is an ultra-thin Swiss material that blends naturally into the scalp, creating a softer, more invisible hairline than standard lace.<br><br>" +
+      "Unlike regular lace, true Swiss HD lace works across <strong>all skin tones</strong> without tinting or makeup. The AA WIGS signature piece uses a <strong>13×6 Swiss HD lace</strong> panel — the widest, finest grade available — combined with pre-bleached knots and a pre-plucked hairline.<br><br>" +
+      "The result is a hairline that looks as though hair is growing directly from the scalp. From day one, without any additional preparation.<br><br>" +
       '<a href="/hd-lace-guide/" class="chat-link">Full HD Lace Guide →</a><br>' +
-      '<a href="/hd-lace-vs-transparent-lace/" class="chat-link">HD Lace vs Transparent Lace →</a>',
-      ['Shop The Crown', 'Is this good for first-time buyers?', 'What makes AA WIGS different?', '← See all options']
+      '<a href="/knowledge-center/hd-lace-vs-transparent-lace/" class="chat-link">HD Lace vs Transparent Lace →</a>',
+      ['Is this right for beginners?', 'Tell me about the signature piece', 'Speak with the AA WIGS team', '← See all options']
     );
     this.resetState();
   },
 
-  // Flow 5 — Wig Care
+  // Flow 5 — Wig Care (v3 Step 3: Educate)
   flowCare: function() {
     this.addBotMessage(
-      "Luxury hair lasts longer when it is washed gently, stored properly, and protected from dryness and excess heat.<br><br>" +
-      "&bull; <strong>Wash every 10–14 days</strong> with a sulphate-free shampoo<br>" +
-      "&bull; <strong>Deep condition monthly</strong> to restore moisture and suppleness<br>" +
-      "&bull; <strong>Minimise heat styling</strong> — air dry when possible; use protectant spray when you do<br>" +
-      "&bull; <strong>Store correctly</strong> — on a wig stand overnight, or in the included satin bag for longer storage<br>" +
+      "Virgin human hair responds to care the same way your natural hair does — it lasts longer when treated with intention.<br><br>" +
+      "&bull; <strong>Wash every 10–14 wears</strong> with a sulphate-free shampoo<br>" +
+      "&bull; <strong>Deep condition monthly</strong> to restore moisture<br>" +
+      "&bull; <strong>Minimise heat styling</strong> — air dry where possible; always use a protectant spray<br>" +
+      "&bull; <strong>Store correctly</strong> — on a wig stand, or in the included satin bag for travel or longer storage<br>" +
       "&bull; <strong>Never sleep in your wig</strong><br><br>" +
-      "With proper care, an AA WIGS unit lasts <strong>1–3 years</strong>.<br><br>" +
-      '<a href="/wig-care/" class="chat-link">Full Care Guide →</a><br>' +
-      '<a href="/how-to-store-a-human-hair-wig/" class="chat-link">How To Store Your Wig →</a><br>' +
-      '<a href="/how-long-does-a-body-wave-wig-last/" class="chat-link">How Long Does It Last? →</a>',
-      ['Shop The Crown', 'Speak with the AA WIGS team', '← See all options']
+      "With consistent care, an AA WIGS unit lasts <strong>1–3 years</strong>.<br><br>" +
+      '<a href="/wig-care/" class="chat-link">Full Care Guide →</a>',
+      ['Tell me about the signature piece', 'What makes AA WIGS different?', 'Speak with the AA WIGS team', '← See all options']
     );
     this.resetState();
   },
 
-  // Flow 6 — What Makes AA WIGS Different
+  // Flow 6 — What Makes AA WIGS Different (v3 Philosophy)
   flowDifferent: function() {
     this.addBotMessage(
-      "AA WIGS focuses on premium Body Wave wigs only. Every detail is intentional:<br><br>" +
-      "&bull; <strong>13×6 Swiss HD lace</strong> — the finest grade for an undetectable install on all skin tones<br>" +
-      "&bull; <strong>180% density</strong> — full, voluminous, and completely natural-looking<br>" +
-      "&bull; <strong>100% virgin human hair</strong> — unprocessed, heat-styleable, long-lasting<br>" +
-      "&bull; <strong>Glueless-ready construction</strong> — adjustable band and combs; no adhesive needed<br>" +
-      "&bull; <strong>Luxury burgundy packaging</strong> — magnetic box, gold foil logo, champagne satin lining<br>" +
-      "&bull; <strong>6 colours × 5 lengths</strong> — 30 thoughtfully chosen combinations<br><br>" +
-      "A brand experience built entirely around confidence.<br><br>" +
-      '<a href="/body-wave-guide/" class="chat-link">The Body Wave Standard →</a><br>' +
-      '<a href="/luxury-packaging/" class="chat-link">The AA WIGS Experience →</a><br>' +
-      '<a href="/knowledge-center/" class="chat-link">Knowledge Center →</a>',
-      ['Shop The Crown', 'Is this good for first-time buyers?', 'Speak with the AA WIGS team', '← See all options']
+      "AA WIGS was built on four principles:<br><br>" +
+      "<strong>Quality before quantity.</strong> One signature piece, perfected — rather than a large catalogue of inconsistent options.<br><br>" +
+      "<strong>Education before promotion.</strong> Every visitor should leave with greater clarity and confidence — whether they purchase or not.<br><br>" +
+      "<strong>Trust before transactions.</strong> We would rather help the right person make an informed decision than convince the wrong person to buy.<br><br>" +
+      "<strong>Consistency before expansion.</strong> Every detail — from the 13×6 Swiss HD lace to the cream satin packaging interior — is held to the same standard on every order.<br><br>" +
+      '<a href="/knowledge-center/aa-wigs-quality-standard/" class="chat-link">The AA WIGS Quality Standard →</a><br>' +
+      '<a href="/the-first-circle/" class="chat-link">The First Circle — Community →</a>',
+      ['Is this right for beginners?', 'Tell me about the signature piece', 'Speak with the AA WIGS team', '← See all options']
     );
     this.resetState();
   },
 
-  // Flow 7 — Speak with Team + Lead Capture
+  // Flow 7 — Why Only One Product (v3 out-of-scope response)
+  flowOneProduct: function() {
+    this.addBotMessage(
+      "AA WIGS focuses exclusively on one signature piece because we believe it is better to perfect one experience than to offer many inconsistent options.<br><br>" +
+      "Every element — the 13×6 Swiss HD lace, the 180% density, the virgin human hair, the luxury packaging — reflects years of deliberate refinement of a single vision.<br><br>" +
+      "If our collection expands in the future, those on our insider list will be the first to know.<br><br>" +
+      '<a href="/the-first-circle/" class="chat-link">Join The First Circle →</a>',
+      ['What makes AA WIGS different?', 'Tell me about the signature piece', 'Speak with the AA WIGS team', '← See all options']
+    );
+    this.resetState();
+  },
+
+  // Flow 8 — Speak with Team + Lead Capture
   flowSpeak: function() {
     this.resetState();
     this.addBotMessage(
-      "Our team is here for you. You can reach us at:<br><br>" +
+      "Our team is here for you. You can reach us directly at:<br><br>" +
       "<strong>Email:</strong> hello@aawigs.com<br>" +
       '<strong>Instagram:</strong> <a href="https://instagram.com/aawigshair" target="_blank" class="chat-link">@aawigshair</a><br>' +
       '<strong>Contact form:</strong> <a href="/contact.html" class="chat-link">Contact page →</a><br><br>' +
-      "Or share a few details below — we will reach out personally within 24 hours.",
+      "Or share a few details below and we will reach out personally within 24 hours.",
       []
     );
     var self = this;
@@ -274,7 +276,7 @@ var AAChat = {
             '<input type="email" id="leadEmail" placeholder="Email Address *" class="chat-lead-input" autocomplete="email">' +
             '<input type="tel" id="leadPhone" placeholder="Phone (optional)" class="chat-lead-input" autocomplete="tel">' +
             '<select id="leadLength" class="chat-lead-select">' +
-              '<option value="">Preferred length...</option>' +
+              '<option value="">Preferred length (optional)...</option>' +
               '<option value="18&quot;">18"</option>' +
               '<option value="20&quot;">20"</option>' +
               '<option value="22&quot;">22"</option>' +
@@ -283,7 +285,7 @@ var AAChat = {
               '<option value="Not sure yet">Not sure yet</option>' +
             '</select>' +
             '<select id="leadColor" class="chat-lead-select">' +
-              '<option value="">Preferred colour...</option>' +
+              '<option value="">Preferred shade (optional)...</option>' +
               '<option value="1B Natural Black">1B Natural Black</option>' +
               '<option value="Dark Brown">Dark Brown</option>' +
               '<option value="Medium Brown">Medium Brown</option>' +
@@ -368,10 +370,10 @@ var AAChat = {
         self.scrollToBottom();
         setTimeout(function() {
           self.addBotMessage(
-            'We have received your details and will be in touch soon.<br><br>' +
-            'In the meantime, explore the AA WIGS Knowledge Center whenever you are ready.<br><br>' +
+            'Thank you. We have received your details and will be in touch personally within 24 hours.<br><br>' +
+            'In the meantime, the Knowledge Center is a good place to continue learning at your own pace.<br><br>' +
             '<a href="/knowledge-center/" class="chat-link">Knowledge Center →</a><br>' +
-            '<a href="/products/22-swiss-hd-body-wave/" class="chat-link">View the Signature Collection →</a>',
+            '<a href="/the-first-circle/" class="chat-link">The First Circle →</a>',
             ['← See all options']
           );
         }, 400);
@@ -395,142 +397,163 @@ var AAChat = {
     {
       keywords: ['hi', 'hello', 'hey', 'good morning', 'good afternoon', 'good evening', 'sup', 'yo', 'whats up'],
       response: function() {
-        return "Hello — welcome to AA WIGS. I'm your personal wig concierge. How can I help you choose your perfect crown today?";
+        return "Hello — welcome to AA WIGS.<br><br>I'm your personal concierge. I'm here to answer your questions, explain our signature piece, and help you determine whether it's the right fit for you.<br><br>What brings you here today?";
       },
-      followUps: ['Help me choose a length', 'Help me choose a color', 'Is this good for first-time buyers?']
+      followUps: ['Is this my first luxury wig?', 'Tell me about the signature piece', 'Speak with the AA WIGS team']
     },
     {
-      keywords: ['price', 'cost', 'how much', 'pricing', 'expensive', 'cheap', 'afford', 'dollar', '$'],
+      keywords: ['price', 'cost', 'how much', 'pricing', 'dollar', '$'],
       response: function(k) {
-        return 'The AA Signature Body Wave ranges from <strong>' + k.product.priceRange + '</strong> depending on length and colour. The most popular option — 22", 1B Natural Black — is <strong>' + k.product.defaultPrice + '</strong>. Free U.S. shipping is included on every order.';
+        return 'The AA WIGS signature piece ranges from <strong>' + k.product.priceRange + '</strong> depending on length and shade. The most popular combination — 22", 1B Natural Black — is <strong>' + k.product.defaultPrice + '</strong>. Free U.S. shipping is included on every order.<br><br>Our pricing reflects the quality standards and experience we provide.';
       },
-      followUps: ['Help me choose a length', 'Help me choose a color', 'Shop The Crown']
+      followUps: ['Tell me about the signature piece', 'Help me understand lengths', 'Speak with the AA WIGS team']
+    },
+    {
+      keywords: ['expensive', 'cheap', 'afford', 'budget', 'discount', 'coupon', 'sale', 'promo'],
+      response: function() {
+        return 'AA WIGS does not offer promotions or discounts.<br><br>Our pricing reflects the quality of the materials, the craftsmanship behind the piece, and the experience we provide — from the Swiss HD lace to the luxury packaging.<br><br>If you have questions about what is included or what to expect, I am happy to walk you through it in detail.';
+      },
+      followUps: ['Tell me about the signature piece', 'What makes AA WIGS different?', 'Speak with the AA WIGS team']
     },
     {
       keywords: ['length', 'long', 'short', 'inch', 'inches', '18', '20', '22', '24', '26', 'size'],
       response: function(k) {
-        return 'We offer five lengths: <strong>' + k.product.lengths.join(', ') + '</strong>.<br><br>Our most popular is 22" — bra-strap length with maximum versatility. Shorter lengths (18"–20") suit everyday wear; 24"–26" deliver a more dramatic, glamorous look.';
+        return 'The signature piece is available in five lengths: <strong>' + k.product.lengths.join(', ') + '</strong>.<br><br>Our most popular is 22" — bra-strap length with natural versatility. Shorter lengths (18"–20") suit effortless everyday wear; 24"–26" deliver a more dramatic, confident look.<br><br>Would you like help narrowing down the right length for your lifestyle?';
       },
-      followUps: ['Help me choose a length', 'Best length for beginners?', 'Shop The Crown']
+      followUps: ['Help me understand lengths', 'Tell me about the signature piece', 'Speak with the AA WIGS team']
     },
     {
       keywords: ['color', 'colour', 'shade', 'black', 'brown', 'blonde', 'burgundy', 'honey', '1b', '613', '99j', 'natural', 'platinum', 'chocolate'],
       response: function() {
-        return 'We offer six shades:<br><br><strong>1B Natural Black</strong> — bestseller<br><strong>Dark Brown</strong><br><strong>Medium Brown</strong><br><strong>Honey Blonde (27)</strong><br><strong>99J Burgundy</strong><br><strong>613 Blonde</strong><br><br>Would you like help choosing the right shade for your style?';
+        return 'The signature piece is available in six shades:<br><br><strong>1B Natural Black</strong> — most popular<br><strong>Dark Brown</strong><br><strong>Medium Brown</strong><br><strong>Honey Blonde (27)</strong><br><strong>99J Burgundy</strong><br><strong>613 Blonde</strong><br><br>Would you like help choosing the right shade for your aesthetic?';
       },
-      followUps: ['Help me choose a color', 'Shop The Crown', 'Join the waitlist']
+      followUps: ['Help me choose a shade', 'Tell me about the signature piece', 'Speak with the AA WIGS team']
     },
     {
-      keywords: ['ship', 'shipping', 'delivery', 'deliver', 'arrive', 'long to get', 'when will', 'tracking', 'track'],
+      keywords: ['ship', 'shipping', 'delivery', 'deliver', 'arrive', 'when will', 'tracking', 'track'],
       response: function(k) {
         return 'We offer <strong>free standard shipping</strong> on all U.S. orders.<br><br><strong>Processing:</strong> ' + k.shipping.processing + '<br><strong>Delivery:</strong> ' + k.shipping.delivery + '<br><strong>Tracking:</strong> ' + k.shipping.tracking + '<br><br>We currently ship within the U.S. only.';
       },
-      followUps: ['International shipping?', 'Return policy', 'Shop The Crown']
+      followUps: ['Return policy', 'Tell me about the signature piece', 'Speak with the AA WIGS team']
     },
     {
-      keywords: ['return', 'refund', 'exchange', 'send back', 'money back', 'not satisfied', 'wrong'],
+      keywords: ['return', 'refund', 'exchange', 'send back', 'money back'],
       response: function(k) {
-        return 'We accept returns within <strong>' + k.returns.window + '</strong>. Requirements:<br><br>' + k.returns.conditions.map(function(c) { return '&bull; ' + c; }).join('<br>') + '<br><br>Approved refunds are processed within <strong>' + k.returns.refundTime + '</strong>. Email <strong>hello@aawigs.com</strong> to begin.';
+        return 'We accept returns within <strong>' + k.returns.window + '</strong>. To be eligible:<br><br>' + k.returns.conditions.map(function(c) { return '&bull; ' + c; }).join('<br>') + '<br><br>Approved refunds are processed within <strong>' + k.returns.refundTime + '</strong>.<br><br>To begin, email <strong>hello@aawigs.com</strong> with your order number.<br><br><a href="/returns/" class="chat-link">Full Returns Policy →</a>';
       },
-      followUps: ['Speak with the AA WIGS team', 'Shipping details', 'Shop The Crown']
+      followUps: ['Shipping details', 'Speak with the AA WIGS team', '← See all options']
     },
     {
-      keywords: ['glueless', 'glue', 'adhesive', 'tape', 'install', 'put on', 'wear', 'apply', 'application'],
+      keywords: ['glueless', 'glue', 'adhesive', 'tape', 'install', 'put on', 'apply', 'application'],
       response: function() {
-        return 'Our wig is <strong>100% glueless</strong>. An adjustable band and combs provide a secure, comfortable fit — no adhesive required. Place it on, adjust the straps, and go. The 13×6 Swiss HD lace creates a seamless, natural hairline.';
+        return 'The signature piece is <strong>100% glueless</strong>. An adjustable band and combs provide a secure, comfortable fit — no adhesive required. Place it on, adjust the straps, and go.<br><br>The 13×6 Swiss HD lace creates a natural hairline without any additional preparation.';
       },
-      followUps: ['Is this good for first-time buyers?', 'Learn about HD lace', 'Shop The Crown']
+      followUps: ['Is this right for beginners?', 'What is HD lace?', '← See all options']
     },
     {
       keywords: ['hd lace', 'lace', 'swiss', 'hairline', 'natural look', 'undetectable', 'invisible', 'melt'],
       response: function() {
-        return 'We use <strong>13×6 Swiss HD lace</strong> — an ultra-thin, sheer material that blends into any skin tone and creates the illusion that hair is growing directly from the scalp. Combined with pre-bleached knots and a pre-plucked hairline, the result is completely undetectable.';
+        return 'We use <strong>13×6 Swiss HD lace</strong> — an ultra-thin material that blends naturally into the scalp across all skin tones, creating the appearance that hair is growing directly from the scalp. Combined with pre-bleached knots and a pre-plucked hairline, the result is a completely natural install.';
       },
-      followUps: ['Learn about HD lace', 'Is it pre-plucked?', 'Shop The Crown']
+      followUps: ['What is HD lace?', 'Is this right for beginners?', '← See all options']
     },
     {
       keywords: ['care', 'wash', 'maintain', 'shampoo', 'conditioner', 'style', 'heat', 'curl', 'straighten', 'store', 'storage', 'last', 'lifespan', 'how long', 'durable'],
       response: function() {
-        return 'With proper care, our wigs last <strong>1–3 years</strong>. Key steps:<br><br>&bull; Wash every 10–14 wears with sulphate-free shampoo<br>&bull; Deep condition monthly<br>&bull; Use heat protectant before styling (safe to 392°F)<br>&bull; Store on a wig stand or in the satin bag between wears<br>&bull; Detangle gently from ends to roots<br><br>A care guide is included with every order.';
+        return 'With consistent care, an AA WIGS unit lasts <strong>1–3 years</strong>. The most important steps:<br><br>&bull; Wash every 10–14 wears with sulphate-free shampoo<br>&bull; Deep condition monthly<br>&bull; Use heat protectant before styling<br>&bull; Store on a wig stand or in the satin bag between wears<br>&bull; Detangle gently from ends to roots<br><br>A care guide is included with every order.<br><br><a href="/wig-care/" class="chat-link">Full Care Guide →</a>';
       },
-      followUps: ['How do I care for my wig?', 'What comes in the box?', 'Shop The Crown']
+      followUps: ['How do I care for it?', 'Tell me about the signature piece', '← See all options']
     },
     {
       keywords: ['package', 'packaging', 'box', 'unbox', 'include', 'come with', "what's in", 'whats in', 'gift'],
       response: function(k) {
-        return 'Every order arrives in a <strong>luxury magnetic burgundy box</strong> with gold foil logo and champagne satin lining. Inside:<br><br>&bull; ' + k.packaging.includes.join('<br>&bull; ') + '<br><br>Many customers say it feels like opening a luxury gift.';
+        return 'Every order arrives in a <strong>luxury deep burgundy box</strong> with gold foil logo and cream satin lining. Inside:<br><br>&bull; ' + k.packaging.includes.join('<br>&bull; ') + '<br><br>The packaging is designed to reflect the standard of what is inside it.';
       },
-      followUps: ['What makes AA WIGS different?', 'Shipping details', 'Shop The Crown']
+      followUps: ['What makes AA WIGS different?', 'Tell me about the signature piece', '← See all options']
     },
     {
-      keywords: ['density', '180', 'thick', 'thin', 'full', 'volume', 'natural density'],
+      keywords: ['density', '180', 'thick', 'thin', 'full', 'volume'],
       response: function() {
-        return 'Our wigs feature <strong>180% density</strong> — full and voluminous while still looking completely natural. This is the ideal balance: not flat, not overdone. Effortless confidence from day one.';
+        return 'The signature piece features <strong>180% density</strong> — full and voluminous while remaining completely natural-looking. Not flat, not overdone. A balanced weight that moves naturally and holds its shape.';
       },
-      followUps: ['What makes AA WIGS different?', 'Help me choose a length', 'Shop The Crown']
+      followUps: ['Tell me about the signature piece', 'What makes AA WIGS different?', '← See all options']
     },
     {
-      keywords: ['hair type', 'virgin', 'human hair', 'real hair', 'synthetic', 'quality', 'material', 'body wave', 'texture', 'pattern'],
+      keywords: ['virgin', 'human hair', 'real hair', 'synthetic', 'quality', 'material', 'body wave', 'texture', 'pattern'],
       response: function() {
-        return 'Our wigs use <strong>100% virgin human hair</strong> in a body wave pattern — never chemically processed, heat-styleable, and soft-textured. Body wave is our most versatile texture: stunning worn as a natural wave, straightened, or styled with more curl.';
+        return 'The signature piece uses <strong>100% virgin human hair</strong> in a body wave pattern — unprocessed, heat-styleable, and naturally soft. Body wave is our most versatile texture: stunning as a natural wave, equally beautiful straightened or with additional curl.';
       },
-      followUps: ['Body wave vs straight?', 'How long does it last?', 'Shop The Crown']
+      followUps: ['Tell me about the signature piece', 'How do I care for it?', '← See all options']
     },
     {
-      keywords: ['beginner', 'first wig', 'first time', 'new to wigs', 'never worn', 'recommend', 'suggestion', 'best', 'popular'],
-      response: function(k) {
-        return 'For first-time buyers, we recommend:<br><br><strong>Length:</strong> 22" — the most versatile starting point<br><strong>Colour:</strong> 1B Natural Black — our bestseller<br><strong>Price:</strong> ' + k.product.defaultPrice + '<br><br>Glueless, adjustable, and ready to wear from day one — no salon visit needed.';
-      },
-      followUps: ['Is this good for first-time buyers?', 'Learn about HD lace', 'Shop The Crown']
-    },
-    {
-      keywords: ['contact', 'email', 'phone', 'reach', 'talk', 'speak', 'customer service', 'support', 'help me'],
+      keywords: ['beginner', 'first wig', 'first time', 'new to wigs', 'never worn', 'recommend', 'suggestion', 'best for'],
       response: function() {
-        return 'You can reach our team at:<br><br><strong>Email:</strong> hello@aawigs.com<br><strong>Instagram:</strong> <a href="https://instagram.com/aawigshair" target="_blank" class="chat-link">@aawigshair</a><br><strong>Contact form:</strong> <a href="/contact.html" class="chat-link">Contact page</a><br><br>We respond within 24 hours. For a faster reply, DM us on Instagram.';
+        return 'For a first luxury wig, most visitors find the <strong>22" in 1B Natural Black</strong> to be the most considered starting point — the most versatile length and our most universally flattering shade.<br><br>The piece is glueless, adjustable, and ready to wear from day one. No salon visit required.<br><br>We always recommend reading through the Knowledge Center first. An informed decision is always the right one.<br><br><a href="/knowledge-center/" class="chat-link">Knowledge Center →</a>';
       },
-      followUps: ['Speak with the AA WIGS team', 'Return policy', 'Shop The Crown']
+      followUps: ['Is this my first luxury wig?', 'What is HD lace?', 'Speak with the AA WIGS team']
+    },
+    {
+      keywords: ['review', 'reviews', 'testimonial', 'what do people say', 'customer', 'experience', 'feedback'],
+      response: function() {
+        return 'To read authentic experiences from AA WIGS clients, visit <strong>The First Circle</strong> — our community space dedicated to honest reflection and shared journeys.<br><br><a href="/the-first-circle/" class="chat-link">The First Circle →</a>';
+      },
+      followUps: ['What makes AA WIGS different?', 'Tell me about the signature piece', '← See all options']
+    },
+    {
+      keywords: ['contact', 'email', 'phone', 'reach', 'talk', 'speak', 'customer service', 'support'],
+      response: function() {
+        return 'You can reach our team at:<br><br><strong>Email:</strong> hello@aawigs.com<br><strong>Instagram:</strong> <a href="https://instagram.com/aawigshair" target="_blank" class="chat-link">@aawigshair</a><br><strong>Contact form:</strong> <a href="/contact.html" class="chat-link">Contact page</a><br><br>We respond within 24 hours.';
+      },
+      followUps: ['Speak with the AA WIGS team', '← See all options']
     },
     {
       keywords: ['payment', 'pay', 'checkout', 'stripe', 'credit card', 'debit', 'secure', 'safe'],
       response: function() {
-        return 'We use <strong>Stripe</strong> for all payments — one of the most trusted processors globally. All major credit and debit cards, Apple Pay, and Google Pay are accepted. Your payment information is fully encrypted.';
+        return 'All payments are processed securely through <strong>Stripe</strong>. Major credit and debit cards, Apple Pay, and Google Pay are accepted. Your payment information is fully encrypted and never stored on our servers.';
       },
-      followUps: ['Shipping details', 'Return policy', 'Shop The Crown']
+      followUps: ['Shipping details', 'Tell me about the signature piece', '← See all options']
     },
     {
       keywords: ['waitlist', 'notify', 'restock', 'back in stock', 'sold out', 'available', 'when available'],
       response: function() {
-        return 'Some shades sell out quickly. If your preferred shade is unavailable, <a href="/waitlist.html" class="chat-link">join our waitlist</a> and we will notify you by email the moment it is back. Takes just a few seconds.';
+        return 'If a shade or length is unavailable, joining our list ensures you will be notified as soon as the next release becomes available.<br><br><a href="/waitlist.html" class="chat-link">Join the Waitlist →</a><br><a href="/the-first-circle/" class="chat-link">The First Circle →</a>';
       },
-      followUps: ['Help me choose a color', 'Shop The Crown']
+      followUps: ['Tell me about the signature piece', 'Speak with the AA WIGS team', '← See all options']
     },
     {
       keywords: ['pre-plucked', 'preplucked', 'plucked', 'baby hair', 'natural hairline'],
       response: function() {
-        return 'Yes — our wig comes <strong>pre-plucked</strong> with a natural hairline right out of the box. Baby hairs are already customised. No plucking, no additional preparation — place it on, adjust, and go.';
+        return 'Yes — the signature piece arrives <strong>pre-plucked</strong> with a natural hairline. Baby hairs are already customised. No additional preparation is required — place it on, adjust, and go.';
       },
-      followUps: ['Is it glueless?', 'Learn about HD lace', 'Shop The Crown']
+      followUps: ['Is it glueless?', 'What is HD lace?', '← See all options']
     },
     {
       keywords: ['order', 'where is my', 'track my', 'status', 'shipped', 'processing'],
       response: function() {
-        return 'Once your order is placed, you will receive a confirmation email. Once shipped (within 1–3 business days), a tracking number is sent via email. No update yet? Email <strong>hello@aawigs.com</strong> with your order number.';
+        return 'Once your order is placed, you will receive a confirmation email. Once shipped (within 1–3 business days), a tracking number is sent to your email. If you have not received an update, email <strong>hello@aawigs.com</strong> with your order number.';
       },
       followUps: ['Shipping details', 'Speak with the AA WIGS team']
     },
     {
-      keywords: ['thank', 'thanks', 'appreciate', 'helpful', 'great', 'awesome', 'perfect', 'wonderful'],
+      keywords: ['thank', 'thanks', 'appreciate', 'helpful', 'great', 'perfect', 'wonderful'],
       response: function() {
-        return "You are very welcome. We hope to be part of your confidence journey. If anything else comes up, I am always here.";
+        return "You are very welcome. Whatever you decide, I hope the information has been useful. If anything else comes up, I am always here.";
       },
-      followUps: ['Shop The Crown', '← See all options']
+      followUps: ['← See all options']
     },
     {
-      keywords: ['international', 'outside us', 'canada', 'uk', 'europe', 'africa', 'asia', 'nigeria', 'abroad'],
+      keywords: ['international', 'outside us', 'canada', 'uk', 'europe', 'africa', 'nigeria', 'abroad'],
       response: function() {
-        return 'We currently ship within the <strong>United States only</strong>. International shipping is coming. <a href="/waitlist.html" class="chat-link">Join our waitlist</a> to be notified when it launches.';
+        return 'We currently ship within the <strong>United States only</strong>. For future updates, including any international shipping announcements, joining our list is the best way to stay informed.<br><br><a href="/the-first-circle/" class="chat-link">The First Circle →</a>';
       },
-      followUps: ['U.S. shipping details', '← See all options']
+      followUps: ['Speak with the AA WIGS team', '← See all options']
+    },
+    {
+      keywords: ['different color', 'different length', 'other texture', 'other style', 'something else', 'other products', 'straight', 'curly', 'deep wave'],
+      response: function() {
+        return 'At the moment, AA WIGS focuses exclusively on one signature piece — the 22\" 13×6 Swiss HD Lace Body Wave — because we believe it is better to perfect one experience than to offer many inconsistent options.<br><br>If our collection expands in the future, members of our insider list will be the first to know.<br><br><a href="/the-first-circle/" class="chat-link">The First Circle →</a>';
+      },
+      followUps: ['Why does AA WIGS offer one product?', 'Tell me about the signature piece', '← See all options']
     }
   ],
 
@@ -561,8 +584,8 @@ var AAChat = {
     }
 
     return {
-      text: "I am happy to help. Ask me about lengths, colours, HD lace, care — or let me connect you with our team personally.",
-      followUps: ['Help me choose a length', 'Help me choose a color', 'Speak with the AA WIGS team', '← See all options']
+      text: "I want to make sure I provide you with accurate information. Could you share a little more about what you are looking for? Or I can connect you with the AA WIGS team directly.",
+      followUps: ['Tell me about the signature piece', 'What makes AA WIGS different?', 'Speak with the AA WIGS team', '← See all options']
     };
   },
 
@@ -641,7 +664,7 @@ var AAChat = {
               '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
             '</button>' +
           '</div>' +
-          '<div class="chat-powered">AA WIGS Concierge &middot; Luxury Wig Advisor</div>' +
+          '<div class="chat-powered">AA WIGS Concierge &middot; Luxury Client Advisor</div>' +
         '</div>' +
 
       '</div>';
@@ -684,7 +707,7 @@ var AAChat = {
         var welcome = document.querySelector('.chat-welcome');
         if (welcome) welcome.style.display = 'none';
         self.addBotMessage(
-          "Welcome to AA WIGS. I'm here to help you choose your perfect crown with confidence.",
+          "Welcome to AA WIGS.<br><br>I'm your personal concierge. I'm here to answer your questions, explain our signature piece, and help you determine whether it's the right fit for you.<br><br>What brings you here today?",
           self.mainMenuReplies
         );
       }, 500);
@@ -715,7 +738,7 @@ var AAChat = {
       this.showTyping();
       setTimeout(function() {
         self.hideTyping();
-        self.addBotMessage('How else can I help you today?', self.mainMenuReplies);
+        self.addBotMessage('Of course. How else can I help you?', self.mainMenuReplies);
       }, 380);
       return;
     }
@@ -730,24 +753,34 @@ var AAChat = {
       return;
     }
 
-    // ── Flow triggers (initial quick replies) ─────────────────────────────
+    // ── Flow triggers (quick replies) ─────────────────────────────────────
     var flowTriggers = {
-      'help me choose a length': 'length',
-      'help me choose a color': 'color',
-      'help me choose a colour': 'color',
-      'is this good for first-time buyers?': 'firsttime',
-      'is this good for first-time buyers': 'firsttime',
-      "yes — it's my first": 'firsttime',
-      "i've worn wigs before": 'firsttime',
-      'first time buyers': 'firsttime',
-      'learn about hd lace': 'hdlace',
-      'how do i care for my wig?': 'care',
-      'how do i care for my wig': 'care',
-      'what makes aa wigs different?': 'different',
-      'what makes aa wigs different': 'different',
-      'speak with the aa wigs team': 'speak',
-      'speak with the team': 'speak',
-      'personal help': 'speak'
+      'is this my first luxury wig?':          'firsttime',
+      'is this my first luxury wig':           'firsttime',
+      "yes — it's my first":                   'firsttime',
+      "i've worn wigs before":                 'firsttime',
+      'is this right for beginners?':          'firsttime',
+      'is this good for first-time buyers?':   'firsttime',
+      'is this good for first-time buyers':    'firsttime',
+      'first time buyers':                     'firsttime',
+      'help me understand lengths':            'length',
+      'help me choose a length':               'length',
+      'help me choose a color':                'color',
+      'help me choose a colour':               'color',
+      'help me choose a shade':                'color',
+      'what is hd lace?':                      'hdlace',
+      'what is hd lace':                       'hdlace',
+      'learn about hd lace':                   'hdlace',
+      'how do i care for it?':                 'care',
+      'how do i care for my wig?':             'care',
+      'how do i care for my wig':              'care',
+      'why does aa wigs offer one product?':   'oneprod',
+      'why does aa wigs offer one product':    'oneprod',
+      'what makes aa wigs different?':         'different',
+      'what makes aa wigs different':          'different',
+      'speak with the aa wigs team':           'speak',
+      'speak with the team':                   'speak',
+      'personal help':                         'speak'
     };
 
     if (flowTriggers[lower]) {
@@ -758,13 +791,18 @@ var AAChat = {
     // ── Quick actions ──────────────────────────────────────────────────────
     var productUrl = this.knowledge.product.url;
     var quickActions = {
-      'shop now':       { text: 'Explore the full collection — 6 colours, 5 lengths, all in 13×6 Swiss HD lace.<br><br><a href="' + productUrl + '" class="chat-link">Shop The Signature Body Wave →</a>', followUps: ['← See all options'] },
-      'shop the crown': { text: 'Explore the full collection — 6 colours, 5 lengths, all in 13×6 Swiss HD lace.<br><br><a href="' + productUrl + '" class="chat-link">Shop The Signature Body Wave →</a>', followUps: ['← See all options'] },
-      'shop':           { text: '<a href="' + productUrl + '" class="chat-link">Shop The Signature Body Wave →</a>', followUps: ['← See all options'] },
-      'buy now':        { text: '<a href="' + productUrl + '" class="chat-link">Shop The Signature Body Wave →</a>', followUps: [] },
-      'join the waitlist': { text: 'Join our waitlist to be notified when your preferred shade is available.<br><br><a href="/waitlist.html" class="chat-link">Join the Waitlist →</a>', followUps: ['← See all options'] },
-      'full care guide':   { text: '<a href="/care.html" class="chat-link">View the Full Care Guide →</a>', followUps: ['← See all options'] },
-      'contact us':        { text: 'Reach us at <strong>hello@aawigs.com</strong> or via our <a href="/contact.html" class="chat-link">contact page</a>.', followUps: ['Speak with the AA WIGS team', '← See all options'] }
+      'tell me about the signature piece': {
+        text: 'The AA WIGS signature piece is a <strong>22" 13×6 Swiss HD Lace Body Wave Wig</strong> crafted from 100% virgin human hair at 180% density. Available in six shades and five lengths.<br><br>It is glueless, pre-plucked, and arrives in luxury packaging — ready to wear from the first install.<br><br><a href="' + productUrl + '" class="chat-link">View the Signature Piece →</a><br><a href="/knowledge-center/" class="chat-link">Knowledge Center →</a>',
+        followUps: ['What is HD lace?', 'Is this right for beginners?', 'Speak with the AA WIGS team', '← See all options']
+      },
+      'join the waitlist': {
+        text: 'Joining our list ensures you will be notified as soon as the next release becomes available.<br><br><a href="/waitlist.html" class="chat-link">Join the Waitlist →</a>',
+        followUps: ['← See all options']
+      },
+      'contact us': {
+        text: 'Reach us at <strong>hello@aawigs.com</strong> or via our <a href="/contact.html" class="chat-link">contact page</a>.',
+        followUps: ['Speak with the AA WIGS team', '← See all options']
+      }
     };
 
     if (quickActions[lower]) {
@@ -850,14 +888,16 @@ var AAChat = {
     });
   },
 
-  escapeHtml: function(text) {
-    var d = document.createElement('div');
-    d.textContent = text;
-    return d.innerHTML;
+  escapeHtml: function(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
   },
 
-  escapeAttr: function(text) {
-    return text.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  escapeAttr: function(str) {
+    return String(str).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
 };
 
