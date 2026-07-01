@@ -198,9 +198,24 @@
   </url>
 
   <url>
-    <loc>https://aawigs.com/returns.html</loc>
+    <loc>https://aawigs.com/returns/</loc>
     <priority>0.40</priority>
     <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://aawigs.com/privacy-policy/</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.30</priority>
+  </url>
+  <url>
+    <loc>https://aawigs.com/cookie-policy/</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.30</priority>
+  </url>
+  <url>
+    <loc>https://aawigs.com/terms/</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.30</priority>
   </url>
 
 

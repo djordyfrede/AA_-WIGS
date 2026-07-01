@@ -1,0 +1,249 @@
+AA WIGS — Add Trust & Legal Infrastructure (Luxury Implementation)
+
+OBJECTIVE
+
+Strengthen the trust and professionalism of the AA WIGS website by implementing a complete privacy and legal infrastructure that matches the existing luxury aesthetic.
+
+This is not a redesign.
+
+Everything added must feel like it has always been part of AA WIGS.
+
+⸻
+
+DO NOT MODIFY
+
+Do NOT redesign or alter:
+
+* Homepage
+* Navigation layout
+* Product pages
+* Knowledge Center
+* The First Circle
+* Concierge
+* CEO Dashboard
+* Cart
+* Checkout
+* Typography
+* Brand colors
+* Existing animations
+
+Maintain the current AA WIGS visual identity.
+
+⸻
+
+IMPLEMENT THE FOLLOWING
+
+1. Luxury Cookie Consent Banner
+
+Create a clean, minimal cookie banner.
+
+Requirements:
+
+* Bottom of the screen
+* Deep Burgundy background
+* Champagne Gold buttons
+* Elegant serif typography
+* Mobile responsive
+* Smooth fade-in animation
+* Do not cover important content
+
+Banner text:
+
+AA WIGS uses cookies to improve your browsing experience, analyze website performance, and provide a more personalized experience. By continuing to browse, you agree to our use of cookies.
+
+Buttons:
+
+* Accept All
+* Reject Non-Essential
+* Cookie Preferences
+
+Remember visitor choice using browser storage.
+
+Do not repeatedly show the banner after a choice has been made.
+
+⸻
+
+2. Cookie Policy
+
+Create:
+
+/cookie-policy/
+
+Include:
+
+* What cookies are
+* Essential cookies
+* Analytics cookies
+* Functional cookies
+* Visitor choices
+* Contact information
+
+Match existing article styling.
+
+⸻
+
+3. Privacy Policy
+
+Create:
+
+/privacy-policy/
+
+Include professionally written sections covering:
+
+* Information collected
+* Email waitlist
+* Concierge conversations
+* Contact forms
+* Analytics
+* Cookies
+* Data security
+* User rights
+* Third-party services
+* Policy updates
+* Contact information
+
+Do not invent business practices.
+
+Only describe features actually used on the website.
+
+⸻
+
+4. Terms & Conditions
+
+Create:
+
+/terms/
+
+Include:
+
+* Website usage
+* Intellectual property
+* Product information
+* Ordering process
+* Waitlist
+* Shipping
+* Returns
+* Limitation of liability
+* Governing law
+* Contact information
+
+Keep language professional and customer-friendly.
+
+⸻
+
+5. Return & Exchange Policy
+
+Create:
+
+/returns/
+
+Include sections for:
+
+* Eligibility
+* Inspection process
+* Return requests
+* Exchanges
+* Damaged items
+* Contact procedure
+
+Do not promise policies that AA WIGS does not currently offer.
+
+⸻
+
+6. Footer Improvements
+
+Add elegant footer links:
+
+* Privacy Policy
+* Cookie Policy
+* Terms & Conditions
+* Returns & Exchanges
+
+Maintain existing typography and spacing.
+
+No redesign.
+
+⸻
+
+7. SEO
+
+Each new page must include:
+
+* Canonical URL
+* Meta Title
+* Meta Description
+* Open Graph Tags
+* Structured heading hierarchy
+* Proper semantic HTML
+
+⸻
+
+8. Sitemap
+
+Automatically update sitemap.xml to include:
+
+* /cookie-policy/
+* /privacy-policy/
+* /terms/
+* /returns/
+
+Use:
+
+* changefreq: yearly
+* priority: 0.30
+
+⸻
+
+9. Google Search Console Checklist
+
+At completion output:
+
+Google Search Console — Request Indexing
+
+https://aawigs.com/privacy-policy/
+
+https://aawigs.com/cookie-policy/
+
+https://aawigs.com/terms/
+
+https://aawigs.com/returns/
+
+Do NOT submit automatically.
+
+Only provide the URLs.
+
+⸻
+
+DESIGN REQUIREMENTS
+
+Everything must look like AA WIGS.
+
+Use:
+
+* Deep Burgundy
+* Champagne Gold
+* Ivory backgrounds
+* Premium serif headings
+* Large white space
+* Calm luxury
+* Minimal animations
+
+No generic legal template appearance.
+
+⸻
+
+FINAL QA
+
+Before completion verify:
+
+* Cookie banner functions correctly
+* Visitor preferences persist
+* Footer links work
+* All new pages are mobile responsive
+* Sitemap updated
+* No console errors
+* Existing styling unchanged
+* Existing functionality unaffected
+* All new pages return HTTP 200
+
+This implementation should make AA WIGS feel like an established luxury brand that values transparency, privacy, and professionalism without changing its visual identity.
