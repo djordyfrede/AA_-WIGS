@@ -293,4 +293,36 @@
     <lastmod>2026-06-26</lastmod>
   </url>
 
+  <!-- Knowledge Center — July 2026 articles -->
+  <url>
+    <loc>https://aawigs.com/knowledge-center/wig-density/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+    <lastmod>2026-07-05</lastmod>
+  </url>
+  <url>
+    <loc>https://aawigs.com/knowledge-center/glueless-wig-installation/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+    <lastmod>2026-07-05</lastmod>
+  </url>
+  <url>
+    <loc>https://aawigs.com/knowledge-center/wig-color-for-skin-tone/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+    <lastmod>2026-07-05</lastmod>
+  </url>
+  <url>
+    <loc>https://aawigs.com/knowledge-center/virgin-human-hair/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+    <lastmod>2026-07-05</lastmod>
+  </url>
+  <url>
+    <loc>https://aawigs.com/knowledge-center/refresh-body-wave/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+    <lastmod>2026-07-05</lastmod>
+  </url>
+
 </urlset>
