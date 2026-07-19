@@ -394,6 +394,48 @@ async function initDatabase() {
     }
     console.log('[DB] Seeded inventory table with 30 variants');
   }
+
+  // ── Always ensure 99J Burgundy product record exists ──
+  const burProduct = await pool.query('SELECT id FROM products WHERE slug=$1', ['99j-burgundy-body-wave']);
+  if (burProduct.rows.length === 0) {
+    await pool.query(
+      `INSERT INTO products (name, slug, description, category, image_url, active, visible, new_arrival)
+       VALUES ($1,$2,$3,$4,$5,TRUE,TRUE,TRUE)`,
+      [
+        '99J Burgundy Body Wave',
+        '99j-burgundy-body-wave',
+        '100% Virgin Human Hair · 13x6 Swiss HD Lace · 180% Density · Pre-plucked Hairline · Glueless Adjustable Band · Heat Safe up to 392°F',
+        'wigs',
+        '/assets/99j/99j-1-front.jpg'
+      ]
+    );
+    console.log('[DB] Seeded 99J Burgundy product record');
+  }
+
+  // ── Always ensure 99J Burgundy product images exist ──
+  const imgCheck = await pool.query('SELECT COUNT(*) FROM product_images WHERE slug=$1', ['99j-burgundy-body-wave']);
+  if (parseInt(imgCheck.rows[0].count) === 0) {
+    const images99j = [
+      { url: '/assets/99j/99j-1-front.jpg',              alt: '99J Burgundy Body Wave – Front View' },
+      { url: '/assets/99j/99j-2-three-quarter.jpg',      alt: '99J Burgundy Body Wave – Three Quarter View' },
+      { url: '/assets/99j/99j-3-three-quarter-opp.jpg',  alt: '99J Burgundy Body Wave – Three Quarter Opposite' },
+      { url: '/assets/99j/99j-4-smile.jpg',              alt: '99J Burgundy Body Wave – Smile' },
+      { url: '/assets/99j/99j-5-left-profile.jpg',       alt: '99J Burgundy Body Wave – Left Profile' },
+      { url: '/assets/99j/99j-6-right-profile.jpg',      alt: '99J Burgundy Body Wave – Right Profile' },
+      { url: '/assets/99j/99j-7-back.jpg',               alt: '99J Burgundy Body Wave – Back View' },
+      { url: '/assets/99j/99j-8-lace.jpg',               alt: '99J Burgundy Body Wave – Lace Closeup' },
+      { url: '/assets/99j/99j-9-lifestyle.jpg',          alt: '99J Burgundy Body Wave – Lifestyle' },
+      { url: '/assets/99j/99j-10-texture.jpg',           alt: '99J Burgundy Body Wave – Texture' },
+      { url: '/assets/99j/99j-11-lifestyle2.jpg',        alt: '99J Burgundy Body Wave – Lifestyle 2' },
+    ];
+    for (let i = 0; i < images99j.length; i++) {
+      await pool.query(
+        'INSERT INTO product_images (slug, url, alt, sort_order) VALUES ($1,$2,$3,$4)',
+        ['99j-burgundy-body-wave', images99j[i].url, images99j[i].alt, i + 1]
+      );
+    }
+    console.log('[DB] Seeded 99J Burgundy product images');
+  }
 }
 
 // ─── DYNAMIC PRODUCT PAGE (inject live rating into meta tags) ─────────────────
