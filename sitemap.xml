@@ -20,6 +20,13 @@
     <changefreq>weekly</changefreq>
   </url>
 
+  <url>
+    <loc>https://aawigs.com/products/99j-burgundy-body-wave/</loc>
+    <priority>0.9</priority>
+    <changefreq>weekly</changefreq>
+    <lastmod>2026-07-19</lastmod>
+  </url>
+
   <!-- Educational hub — new clean-URL pages -->
   <url>
     <loc>https://aawigs.com/hd-lace-guide/</loc>

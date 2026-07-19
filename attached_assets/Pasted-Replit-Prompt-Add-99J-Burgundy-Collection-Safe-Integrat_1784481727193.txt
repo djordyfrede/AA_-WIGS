@@ -1,0 +1,272 @@
+Replit Prompt — Add 99J Burgundy Collection (Safe Integration)
+
+You are working on the existing AA WIGS production website.
+
+IMPORTANT
+
+This is an expansion task.
+
+DO NOT:
+
+change any existing logic
+modify existing routes
+remove components
+rename files
+alter Stripe functionality
+modify existing product cards
+change typography
+change colors
+change layouts
+change spacing
+modify CSS globally
+modify navigation
+modify SEO already implemented
+change dashboard functionality
+
+Everything currently working must remain exactly the same.
+
+The objective is ONLY to add a new color collection using the existing architecture.
+
+New Collection
+
+Create a new color:
+
+99J Burgundy
+
+Use the exact same product architecture as the existing Natural Black collection.
+
+Everything should function identically.
+
+Product Information
+
+Color Name
+
+99J Burgundy
+
+Texture
+
+Body Wave
+
+Lace
+
+13x6 Swiss HD Lace
+
+Density
+
+180%
+
+Hair
+
+100% Virgin Human Hair
+
+Construction
+
+Glueless Ready
+
+Lengths
+
+Create the same five variants.
+
+18"
+
+20"
+
+22"
+
+24"
+
+26"
+
+Each length should have its own Stripe product exactly like Natural Black.
+
+Reuse the existing variant logic.
+
+Do not duplicate unnecessary code.
+
+Images
+
+Create a dedicated image gallery using the provided 99J Burgundy photographs.
+
+Maintain the same order as Natural Black:
+
+Front
+
+Three Quarter
+
+Three Quarter Opposite
+
+Smile Portrait
+
+Left Profile
+
+Right Profile
+
+Back
+
+Lace Close-up
+
+Hair Texture / Lifestyle
+
+Lifestyle Walking Image
+
+Use the existing gallery component.
+
+Do not rebuild it.
+
+Product URL
+
+Create:
+
+/products/99j-burgundy-body-wave
+
+Follow the exact URL structure used for the existing products.
+
+Product Card
+
+Add one additional product card to the shop.
+
+Display:
+
+99J Burgundy
+
+Body Wave
+
+Starting at $299
+
+Luxury Body Wave
+
+Use the same hover animations already implemented.
+
+Color Selector
+
+Where the customer selects colors, add:
+
+○ Natural Black
+
+○ 99J Burgundy
+
+Use the existing selector component.
+
+Do not redesign it.
+
+SEO
+
+Generate:
+
+Title
+
+99J Burgundy Body Wave Wig | AA WIGS
+
+Meta Description
+
+Premium 99J Burgundy Body Wave Wig featuring 13x6 Swiss HD Lace, 180% density, glueless construction, and 100% virgin human hair. Luxury meets confidence.
+
+Canonical URL
+
+/products/99j-burgundy-body-wave
+
+Open Graph image
+
+First hero image.
+
+JSON-LD
+
+Duplicate the current Product schema and update:
+
+Color
+
+99J Burgundy
+
+Images
+
+New gallery
+
+SKU
+
+Unique Burgundy SKU
+
+Leave everything else identical.
+
+Knowledge Center
+
+Where product recommendations appear, include the Burgundy collection exactly as Natural Black appears.
+
+No layout changes.
+
+Search
+
+Ensure searches for:
+
+99J
+
+99J Wig
+
+Burgundy Wig
+
+Burgundy Body Wave
+
+Body Wave Burgundy
+
+return this product.
+
+Internal Linking
+
+Automatically connect:
+
+Luxury Packaging
+
+HD Lace Guide
+
+Body Wave Guide
+
+Wig Care
+
+Length Guide
+
+to this new product using the existing internal linking system.
+
+Responsive
+
+Verify:
+
+Desktop
+
+Tablet
+
+Mobile
+
+No layout shifts.
+
+No CLS.
+
+No overflow.
+
+Performance
+
+Do not duplicate reusable components.
+
+Reuse existing:
+
+Gallery
+
+Variant selector
+
+Stripe logic
+
+Product template
+
+SEO template
+
+Image components
+
+Accessibility
+
+Maintain:
+
+alt text
+
+ARIA labels
+
+keyboard navigation
+
+focus states
