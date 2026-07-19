@@ -395,6 +395,31 @@ async function initDatabase() {
     console.log('[DB] Seeded inventory table with 30 variants');
   }
 
+  // ── Always ensure 613 Blonde product images exist ──
+  const img613Check = await pool.query('SELECT COUNT(*) FROM product_images WHERE slug=$1', ['613-blonde-body-wave']);
+  if (parseInt(img613Check.rows[0].count) === 0) {
+    const images613 = [
+      { url: '/assets/613/613-1-front.jpg',              alt: '613 Blonde Body Wave – Front View' },
+      { url: '/assets/613/613-2-left-profile.jpg',       alt: '613 Blonde Body Wave – Left Profile' },
+      { url: '/assets/613/613-3-smile.jpg',              alt: '613 Blonde Body Wave – Smile' },
+      { url: '/assets/613/613-4-three-quarter.jpg',      alt: '613 Blonde Body Wave – Three Quarter View' },
+      { url: '/assets/613/613-5-lifestyle.jpg',          alt: '613 Blonde Body Wave – Lifestyle' },
+      { url: '/assets/613/613-6-right-profile.jpg',      alt: '613 Blonde Body Wave – Right Profile' },
+      { url: '/assets/613/613-7-three-quarter-opp.jpg',  alt: '613 Blonde Body Wave – Three Quarter Opposite' },
+      { url: '/assets/613/613-8-lace.jpg',               alt: '613 Blonde Body Wave – Lace Closeup' },
+      { url: '/assets/613/613-9-back.jpg',               alt: '613 Blonde Body Wave – Back View' },
+      { url: '/assets/613/613-10-three-quarter-back.jpg',alt: '613 Blonde Body Wave – Three Quarter Back' },
+      { url: '/assets/613/613-11-texture.jpg',           alt: '613 Blonde Body Wave – Texture' },
+    ];
+    for (let i = 0; i < images613.length; i++) {
+      await pool.query(
+        'INSERT INTO product_images (slug, url, alt, sort_order) VALUES ($1,$2,$3,$4)',
+        ['613-blonde-body-wave', images613[i].url, images613[i].alt, i + 1]
+      );
+    }
+    console.log('[DB] Seeded 613 Blonde product images');
+  }
+
   // ── Always ensure 99J Burgundy product record exists ──
   const burProduct = await pool.query('SELECT id FROM products WHERE slug=$1', ['99j-burgundy-body-wave']);
   if (burProduct.rows.length === 0) {

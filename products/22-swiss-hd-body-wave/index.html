@@ -903,7 +903,7 @@
 
     // ── COLOR-AWARE GALLERY SWAP ───────────────────────────────────
     function loadGalleryForColor(color) {
-      var slug = (color === '99J') ? '99j-burgundy-body-wave' : '22-swiss-hd-body-wave';
+      var slug = color === '99J' ? '99j-burgundy-body-wave' : color === '613' ? '613-blonde-body-wave' : '22-swiss-hd-body-wave';
       fetch('/api/product-images/' + slug)
         .then(function(r) { return r.json(); })
         .then(function(data) {
