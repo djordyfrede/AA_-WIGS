@@ -715,6 +715,7 @@
         swatch.classList.add('active');
         selectedColor = swatch.getAttribute('data-shade');
         updateUI();
+        loadGalleryForColor(selectedColor);
       });
     });
 
@@ -897,6 +898,40 @@
       document.querySelectorAll('#productGalleryThumbs .thumb').forEach(function(t, idx) {
         t.classList.toggle('active', idx === i);
       });
+    }
+
+    // ── COLOR-AWARE GALLERY SWAP ───────────────────────────────────
+    function loadGalleryForColor(color) {
+      var slug = (color === '99J') ? '99j-burgundy-body-wave' : '22-swiss-hd-body-wave';
+      fetch('/api/product-images/' + slug)
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          var thumbsEl = document.getElementById('productGalleryThumbs');
+          var mainImg = document.getElementById('productMainImgEl');
+          var mainLabel = document.getElementById('productImgLabel');
+          if (!thumbsEl || !mainImg) return;
+          if (!data.success || !data.images || !data.images.length) {
+            // No images for this color — restore placeholder state
+            _galleryImages = [];
+            _galleryActive = 0;
+            thumbsEl.innerHTML = '';
+            mainImg.src = '';
+            mainImg.style.display = 'none';
+            if (mainLabel) mainLabel.style.display = '';
+            return;
+          }
+          _galleryImages = data.images;
+          _galleryActive = 0;
+          thumbsEl.innerHTML = data.images.map(function(img, i) {
+            return '<div class="thumb' + (i === 0 ? ' active' : '') + '" data-gi="' + i + '" onclick="selectGalleryImg(' + i + ')" style="overflow:hidden;padding:0">' +
+              '<img src="' + escHtmlP(img.url) + '" alt="' + escHtmlP(img.alt) + '" style="width:100%;height:100%;object-fit:cover;display:block">' +
+            '</div>';
+          }).join('');
+          mainImg.src = data.images[0].url;
+          mainImg.style.display = 'block';
+          if (mainLabel) mainLabel.style.display = 'none';
+        })
+        .catch(function() {});
     }
 
     // ── PRODUCT BADGES FROM DB ─────────────────────────────────────
