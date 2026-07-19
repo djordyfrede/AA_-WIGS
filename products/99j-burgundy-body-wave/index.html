@@ -262,17 +262,6 @@
           </div>
           <p class="price-value-line">✦ Free Luxury Packaging Included</p>
 
-          <div class="social-proof-live">
-            <div class="proof-pill proof-viewing">
-              <span class="proof-dot"></span>
-              <span class="proof-text">Limited release. Prepared with intention.</span>
-            </div>
-            <div class="proof-pill proof-sold">
-              <span class="proof-check">&#10003;</span>
-              <span class="proof-text">Each unit is selected, inspected, and presented with care.</span>
-            </div>
-          </div>
-
           <div class="product-trust-row">
             <span class="product-trust-item"><span class="trust-check">✓</span> Free U.S. Shipping</span>
             <span class="product-trust-item"><span class="trust-check">✓</span> Secure Stripe Checkout</span>
@@ -348,36 +337,6 @@
             <button class="btn btn-solid" id="addToCartBtn">Add to Bag — $379</button>
           </div>
 
-          <div class="social-proof">
-            <div class="rating-summary">
-              <div class="stars" id="productStarsEl" aria-label="" style="visibility:hidden">
-                <span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span><span class="star">&#9733;</span>
-              </div>
-              <span class="rating-text" id="productRatingText"></span>
-            </div>
-
-            <div class="review-snippets" id="productReviewSnippets">
-              <div class="review-card"><div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="review-text">Loading reviews…</p></div>
-            </div>
-            <div style="text-align:center;margin-top:8px">
-              <a href="/the-first-circle/" class="btn-link-subtle">The First Circle &rarr;</a>
-            </div>
-
-            <div class="trust-badges">
-              <div class="trust-badge">
-                <span class="trust-badge-icon">&#10003;</span>
-                <span class="trust-badge-label">Free U.S. Shipping</span>
-              </div>
-              <div class="trust-badge">
-                <span class="trust-badge-icon">&#9919;</span>
-                <span class="trust-badge-label">Secure Stripe Checkout</span>
-              </div>
-              <div class="trust-badge">
-                <span class="trust-badge-icon">&#10022;</span>
-                <span class="trust-badge-label">Luxury Packaging Included</span>
-              </div>
-            </div>
-          </div>
 
           <div class="included-list fade-in" id="productIncludedList">
             <h3 class="product-section-title">What's Included</h3>
@@ -966,135 +925,5 @@
   })();
   </script>
   <script src="../../chat.js?v=20260308a"></script>
-  <div class="recent-purchase" id="recentPurchase" aria-live="polite">
-    <button class="recent-purchase-close" id="recentPurchaseClose" aria-label="Dismiss">&times;</button>
-    <div class="recent-purchase-inner">
-      <span class="recent-purchase-icon">&#128172;</span>
-      <div class="recent-purchase-body">
-        <p class="recent-purchase-msg" id="recentPurchaseMsg">Sarah from Miami just purchased a 22" Body Wave wig.</p>
-        <p class="recent-purchase-time">A few moments ago</p>
-      </div>
-    </div>
-  </div>
-  <script>
-  (function() {
-    var names = ['Sarah','Jasmine','Tiffany','Ashley','Nicole','Maya','Brianna','Destiny','Aaliyah','Kiara','Monique','Crystal','Danielle','Ebony','Imani','Keisha','Latoya','Mia','Naomi','Simone','Tamara','Vanessa','Zara'];
-    var cities = ['Miami','Atlanta','Houston','Dallas','Chicago','Los Angeles','New York','Charlotte','Detroit','Memphis','New Orleans','Baltimore','Philadelphia','Brooklyn','Oakland','Tampa','Raleigh','Nashville','Phoenix','San Antonio','Jacksonville','Richmond','St. Louis'];
-    var lengths = ['18','20','22','24','26'];
-    var times = ['A few moments ago','Just now','2 minutes ago','3 minutes ago','5 minutes ago'];
-
-    var el = document.getElementById('recentPurchase');
-    var msgEl = document.getElementById('recentPurchaseMsg');
-    var closeBtn = document.getElementById('recentPurchaseClose');
-    var dismissed = false;
-
-    function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-
-    function showNotification() {
-      if (dismissed) return;
-      var name = pick(names);
-      var city = pick(cities);
-      var len = pick(lengths);
-      var time = pick(times);
-      msgEl.textContent = name + ' from ' + city + ' just purchased a ' + len + '" Body Wave wig.';
-      el.querySelector('.recent-purchase-time').textContent = time;
-      el.classList.add('visible');
-      setTimeout(function() {
-        el.classList.remove('visible');
-      }, 6000);
-    }
-
-    function scheduleNext() {
-      var delay = Math.floor(Math.random() * 50000) + 40000;
-      setTimeout(function() {
-        showNotification();
-        scheduleNext();
-      }, delay);
-    }
-
-    closeBtn.addEventListener('click', function() {
-      el.classList.remove('visible');
-      dismissed = true;
-    });
-
-    setTimeout(showNotification, 8000);
-    scheduleNext();
-  })();
-  </script>
-  <script>
-  (function(){
-    var el = document.getElementById('productReviewSnippets');
-    if (!el) return;
-    function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-    function buildStarHTML(avg) {
-      var full = Math.max(0, Math.min(5, Math.round(avg)));
-      var html = '';
-      for (var i = 0; i < 5; i++) {
-        html += '<span class="star">' + (i < full ? '&#9733;' : '&#9734;') + '</span>';
-      }
-      return html;
-    }
-
-    function updateRatingDisplay(reviews) {
-      var count = reviews.length;
-      var rounded, avg;
-      if (count) {
-        var total = reviews.reduce(function(sum, r){ return sum + (r.rating || 0); }, 0);
-        avg = total / count;
-        rounded = Math.round(avg * 10) / 10;
-      } else {
-        avg = 0;
-        rounded = 0;
-      }
-
-      var starsEl = document.getElementById('productStarsEl');
-      if (starsEl) {
-        if (count > 0) {
-          starsEl.innerHTML = buildStarHTML(avg);
-          starsEl.setAttribute('aria-label', rounded + ' out of 5 stars');
-          starsEl.style.visibility = '';
-        } else {
-          starsEl.style.display = 'none';
-        }
-      }
-
-      var ratingText = document.getElementById('productRatingText');
-      if (ratingText) {
-        if (count > 0) {
-          ratingText.textContent = rounded + '/5 based on ' + count + ' customer review' + (count === 1 ? '' : 's');
-        } else {
-          ratingText.textContent = 'No reviews yet';
-        }
-      }
-    }
-
-    fetch('/api/reviews?page=product')
-      .then(function(r){ return r.json(); })
-      .then(function(data){
-        var reviews = data.reviews || [];
-        updateRatingDisplay(reviews);
-        if (!reviews.length) {
-          el.innerHTML = '';
-          return;
-        }
-        el.innerHTML = reviews.slice(0,3).map(function(r){
-          var stars = '&#9733;'.repeat(r.rating) + '&#9734;'.repeat(5-r.rating);
-          var vb = r.verified_purchase ? '<span class="review-verified-badge">&#10003; Verified</span>' : '';
-          var photos = (r.photo_urls||[]).slice(0,2).map(function(u){
-            return '<img src="'+esc(u)+'" class="review-photo-thumb" onclick="window.open(this.src)">';
-          }).join('');
-          return '<div class="review-card">'+
-            '<div class="review-stars">'+stars+'</div>'+
-            (photos?'<div class="review-photos-row">'+photos+'</div>':'')+
-            '<p class="review-text">"'+esc(r.review_text)+'"</p>'+
-            '<p class="review-author">'+esc(r.customer_name)+vb+
-              (r.wig_length?'<span class="review-location"> &middot; '+esc(r.wig_length)+'</span>':'')+
-            '</p>'+
-          '</div>';
-        }).join('');
-      }).catch(function(){});
-  })();
-  </script>
 </body>
 </html>
