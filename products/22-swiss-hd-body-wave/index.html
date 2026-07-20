@@ -236,7 +236,7 @@
         <div class="product-gallery">
           <div class="img-placeholder product-main-img" id="productMainImg" style="position:relative;overflow:hidden">
             <img id="productMainImgB" src="" alt="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;inset:0;opacity:0;transition:opacity 0.65s ease;z-index:1">
-            <img id="productMainImgEl" src="/assets/products/model-1b.png" alt="AA WIGS Body Wave" style="display:block;width:100%;height:100%;object-fit:cover;position:absolute;inset:0;opacity:1;transition:opacity 0.65s ease;z-index:2">
+            <img id="productMainImgEl" src="/assets/1b/1b-new-1-front.png" alt="AA WIGS 22 Swiss HD Body Wave – 1B Natural Black" style="display:block;width:100%;height:100%;object-fit:cover;position:absolute;inset:0;opacity:1;transition:opacity 0.65s ease;z-index:2">
             <span class="placeholder-text" id="productImgLabel" style="display:none">1B Natural Black</span>
           </div>
           <div id="galleryDots" class="gallery-dots"></div>
@@ -985,23 +985,36 @@
       }, { passive: true });
     })();
 
+    var GALLERY_1B = [
+      { url: '/assets/1b/1b-new-1-front.png',        alt: 'AA WIGS 1B Natural Black – Front View' },
+      { url: '/assets/1b/1b-new-2-smile.png',         alt: 'AA WIGS 1B Natural Black – Smiling' },
+      { url: '/assets/1b/1b-new-4-left-profile.png',  alt: 'AA WIGS 1B Natural Black – Left Profile' },
+      { url: '/assets/1b/1b-new-6-right-profile.png', alt: 'AA WIGS 1B Natural Black – Right Profile' },
+      { url: '/assets/1b/1b-new-5-front2.png',        alt: 'AA WIGS 1B Natural Black – Full Front' },
+      { url: '/assets/1b/1b-new-7-front3.png',        alt: 'AA WIGS 1B Natural Black – Flowing' },
+      { url: '/assets/1b/1b-new-8-back.png',          alt: 'AA WIGS 1B Natural Black – Back View' },
+      { url: '/assets/1b/1b-new-3-lace.png',          alt: 'AA WIGS 1B Natural Black – HD Lace Closeup' }
+    ];
+
     function loadProductImages() {
-      var hardcoded = [
-        { url: '/assets/products/model-1b.png',  alt: 'AA WIGS Body Wave – 1B Natural Black' },
-        { url: '/assets/products/model-99j.png', alt: 'AA WIGS Body Wave – 99J Burgundy' },
-        { url: '/assets/products/model-613.png', alt: 'AA WIGS Body Wave – 613 Blonde' },
-        { url: '/assets/products/model-27.png',  alt: 'AA WIGS Body Wave – 27 Honey Blonde' },
-        { url: '/assets/products/model-2.png',   alt: 'AA WIGS Body Wave – 2 Dark Brown' }
-      ];
-      _galleryImages = hardcoded;
+      _galleryImages = GALLERY_1B;
       _galleryActive = 0;
       _userPaused = false;
-      _buildGalleryUI(hardcoded);
+      _buildGalleryUI(GALLERY_1B);
       _autoplayStart();
     }
 
     // ── COLOR-AWARE GALLERY SWAP ───────────────────────────────────
     function loadGalleryForColor(color) {
+      if (color === '1B' || color === '1b' || !color) {
+        _autoplayStop();
+        _galleryImages = GALLERY_1B;
+        _galleryActive = 0;
+        _userPaused = false;
+        _buildGalleryUI(GALLERY_1B);
+        _autoplayStart();
+        return;
+      }
       var slug = color === '99J' ? '99j-burgundy-body-wave' : color === '613' ? '613-blonde-body-wave' : color === '27' ? '27-honey-blonde-body-wave' : color === '4' ? '4-medium-brown-body-wave' : color === '2' ? '2-dark-brown-body-wave' : '22-swiss-hd-body-wave';
       fetch('/api/product-images/' + slug)
         .then(function(r) { return r.json(); })
