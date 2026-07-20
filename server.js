@@ -443,6 +443,30 @@ async function initDatabase() {
     console.log('[DB] Seeded 613 Blonde product images');
   }
 
+  // ── Always ensure 27 Honey Blonde product images exist ──
+  const img27Check = await pool.query('SELECT COUNT(*) FROM product_images WHERE slug=$1', ['27-honey-blonde-body-wave']);
+  if (parseInt(img27Check.rows[0].count) === 0) {
+    const images27 = [
+      { url: '/assets/27/27-1-lifestyle.jpg',          alt: '27 Honey Blonde Body Wave – Lifestyle' },
+      { url: '/assets/27/27-2-front.jpg',              alt: '27 Honey Blonde Body Wave – Front View' },
+      { url: '/assets/27/27-3-smile.jpg',              alt: '27 Honey Blonde Body Wave – Smile' },
+      { url: '/assets/27/27-4-back.jpg',               alt: '27 Honey Blonde Body Wave – Back View' },
+      { url: '/assets/27/27-5-three-quarter.jpg',      alt: '27 Honey Blonde Body Wave – Three Quarter View' },
+      { url: '/assets/27/27-6-left-profile.jpg',       alt: '27 Honey Blonde Body Wave – Left Profile' },
+      { url: '/assets/27/27-7-right-profile.jpg',      alt: '27 Honey Blonde Body Wave – Right Profile' },
+      { url: '/assets/27/27-8-hand.jpg',               alt: '27 Honey Blonde Body Wave – Hand in Hair' },
+      { url: '/assets/27/27-9-lace.jpg',               alt: '27 Honey Blonde Body Wave – Lace Closeup' },
+      { url: '/assets/27/27-10-three-quarter-opp.jpg', alt: '27 Honey Blonde Body Wave – Three Quarter Opposite' },
+    ];
+    for (let i = 0; i < images27.length; i++) {
+      await pool.query(
+        'INSERT INTO product_images (slug, url, alt, sort_order) VALUES ($1,$2,$3,$4)',
+        ['27-honey-blonde-body-wave', images27[i].url, images27[i].alt, i + 1]
+      );
+    }
+    console.log('[DB] Seeded 27 Honey Blonde product images');
+  }
+
   // ── Always ensure 99J Burgundy product record exists ──
   const burProduct = await pool.query('SELECT id FROM products WHERE slug=$1', ['99j-burgundy-body-wave']);
   if (burProduct.rows.length === 0) {
