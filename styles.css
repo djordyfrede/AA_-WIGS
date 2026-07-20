@@ -3371,7 +3371,8 @@ button.btn-disabled {
   .product-detail-grid { gap: 16px; }
   .product-gallery .img-placeholder,
   .product-main-img { aspect-ratio: 4/5; max-height: 62vh; background: var(--champagne); }
-  #productMainImgEl, #productMainImgB { object-fit: contain !important; object-position: top center; }
+  /* cover fills the frame cleanly; top-center keeps face/hair visible, not body/torso */
+  #productMainImgEl, #productMainImgB { object-fit: cover !important; object-position: top center; }
   .product-gallery-thumbs { margin-top: 8px; gap: 8px; }
   .product-gallery-thumbs .thumb { width: 62px; height: 62px; flex-shrink: 0; }
   .gallery-zoom-nav { display: none; }
