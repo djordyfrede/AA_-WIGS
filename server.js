@@ -397,17 +397,19 @@ async function initDatabase() {
 
   // ── Always ensure 1B Natural Black product images exist ──
   const img1bCheck = await pool.query('SELECT COUNT(*) FROM product_images WHERE slug=$1', ['22-swiss-hd-body-wave']);
-  if (parseInt(img1bCheck.rows[0].count) === 0) {
+  if (parseInt(img1bCheck.rows[0].count) !== 10) {
+    await pool.query('DELETE FROM product_images WHERE slug=$1', ['22-swiss-hd-body-wave']);
     const images1b = [
       { url: '/assets/1b/1b-1-front.jpg',             alt: '1B Natural Black Body Wave – Front View' },
       { url: '/assets/1b/1b-2-three-quarter.jpg',      alt: '1B Natural Black Body Wave – Three Quarter View' },
-      { url: '/assets/1b/1b-3-smile.jpg',              alt: '1B Natural Black Body Wave – Smile' },
-      { url: '/assets/1b/1b-4-lifestyle.jpg',          alt: '1B Natural Black Body Wave – Lifestyle' },
-      { url: '/assets/1b/1b-5-lace.jpg',               alt: '1B Natural Black Body Wave – Lace Closeup' },
+      { url: '/assets/1b/1b-smile-portrait.png',       alt: '1B Natural Black Body Wave – Smiling Portrait' },
       { url: '/assets/1b/1b-6-left-profile.jpg',       alt: '1B Natural Black Body Wave – Left Profile' },
-      { url: '/assets/1b/1b-7-three-quarter-opp.jpg',  alt: '1B Natural Black Body Wave – Three Quarter Opposite' },
-      { url: '/assets/1b/1b-8-back.jpg',               alt: '1B Natural Black Body Wave – Back View' },
       { url: '/assets/1b/1b-9-right-profile.jpg',      alt: '1B Natural Black Body Wave – Right Profile' },
+      { url: '/assets/1b/1b-8-back.jpg',               alt: '1B Natural Black Body Wave – Back View' },
+      { url: '/assets/1b/1b-5-lace.jpg',               alt: '1B Natural Black Body Wave – Lace Closeup' },
+      { url: '/assets/1b/1b-7-three-quarter-opp.jpg',  alt: '1B Natural Black Body Wave – Three Quarter Opposite' },
+      { url: '/assets/1b/1b-4-lifestyle.jpg',          alt: '1B Natural Black Body Wave – Lifestyle' },
+      { url: '/assets/1b/1b-3-smile.jpg',              alt: '1B Natural Black Body Wave – Smile' },
     ];
     for (let i = 0; i < images1b.length; i++) {
       await pool.query(
@@ -420,19 +422,21 @@ async function initDatabase() {
 
   // ── Always ensure 613 Blonde product images exist ──
   const img613Check = await pool.query('SELECT COUNT(*) FROM product_images WHERE slug=$1', ['613-blonde-body-wave']);
-  if (parseInt(img613Check.rows[0].count) === 0) {
+  if (parseInt(img613Check.rows[0].count) !== 12) {
+    await pool.query('DELETE FROM product_images WHERE slug=$1', ['613-blonde-body-wave']);
     const images613 = [
       { url: '/assets/613/613-1-front.jpg',              alt: '613 Blonde Body Wave – Front View' },
-      { url: '/assets/613/613-2-left-profile.jpg',       alt: '613 Blonde Body Wave – Left Profile' },
-      { url: '/assets/613/613-3-smile.jpg',              alt: '613 Blonde Body Wave – Smile' },
       { url: '/assets/613/613-4-three-quarter.jpg',      alt: '613 Blonde Body Wave – Three Quarter View' },
-      { url: '/assets/613/613-5-lifestyle.jpg',          alt: '613 Blonde Body Wave – Lifestyle' },
+      { url: '/assets/613/613-smile-portrait.png',       alt: '613 Blonde Body Wave – Smiling Portrait' },
+      { url: '/assets/613/613-2-left-profile.jpg',       alt: '613 Blonde Body Wave – Left Profile' },
       { url: '/assets/613/613-6-right-profile.jpg',      alt: '613 Blonde Body Wave – Right Profile' },
-      { url: '/assets/613/613-7-three-quarter-opp.jpg',  alt: '613 Blonde Body Wave – Three Quarter Opposite' },
-      { url: '/assets/613/613-8-lace.jpg',               alt: '613 Blonde Body Wave – Lace Closeup' },
       { url: '/assets/613/613-9-back.jpg',               alt: '613 Blonde Body Wave – Back View' },
-      { url: '/assets/613/613-10-three-quarter-back.jpg',alt: '613 Blonde Body Wave – Three Quarter Back' },
+      { url: '/assets/613/613-8-lace.jpg',               alt: '613 Blonde Body Wave – Lace Closeup' },
       { url: '/assets/613/613-11-texture.jpg',           alt: '613 Blonde Body Wave – Texture' },
+      { url: '/assets/613/613-5-lifestyle.jpg',          alt: '613 Blonde Body Wave – Lifestyle' },
+      { url: '/assets/613/613-7-three-quarter-opp.jpg',  alt: '613 Blonde Body Wave – Three Quarter Opposite' },
+      { url: '/assets/613/613-10-three-quarter-back.jpg',alt: '613 Blonde Body Wave – Three Quarter Back' },
+      { url: '/assets/613/613-3-smile.jpg',              alt: '613 Blonde Body Wave – Smile' },
     ];
     for (let i = 0; i < images613.length; i++) {
       await pool.query(
@@ -445,18 +449,20 @@ async function initDatabase() {
 
   // ── Always ensure 27 Honey Blonde product images exist ──
   const img27Check = await pool.query('SELECT COUNT(*) FROM product_images WHERE slug=$1', ['27-honey-blonde-body-wave']);
-  if (parseInt(img27Check.rows[0].count) === 0) {
+  if (parseInt(img27Check.rows[0].count) !== 11) {
+    await pool.query('DELETE FROM product_images WHERE slug=$1', ['27-honey-blonde-body-wave']);
     const images27 = [
-      { url: '/assets/27/27-1-lifestyle.jpg',          alt: '27 Honey Blonde Body Wave – Lifestyle' },
       { url: '/assets/27/27-2-front.jpg',              alt: '27 Honey Blonde Body Wave – Front View' },
-      { url: '/assets/27/27-3-smile.jpg',              alt: '27 Honey Blonde Body Wave – Smile' },
-      { url: '/assets/27/27-4-back.jpg',               alt: '27 Honey Blonde Body Wave – Back View' },
       { url: '/assets/27/27-5-three-quarter.jpg',      alt: '27 Honey Blonde Body Wave – Three Quarter View' },
+      { url: '/assets/27/27-smile-portrait.png',       alt: '27 Honey Blonde Body Wave – Smiling Portrait' },
       { url: '/assets/27/27-6-left-profile.jpg',       alt: '27 Honey Blonde Body Wave – Left Profile' },
       { url: '/assets/27/27-7-right-profile.jpg',      alt: '27 Honey Blonde Body Wave – Right Profile' },
-      { url: '/assets/27/27-8-hand.jpg',               alt: '27 Honey Blonde Body Wave – Hand in Hair' },
+      { url: '/assets/27/27-4-back.jpg',               alt: '27 Honey Blonde Body Wave – Back View' },
       { url: '/assets/27/27-9-lace.jpg',               alt: '27 Honey Blonde Body Wave – Lace Closeup' },
+      { url: '/assets/27/27-8-hand.jpg',               alt: '27 Honey Blonde Body Wave – Hand in Hair' },
+      { url: '/assets/27/27-1-lifestyle.jpg',          alt: '27 Honey Blonde Body Wave – Lifestyle' },
       { url: '/assets/27/27-10-three-quarter-opp.jpg', alt: '27 Honey Blonde Body Wave – Three Quarter Opposite' },
+      { url: '/assets/27/27-3-smile.jpg',              alt: '27 Honey Blonde Body Wave – Smile' },
     ];
     for (let i = 0; i < images27.length; i++) {
       await pool.query(
@@ -469,17 +475,21 @@ async function initDatabase() {
 
   // ── Always ensure 4 Medium Brown product images exist ──
   const img4Check = await pool.query('SELECT COUNT(*) FROM product_images WHERE slug=$1', ['4-medium-brown-body-wave']);
-  if (parseInt(img4Check.rows[0].count) === 0) {
+  const img4Pos2 = parseInt(img4Check.rows[0].count) > 0
+    ? await pool.query('SELECT url FROM product_images WHERE slug=$1 AND sort_order=2 LIMIT 1', ['4-medium-brown-body-wave'])
+    : { rows: [] };
+  if (parseInt(img4Check.rows[0].count) === 0 || !(img4Pos2.rows[0] && img4Pos2.rows[0].url.includes('three-quarter'))) {
+    await pool.query('DELETE FROM product_images WHERE slug=$1', ['4-medium-brown-body-wave']);
     const images4 = [
       { url: '/assets/4/4-1-front.jpg',             alt: '4 Medium Brown Body Wave – Front View' },
-      { url: '/assets/4/4-2-right-profile.jpg',      alt: '4 Medium Brown Body Wave – Right Profile' },
-      { url: '/assets/4/4-3-hand.jpg',               alt: '4 Medium Brown Body Wave – Hand in Hair' },
-      { url: '/assets/4/4-4-lace.jpg',               alt: '4 Medium Brown Body Wave – Lace Closeup' },
-      { url: '/assets/4/4-5-lifestyle.jpg',          alt: '4 Medium Brown Body Wave – Lifestyle' },
       { url: '/assets/4/4-6-three-quarter.jpg',      alt: '4 Medium Brown Body Wave – Three Quarter View' },
-      { url: '/assets/4/4-7-left-profile.jpg',       alt: '4 Medium Brown Body Wave – Left Profile' },
       { url: '/assets/4/4-8-three-quarter-opp.jpg',  alt: '4 Medium Brown Body Wave – Three Quarter Opposite' },
+      { url: '/assets/4/4-7-left-profile.jpg',       alt: '4 Medium Brown Body Wave – Left Profile' },
+      { url: '/assets/4/4-2-right-profile.jpg',      alt: '4 Medium Brown Body Wave – Right Profile' },
       { url: '/assets/4/4-9-back.jpg',               alt: '4 Medium Brown Body Wave – Back View' },
+      { url: '/assets/4/4-4-lace.jpg',               alt: '4 Medium Brown Body Wave – Lace Closeup' },
+      { url: '/assets/4/4-3-hand.jpg',               alt: '4 Medium Brown Body Wave – Hand in Hair' },
+      { url: '/assets/4/4-5-lifestyle.jpg',          alt: '4 Medium Brown Body Wave – Lifestyle' },
       { url: '/assets/4/4-10-flow.jpg',              alt: '4 Medium Brown Body Wave – Flow' },
     ];
     for (let i = 0; i < images4.length; i++) {
@@ -533,18 +543,20 @@ async function initDatabase() {
 
   // ── Always ensure 99J Burgundy product images exist ──
   const imgCheck = await pool.query('SELECT COUNT(*) FROM product_images WHERE slug=$1', ['99j-burgundy-body-wave']);
-  if (parseInt(imgCheck.rows[0].count) === 0) {
+  if (parseInt(imgCheck.rows[0].count) !== 12) {
+    await pool.query('DELETE FROM product_images WHERE slug=$1', ['99j-burgundy-body-wave']);
     const images99j = [
       { url: '/assets/99j/99j-1-front.jpg',              alt: '99J Burgundy Body Wave – Front View' },
       { url: '/assets/99j/99j-2-three-quarter.jpg',      alt: '99J Burgundy Body Wave – Three Quarter View' },
-      { url: '/assets/99j/99j-3-three-quarter-opp.jpg',  alt: '99J Burgundy Body Wave – Three Quarter Opposite' },
-      { url: '/assets/99j/99j-4-smile.jpg',              alt: '99J Burgundy Body Wave – Smile' },
+      { url: '/assets/99j/99j-smile-portrait.png',       alt: '99J Burgundy Body Wave – Smiling Portrait' },
       { url: '/assets/99j/99j-5-left-profile.jpg',       alt: '99J Burgundy Body Wave – Left Profile' },
       { url: '/assets/99j/99j-6-right-profile.jpg',      alt: '99J Burgundy Body Wave – Right Profile' },
       { url: '/assets/99j/99j-7-back.jpg',               alt: '99J Burgundy Body Wave – Back View' },
       { url: '/assets/99j/99j-8-lace.jpg',               alt: '99J Burgundy Body Wave – Lace Closeup' },
-      { url: '/assets/99j/99j-9-lifestyle.jpg',          alt: '99J Burgundy Body Wave – Lifestyle' },
       { url: '/assets/99j/99j-10-texture.jpg',           alt: '99J Burgundy Body Wave – Texture' },
+      { url: '/assets/99j/99j-9-lifestyle.jpg',          alt: '99J Burgundy Body Wave – Lifestyle' },
+      { url: '/assets/99j/99j-3-three-quarter-opp.jpg',  alt: '99J Burgundy Body Wave – Three Quarter Opposite' },
+      { url: '/assets/99j/99j-4-smile.jpg',              alt: '99J Burgundy Body Wave – Smile' },
       { url: '/assets/99j/99j-11-lifestyle2.jpg',        alt: '99J Burgundy Body Wave – Lifestyle 2' },
     ];
     for (let i = 0; i < images99j.length; i++) {
