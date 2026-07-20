@@ -1256,5 +1256,79 @@
       }).catch(function(){});
   })();
   </script>
+
+  <!-- ── GALLERY ZOOM LIGHTBOX ──────────────────────── -->
+  <div id="galleryZoom" role="dialog" aria-modal="true" aria-label="Image zoom">
+    <button id="galleryZoomClose" aria-label="Close zoom">&#x2715;</button>
+    <button class="gallery-zoom-nav" id="galleryZoomPrev" aria-label="Previous image">&#8249;</button>
+    <img id="galleryZoomImg" src="" alt="">
+    <button class="gallery-zoom-nav" id="galleryZoomNext" aria-label="Next image">&#8250;</button>
+    <span id="galleryZoomCounter"></span>
+  </div>
+
+  <script>
+  (function() {
+    var overlay  = document.getElementById('galleryZoom');
+    var zImg     = document.getElementById('galleryZoomImg');
+    var counter  = document.getElementById('galleryZoomCounter');
+    var zIdx     = 0;
+
+    function _updateZoom() {
+      if (!_galleryImages || !_galleryImages[zIdx]) return;
+      zImg.src = _galleryImages[zIdx].url;
+      zImg.alt = _galleryImages[zIdx].alt || '';
+      if (counter) counter.textContent = (zIdx + 1) + ' / ' + _galleryImages.length;
+    }
+
+    function openZoom(i) {
+      if (!_galleryImages || !_galleryImages.length) return;
+      zIdx = (i !== undefined) ? i : _galleryActive;
+      _updateZoom();
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeZoom() {
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function zoomNav(dir) {
+      if (!_galleryImages || !_galleryImages.length) return;
+      zIdx = (zIdx + dir + _galleryImages.length) % _galleryImages.length;
+      _updateZoom();
+    }
+
+    // Click main image to open zoom
+    var mainWrap = document.getElementById('productMainImg');
+    if (mainWrap) mainWrap.addEventListener('click', function() { openZoom(_galleryActive); });
+
+    // Controls
+    document.getElementById('galleryZoomClose').addEventListener('click', closeZoom);
+    document.getElementById('galleryZoomPrev').addEventListener('click', function() { zoomNav(-1); });
+    document.getElementById('galleryZoomNext').addEventListener('click', function() { zoomNav(1); });
+
+    // Click backdrop to close
+    overlay.addEventListener('click', function(e) { if (e.target === overlay) closeZoom(); });
+
+    // Keyboard
+    document.addEventListener('keydown', function(e) {
+      if (!overlay.classList.contains('open')) return;
+      if (e.key === 'Escape')      closeZoom();
+      if (e.key === 'ArrowRight')  zoomNav(1);
+      if (e.key === 'ArrowLeft')   zoomNav(-1);
+    });
+
+    // Swipe inside lightbox
+    var sx = 0;
+    overlay.addEventListener('touchstart', function(e) { sx = e.touches[0].clientX; }, { passive: true });
+    overlay.addEventListener('touchend', function(e) {
+      var dx = e.changedTouches[0].clientX - sx;
+      if (Math.abs(dx) > 44) zoomNav(dx < 0 ? 1 : -1);
+    }, { passive: true });
+
+    window.openGalleryZoom = openZoom;
+  })();
+  </script>
 </body>
 </html>
