@@ -236,8 +236,8 @@
         <div class="product-gallery">
           <div class="img-placeholder product-main-img" id="productMainImg" style="position:relative;overflow:hidden">
             <img id="productMainImgB" src="" alt="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;inset:0;opacity:0;transition:opacity 0.65s ease;z-index:1">
-            <img id="productMainImgEl" src="" alt="AA WIGS Body Wave" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;inset:0;opacity:1;transition:opacity 0.65s ease;z-index:2">
-            <span class="placeholder-text" id="productImgLabel">1B Natural Black</span>
+            <img id="productMainImgEl" src="/assets/products/model-1b.png" alt="AA WIGS Body Wave" style="display:block;width:100%;height:100%;object-fit:cover;position:absolute;inset:0;opacity:1;transition:opacity 0.65s ease;z-index:2">
+            <span class="placeholder-text" id="productImgLabel" style="display:none">1B Natural Black</span>
           </div>
           <div id="galleryDots" class="gallery-dots"></div>
           <div class="product-gallery-thumbs" id="productGalleryThumbs">
@@ -986,17 +986,18 @@
     })();
 
     function loadProductImages() {
-      fetch('/api/product-images/22-swiss-hd-body-wave')
-        .then(function(r) { return r.json(); })
-        .then(function(data) {
-          if (!data.success || !data.images || !data.images.length) return;
-          _galleryImages = data.images;
-          _galleryActive = 0;
-          _userPaused = false;
-          _buildGalleryUI(data.images);
-          _autoplayStart();
-        })
-        .catch(function() {});
+      var hardcoded = [
+        { url: '/assets/products/model-1b.png',  alt: 'AA WIGS Body Wave – 1B Natural Black' },
+        { url: '/assets/products/model-99j.png', alt: 'AA WIGS Body Wave – 99J Burgundy' },
+        { url: '/assets/products/model-613.png', alt: 'AA WIGS Body Wave – 613 Blonde' },
+        { url: '/assets/products/model-27.png',  alt: 'AA WIGS Body Wave – 27 Honey Blonde' },
+        { url: '/assets/products/model-2.png',   alt: 'AA WIGS Body Wave – 2 Dark Brown' }
+      ];
+      _galleryImages = hardcoded;
+      _galleryActive = 0;
+      _userPaused = false;
+      _buildGalleryUI(hardcoded);
+      _autoplayStart();
     }
 
     // ── COLOR-AWARE GALLERY SWAP ───────────────────────────────────
