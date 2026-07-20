@@ -1747,13 +1747,9 @@ app.post('/api/vip-signup', async (req, res) => {
   }
 });
 
-initDatabase()
-  .then(() => {
-    app.listen(PORT, '0.0.0.0', () => {
-      console.log(`AA Wigs server running on port ${PORT}`);
-    });
-  })
-  .catch(err => {
-    console.error('[DB] initDatabase failed:', err.message);
-    process.exit(1);
-  });
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`AA Wigs server running on port ${PORT}`);
+  initDatabase()
+    .then(() => console.log('[DB] Database ready'))
+    .catch(err => console.error('[DB] initDatabase failed:', err.message));
+});
