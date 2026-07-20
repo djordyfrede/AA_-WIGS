@@ -467,6 +467,30 @@ async function initDatabase() {
     console.log('[DB] Seeded 27 Honey Blonde product images');
   }
 
+  // ── Always ensure 4 Medium Brown product images exist ──
+  const img4Check = await pool.query('SELECT COUNT(*) FROM product_images WHERE slug=$1', ['4-medium-brown-body-wave']);
+  if (parseInt(img4Check.rows[0].count) === 0) {
+    const images4 = [
+      { url: '/assets/4/4-1-front.jpg',             alt: '4 Medium Brown Body Wave – Front View' },
+      { url: '/assets/4/4-2-right-profile.jpg',      alt: '4 Medium Brown Body Wave – Right Profile' },
+      { url: '/assets/4/4-3-hand.jpg',               alt: '4 Medium Brown Body Wave – Hand in Hair' },
+      { url: '/assets/4/4-4-lace.jpg',               alt: '4 Medium Brown Body Wave – Lace Closeup' },
+      { url: '/assets/4/4-5-lifestyle.jpg',          alt: '4 Medium Brown Body Wave – Lifestyle' },
+      { url: '/assets/4/4-6-three-quarter.jpg',      alt: '4 Medium Brown Body Wave – Three Quarter View' },
+      { url: '/assets/4/4-7-left-profile.jpg',       alt: '4 Medium Brown Body Wave – Left Profile' },
+      { url: '/assets/4/4-8-three-quarter-opp.jpg',  alt: '4 Medium Brown Body Wave – Three Quarter Opposite' },
+      { url: '/assets/4/4-9-back.jpg',               alt: '4 Medium Brown Body Wave – Back View' },
+      { url: '/assets/4/4-10-flow.jpg',              alt: '4 Medium Brown Body Wave – Flow' },
+    ];
+    for (let i = 0; i < images4.length; i++) {
+      await pool.query(
+        'INSERT INTO product_images (slug, url, alt, sort_order) VALUES ($1,$2,$3,$4)',
+        ['4-medium-brown-body-wave', images4[i].url, images4[i].alt, i + 1]
+      );
+    }
+    console.log('[DB] Seeded 4 Medium Brown product images');
+  }
+
   // ── Always ensure 99J Burgundy product record exists ──
   const burProduct = await pool.query('SELECT id FROM products WHERE slug=$1', ['99j-burgundy-body-wave']);
   if (burProduct.rows.length === 0) {
