@@ -652,6 +652,37 @@ p {
   letter-spacing: 0.3px;
 }
 
+.qp-gallery { padding: 0; background: #000; }
+.qp-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  display: block;
+}
+.qp-slide.active { opacity: 1; }
+.qp-dots {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 7px;
+  z-index: 3;
+}
+.qp-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.45);
+  transition: background 0.3s;
+  cursor: pointer;
+}
+.qp-dot.active { background: #fff; }
+
 .quick-product-brand-note {
   font-family: var(--font-serif);
   font-style: italic;

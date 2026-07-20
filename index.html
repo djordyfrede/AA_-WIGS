@@ -275,9 +275,19 @@
     <div class="container">
       <article class="quick-product-card">
         <div class="quick-product-image">
-          <div class="quick-product-visual">
-            <span class="quick-product-label">Signature visuals coming soon</span>
-            <span class="quick-product-sublabel">Our official product photography is being prepared to reflect the full AA WIGS experience.</span>
+          <div class="quick-product-visual qp-gallery">
+            <img class="qp-slide active" src="/assets/products/model-1b.png"  alt="AA WIGS Body Wave – 1B Natural Black">
+            <img class="qp-slide"        src="/assets/products/model-99j.png" alt="AA WIGS Body Wave – 99J Burgundy">
+            <img class="qp-slide"        src="/assets/products/model-613.png" alt="AA WIGS Body Wave – 613 Blonde">
+            <img class="qp-slide"        src="/assets/products/model-27.png"  alt="AA WIGS Body Wave – 27 Honey Blonde">
+            <img class="qp-slide"        src="/assets/products/model-2.png"   alt="AA WIGS Body Wave – 2 Dark Brown">
+            <div class="qp-dots">
+              <span class="qp-dot active"></span>
+              <span class="qp-dot"></span>
+              <span class="qp-dot"></span>
+              <span class="qp-dot"></span>
+              <span class="qp-dot"></span>
+            </div>
           </div>
         </div>
         <div class="quick-product-info">
@@ -825,6 +835,23 @@
     }
   })();
 
+  </script>
+  <script>
+  (function(){
+    var slides = document.querySelectorAll('.qp-slide');
+    var dots   = document.querySelectorAll('.qp-dot');
+    if (!slides.length) return;
+    var cur = 0;
+    function show(n) {
+      slides[cur].classList.remove('active');
+      dots[cur].classList.remove('active');
+      cur = (n + slides.length) % slides.length;
+      slides[cur].classList.add('active');
+      dots[cur].classList.add('active');
+    }
+    dots.forEach(function(d, i){ d.addEventListener('click', function(){ show(i); }); });
+    setInterval(function(){ show(cur + 1); }, 4000);
+  })();
   </script>
 </body>
 </html>
