@@ -235,9 +235,11 @@
       <div class="product-detail-grid">
         <div class="product-gallery">
           <div class="img-placeholder product-main-img" id="productMainImg" style="position:relative;overflow:hidden">
-            <img id="productMainImgEl" src="" alt="AA WIGS Body Wave" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;inset:0">
+            <img id="productMainImgB" src="" alt="" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;inset:0;opacity:0;transition:opacity 0.65s ease;z-index:1">
+            <img id="productMainImgEl" src="" alt="AA WIGS Body Wave" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;inset:0;opacity:1;transition:opacity 0.65s ease;z-index:2">
             <span class="placeholder-text" id="productImgLabel">1B Natural Black</span>
           </div>
+          <div id="galleryDots" class="gallery-dots"></div>
           <div class="product-gallery-thumbs" id="productGalleryThumbs">
             <div class="thumb active">1</div>
             <div class="thumb">2</div>
@@ -868,6 +870,121 @@
     // ── PRODUCT GALLERY FROM DB ────────────────────────────────────
     var _galleryImages = [];
     var _galleryActive = 0;
+    var _galleryFrontIsA = true;
+    var _autoplayTimer = null;
+    var _userPaused = false;
+
+    function _buildGalleryUI(images) {
+      var thumbsEl = document.getElementById('productGalleryThumbs');
+      var mainLabel = document.getElementById('productImgLabel');
+      var imgA = document.getElementById('productMainImgEl');
+      var imgB = document.getElementById('productMainImgB');
+      var dotsEl = document.getElementById('galleryDots');
+      if (!thumbsEl || !imgA) return;
+
+      thumbsEl.innerHTML = images.map(function(img, i) {
+        var lazy = i > 0 ? ' loading="lazy"' : '';
+        return '<div class="thumb' + (i === 0 ? ' active' : '') + '" data-gi="' + i + '" onclick="selectGalleryImg(' + i + ',true)" style="overflow:hidden;padding:0">' +
+          '<img src="' + escHtmlP(img.url) + '" alt="' + escHtmlP(img.alt) + '"' + lazy + ' style="width:100%;height:100%;object-fit:cover;display:block">' +
+        '</div>';
+      }).join('');
+
+      if (dotsEl) {
+        dotsEl.innerHTML = images.map(function(_, i) {
+          return '<button class="gallery-dot' + (i === 0 ? ' active' : '') + '" data-di="' + i + '" aria-label="View image ' + (i + 1) + '"></button>';
+        }).join('');
+        dotsEl.querySelectorAll('.gallery-dot').forEach(function(dot) {
+          dot.addEventListener('click', function() {
+            selectGalleryImg(parseInt(this.getAttribute('data-di')), true);
+          });
+        });
+      }
+
+      _galleryFrontIsA = true;
+      imgA.src = images[0].url;
+      imgA.alt = images[0].alt || '';
+      imgA.style.display = 'block';
+      imgA.style.opacity = '1';
+      imgA.style.zIndex = '2';
+      if (imgB) {
+        imgB.style.display = 'none';
+        imgB.style.opacity = '0';
+        imgB.style.zIndex = '1';
+      }
+      if (mainLabel) mainLabel.style.display = 'none';
+    }
+
+    function _updateDots(i) {
+      var dotsEl = document.getElementById('galleryDots');
+      if (!dotsEl) return;
+      dotsEl.querySelectorAll('.gallery-dot').forEach(function(dot, idx) {
+        dot.classList.toggle('active', idx === i);
+      });
+    }
+
+    function _autoplayStop() {
+      if (_autoplayTimer) { clearInterval(_autoplayTimer); _autoplayTimer = null; }
+    }
+
+    function _autoplayStart() {
+      _autoplayStop();
+      if (_galleryImages.length <= 1 || _userPaused) return;
+      _autoplayTimer = setInterval(function() {
+        selectGalleryImg((_galleryActive + 1) % _galleryImages.length, false);
+      }, 4500);
+    }
+
+    function selectGalleryImg(i, fromUser) {
+      if (!_galleryImages[i] || i === _galleryActive) return;
+      if (fromUser) { _userPaused = true; _autoplayStop(); }
+      _galleryActive = i;
+
+      var imgA = document.getElementById('productMainImgEl');
+      var imgB = document.getElementById('productMainImgB');
+      if (imgA && imgB) {
+        var front = _galleryFrontIsA ? imgA : imgB;
+        var back  = _galleryFrontIsA ? imgB : imgA;
+        back.src = _galleryImages[i].url;
+        back.alt = _galleryImages[i].alt || '';
+        back.style.display = 'block';
+        back.style.zIndex = '2';
+        front.style.zIndex = '1';
+        back.getBoundingClientRect();
+        back.style.opacity = '1';
+        front.style.opacity = '0';
+        _galleryFrontIsA = !_galleryFrontIsA;
+        var _front = front;
+        setTimeout(function() { _front.style.display = 'none'; }, 700);
+      }
+
+      document.querySelectorAll('#productGalleryThumbs .thumb').forEach(function(t, idx) {
+        t.classList.toggle('active', idx === i);
+      });
+      _updateDots(i);
+    }
+    window.selectGalleryImg = selectGalleryImg;
+
+    // Swipe support on main image
+    (function() {
+      var el = document.getElementById('productMainImg');
+      if (!el) return;
+      var sx = 0, sy = 0;
+      el.addEventListener('touchstart', function(e) {
+        sx = e.touches[0].clientX;
+        sy = e.touches[0].clientY;
+      }, { passive: true });
+      el.addEventListener('touchend', function(e) {
+        var dx = e.changedTouches[0].clientX - sx;
+        var dy = e.changedTouches[0].clientY - sy;
+        if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) && _galleryImages.length > 1) {
+          var next = dx < 0
+            ? (_galleryActive + 1) % _galleryImages.length
+            : (_galleryActive - 1 + _galleryImages.length) % _galleryImages.length;
+          selectGalleryImg(next, true);
+        }
+      }, { passive: true });
+    })();
+
     function loadProductImages() {
       fetch('/api/product-images/22-swiss-hd-body-wave')
         .then(function(r) { return r.json(); })
@@ -875,31 +992,12 @@
           if (!data.success || !data.images || !data.images.length) return;
           _galleryImages = data.images;
           _galleryActive = 0;
-          var thumbsEl = document.getElementById('productGalleryThumbs');
-          var mainImg = document.getElementById('productMainImgEl');
-          var mainLabel = document.getElementById('productImgLabel');
-          if (!thumbsEl || !mainImg) return;
-          thumbsEl.innerHTML = data.images.map(function(img, i) {
-            return '<div class="thumb' + (i === 0 ? ' active' : '') + '" data-gi="' + i + '" onclick="selectGalleryImg(' + i + ')" style="overflow:hidden;padding:0">' +
-              '<img src="' + escHtmlP(img.url) + '" alt="' + escHtmlP(img.alt) + '" style="width:100%;height:100%;object-fit:cover;display:block">' +
-            '</div>';
-          }).join('');
-          mainImg.src = data.images[0].url;
-          mainImg.style.display = 'block';
-          if (mainLabel) mainLabel.style.display = 'none';
+          _userPaused = false;
+          _buildGalleryUI(data.images);
+          _autoplayStart();
         })
         .catch(function() {});
     }
-    function selectGalleryImg(i) {
-      if (!_galleryImages[i]) return;
-      _galleryActive = i;
-      var mainImg = document.getElementById('productMainImgEl');
-      if (mainImg) { mainImg.src = _galleryImages[i].url; mainImg.style.display = 'block'; }
-      document.querySelectorAll('#productGalleryThumbs .thumb').forEach(function(t, idx) {
-        t.classList.toggle('active', idx === i);
-      });
-    }
-    window.selectGalleryImg = selectGalleryImg;
 
     // ── COLOR-AWARE GALLERY SWAP ───────────────────────────────────
     function loadGalleryForColor(color) {
@@ -908,29 +1006,27 @@
         .then(function(r) { return r.json(); })
         .then(function(data) {
           var thumbsEl = document.getElementById('productGalleryThumbs');
-          var mainImg = document.getElementById('productMainImgEl');
+          var imgA = document.getElementById('productMainImgEl');
+          var imgB = document.getElementById('productMainImgB');
           var mainLabel = document.getElementById('productImgLabel');
-          if (!thumbsEl || !mainImg) return;
+          if (!thumbsEl || !imgA) return;
+          _autoplayStop();
           if (!data.success || !data.images || !data.images.length) {
-            // No images for this color — restore placeholder state
             _galleryImages = [];
             _galleryActive = 0;
             thumbsEl.innerHTML = '';
-            mainImg.src = '';
-            mainImg.style.display = 'none';
+            var dotsEl = document.getElementById('galleryDots');
+            if (dotsEl) dotsEl.innerHTML = '';
+            imgA.src = ''; imgA.style.display = 'none'; imgA.style.opacity = '1';
+            if (imgB) { imgB.src = ''; imgB.style.display = 'none'; imgB.style.opacity = '0'; }
             if (mainLabel) mainLabel.style.display = '';
             return;
           }
           _galleryImages = data.images;
           _galleryActive = 0;
-          thumbsEl.innerHTML = data.images.map(function(img, i) {
-            return '<div class="thumb' + (i === 0 ? ' active' : '') + '" data-gi="' + i + '" onclick="selectGalleryImg(' + i + ')" style="overflow:hidden;padding:0">' +
-              '<img src="' + escHtmlP(img.url) + '" alt="' + escHtmlP(img.alt) + '" style="width:100%;height:100%;object-fit:cover;display:block">' +
-            '</div>';
-          }).join('');
-          mainImg.src = data.images[0].url;
-          mainImg.style.display = 'block';
-          if (mainLabel) mainLabel.style.display = 'none';
+          _userPaused = false;
+          _buildGalleryUI(data.images);
+          _autoplayStart();
         })
         .catch(function() {});
     }
