@@ -397,19 +397,14 @@ async function initDatabase() {
 
   // ── Always ensure 1B Natural Black product images exist ──
   const img1bCheck = await pool.query('SELECT COUNT(*) FROM product_images WHERE slug=$1', ['22-swiss-hd-body-wave']);
-  if (parseInt(img1bCheck.rows[0].count) !== 10) {
+  if (parseInt(img1bCheck.rows[0].count) !== 5) {
     await pool.query('DELETE FROM product_images WHERE slug=$1', ['22-swiss-hd-body-wave']);
     const images1b = [
-      { url: '/assets/1b/1b-1-front.jpg',             alt: '1B Natural Black Body Wave – Front View' },
-      { url: '/assets/1b/1b-2-three-quarter.jpg',      alt: '1B Natural Black Body Wave – Three Quarter View' },
-      { url: '/assets/1b/1b-smile-portrait.png',       alt: '1B Natural Black Body Wave – Smiling Portrait' },
-      { url: '/assets/1b/1b-6-left-profile.jpg',       alt: '1B Natural Black Body Wave – Left Profile' },
-      { url: '/assets/1b/1b-9-right-profile.jpg',      alt: '1B Natural Black Body Wave – Right Profile' },
-      { url: '/assets/1b/1b-8-back.jpg',               alt: '1B Natural Black Body Wave – Back View' },
-      { url: '/assets/1b/1b-5-lace.jpg',               alt: '1B Natural Black Body Wave – Lace Closeup' },
-      { url: '/assets/1b/1b-7-three-quarter-opp.jpg',  alt: '1B Natural Black Body Wave – Three Quarter Opposite' },
-      { url: '/assets/1b/1b-4-lifestyle.jpg',          alt: '1B Natural Black Body Wave – Lifestyle' },
-      { url: '/assets/1b/1b-3-smile.jpg',              alt: '1B Natural Black Body Wave – Smile' },
+      { url: '/assets/products/model-1b.png',  alt: 'AA WIGS Body Wave – 1B Natural Black' },
+      { url: '/assets/products/model-99j.png', alt: 'AA WIGS Body Wave – 99J Burgundy' },
+      { url: '/assets/products/model-613.png', alt: 'AA WIGS Body Wave – 613 Blonde' },
+      { url: '/assets/products/model-27.png',  alt: 'AA WIGS Body Wave – 27 Honey Blonde' },
+      { url: '/assets/products/model-2.png',   alt: 'AA WIGS Body Wave – 2 Dark Brown' },
     ];
     for (let i = 0; i < images1b.length; i++) {
       await pool.query(
@@ -417,7 +412,7 @@ async function initDatabase() {
         ['22-swiss-hd-body-wave', images1b[i].url, images1b[i].alt, i + 1]
       );
     }
-    console.log('[DB] Seeded 1B Natural Black product images');
+    console.log('[DB] Seeded main product gallery with 5 professional images');
   }
 
   // ── Always ensure 613 Blonde product images exist ──
