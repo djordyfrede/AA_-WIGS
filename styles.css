@@ -3358,6 +3358,14 @@ button.btn-disabled {
   .quick-product-row { justify-content: space-between; }
   .quick-product-row .btn { min-width: 140px; flex-shrink: 0; }
 
+  /* ── ROOT FIX: grid children expand to content width by default (min-width: auto).
+     The 8 thumbnails × 62px + gaps = 552px forces the grid cell wider than viewport.
+     Setting min-width: 0 lets the cell stay within the 1fr column constraint. ── */
+  .product-gallery { min-width: 0; overflow: hidden; }
+  .product-details { min-width: 0; }
+  /* min-width: 0 on the thumb strip so overflow-x: auto clips content, not expands the parent */
+  .product-gallery-thumbs { min-width: 0; width: 100%; }
+
   /* ── Product page gallery ── */
   .product-detail { padding: 16px 0 56px; }
   .product-detail-grid { gap: 16px; }
@@ -3365,8 +3373,15 @@ button.btn-disabled {
   .product-main-img { aspect-ratio: 4/5; max-height: 62vh; background: var(--champagne); }
   #productMainImgEl, #productMainImgB { object-fit: contain !important; object-position: top center; }
   .product-gallery-thumbs { margin-top: 8px; gap: 8px; }
-  .product-gallery-thumbs .thumb { width: 62px; height: 62px; }
+  .product-gallery-thumbs .thumb { width: 62px; height: 62px; flex-shrink: 0; }
   .gallery-zoom-nav { display: none; }
+
+  /* ── Specs table & shipping rows: prevent text from expanding table past viewport ── */
+  .specs-table { max-width: 100%; }
+  .specs-table td { word-break: break-word; overflow-wrap: break-word; }
+  .shipping-info { overflow: hidden; }
+  .shipping-detail { flex-wrap: wrap; gap: 4px 8px; }
+  .shipping-detail span:last-child { word-break: break-word; }
 
   /* ── Breadcrumb: hide full trail, show compact back link ── */
   .breadcrumb { display: none; }
