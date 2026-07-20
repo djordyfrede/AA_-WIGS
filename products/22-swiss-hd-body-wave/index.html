@@ -231,6 +231,7 @@
         <span aria-hidden="true">›</span>
         <span aria-current="page">Signature Body Wave</span>
       </nav>
+      <a href="../../collection.html" class="mobile-back-link" aria-label="Back to collection">&#8249; Back to Collection</a>
 
       <div class="product-detail-grid">
         <div class="product-gallery">
@@ -1176,7 +1177,8 @@
       dismissed = true;
     });
 
-    setTimeout(showNotification, 8000);
+    var isMobileViewport = window.innerWidth < 768;
+    setTimeout(showNotification, isMobileViewport ? 20000 : 8000);
     scheduleNext();
   })();
   </script>

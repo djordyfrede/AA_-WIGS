@@ -1,0 +1,351 @@
+You are working on the existing AA WIGS product page.
+
+The desktop layout is acceptable.
+
+The problem is the mobile product-page experience. The current mobile layout is oversized, crowded, and partially covered by sticky elements.
+
+Your task is to improve the mobile layout only.
+
+Critical rule
+
+Do not redesign the website.
+
+Do not change the AA WIGS brand identity.
+
+Do not change desktop unless a shared fix is absolutely necessary.
+
+Do not modify:
+
+* Product data
+* Prices
+* Stripe or checkout logic
+* Color-selection logic
+* Length-selection logic
+* Product routes
+* SEO metadata
+* Structured data
+* Dashboard
+* Reviews
+* Navigation logic
+* Existing product images
+* Fonts
+* Brand colors
+
+Only fix mobile responsiveness, spacing, image presentation, and overlap issues.
+
+⸻
+
+1. Fix the main image gallery on mobile
+
+The current hero image is too tall and takes over the full screen.
+
+On mobile:
+
+* Use a square or near-square product-image container.
+* Recommended aspect ratio: 1 / 1.
+* Maximum visible height: approximately 65vh.
+* Use object-fit: cover only when necessary.
+* Prefer object-fit: contain if cropping important hair details.
+* Keep the model’s face, hairline, and hair visible.
+* Do not stretch or distort images.
+* Keep rounded corners consistent.
+* Prevent images from overflowing horizontally.
+
+The product title and basic buying information should begin appearing shortly after the first image and thumbnails, without excessive scrolling.
+
+⸻
+
+2. Fix image cropping
+
+Some images are showing only the model’s torso or are excessively zoomed.
+
+For each product image:
+
+* Preserve the intended composition.
+* Do not automatically enlarge portrait images until the face or hair is cut off.
+* Center the image intelligently.
+* Use image-specific positioning only when necessary.
+* Ensure front portraits show the face and main hair shape.
+* Ensure side and back images show the relevant hair angle.
+* Avoid one global crop rule that damages different image types.
+
+⸻
+
+3. Improve mobile thumbnails
+
+The thumbnail gallery should:
+
+* Scroll horizontally.
+* Never overflow the viewport.
+* Use thumbnails approximately 64px–72px.
+* Maintain at least 8px spacing.
+* Make each thumbnail easy to tap.
+* Show a clear burgundy border on the selected image.
+* Keep all thumbnails on one horizontal row.
+* Hide or style the scrollbar cleanly.
+* Preserve swipe behavior on the main gallery.
+
+Do not allow thumbnail rows to widen the entire page.
+
+⸻
+
+4. Reduce unnecessary vertical space
+
+On mobile, reduce excessive spacing between:
+
+* Header and breadcrumbs
+* Breadcrumbs and gallery
+* Gallery and thumbnails
+* Thumbnails and product title
+* Product subtitle and selectors
+* Selectors and Add to Bag
+
+Use consistent spacing.
+
+Recommended mobile section spacing:
+
+* Small gaps: 8px–12px
+* Standard gaps: 16px–20px
+* Large section gaps: no more than 24px–32px
+
+Do not leave large blank areas.
+
+⸻
+
+5. Simplify breadcrumbs on mobile
+
+On screens below 768px:
+
+Either:
+
+* Hide breadcrumbs completely,
+
+or:
+
+* Display only a compact back link such as:
+
+‹ Back to Collection
+
+Do not allow the full breadcrumb trail to consume valuable mobile space.
+
+Keep the desktop breadcrumb unchanged.
+
+⸻
+
+6. Fix product-information hierarchy
+
+On mobile, use this order:
+
+1. Product gallery
+2. Thumbnail row
+3. Small collection label
+4. Product name
+5. Price
+6. Product specifications
+7. Selected color
+8. Color selector
+9. Selected length
+10. Length selector
+11. Add to Bag button
+12. Supporting product details
+
+Make sure the user sees the product name, price, and essential options without scrolling through unnecessary content.
+
+⸻
+
+7. Fix horizontal text overflow
+
+The product specification line currently appears too long and gets cut off.
+
+For mobile:
+
+* Allow specification text to wrap naturally.
+* Do not use a single-line nowrap style.
+* Keep text inside the viewport.
+* Do not create horizontal scrolling.
+* Use readable font sizing and line height.
+
+Example:
+
+22" · 13×6 Swiss HD Lace · 180% Density · Glueless Ready
+
+It may wrap onto two lines.
+
+⸻
+
+8. Fix the sticky Add to Bag section
+
+The sticky Add to Bag bar must not cover important content.
+
+On mobile:
+
+* Keep the sticky bar compact.
+* Use approximately 72px–88px total height.
+* Respect the iPhone safe-area inset.
+* Add bottom padding to the product page equal to or greater than the sticky bar height.
+* Ensure the final page content can scroll completely above the sticky bar.
+* Do not cover color selectors, length selectors, text, or thumbnails.
+* The sticky bar may appear only after the user scrolls past the main product controls, or remain visible if it does not obstruct content.
+
+Use:
+
+padding-bottom: calc(sticky-bar-height + env(safe-area-inset-bottom));
+
+Do not create two visible Add to Bag buttons at the same time unless this is already intentional.
+
+⸻
+
+9. Fix floating concierge button overlap
+
+The circular AA WIGS concierge button currently overlaps product text and other elements.
+
+On mobile:
+
+* Position it above the sticky Add to Bag bar.
+* Respect safe-area spacing.
+* Keep at least 12px–16px from the screen edge.
+* Do not cover product titles, prices, selectors, buttons, or notifications.
+* Reduce its mobile size slightly if necessary.
+
+Recommended mobile size:
+
+52px–58px
+
+⸻
+
+10. Fix purchase-notification popup
+
+The social-proof purchase popup should not interrupt the first impression or cover product controls.
+
+On mobile:
+
+* Delay it by at least 20 seconds.
+* Do not show it during the initial page load.
+* Do not display it while the user is interacting with selectors or checkout.
+* Position it above the sticky Add to Bag bar.
+* Keep it within the viewport.
+* Make it easy to close.
+* Do not allow it to cover the product title, price, color options, or Add to Bag button.
+* Show one notification at a time.
+* Do not loop aggressively.
+
+If proper positioning cannot be guaranteed, disable this popup on screens below 768px.
+
+⸻
+
+11. Header behavior
+
+Preserve the existing mobile header design, but ensure:
+
+* It does not overlap the product image.
+* Its height remains compact.
+* Sticky positioning does not cause content to begin underneath it.
+* The announcement bar and navigation do not create duplicate spacing.
+* The cart and menu icons remain easy to tap.
+
+⸻
+
+12. Mobile typography
+
+Maintain AA WIGS fonts and colors.
+
+Adjust only mobile sizing where required:
+
+* Product title: approximately 30px–36px
+* Collection label: approximately 13px–15px
+* Product specifications: approximately 16px–18px
+* Price: clearly visible
+* Button text: readable and centered
+
+Avoid oversized headings that force awkward wrapping.
+
+⸻
+
+13. Responsive breakpoints
+
+Test at minimum:
+
+* 320px
+* 375px
+* 390px
+* 414px
+* 430px
+* 768px
+
+Also test:
+
+* iPhone Safari
+* Chrome mobile
+* Portrait orientation
+* Landscape orientation
+
+There must be:
+
+* No horizontal overflow
+* No clipped text
+* No cropped faces from incorrect CSS
+* No overlapping floating elements
+* No covered buttons
+* No layout jumps
+
+⸻
+
+14. Performance
+
+Do not reduce performance.
+
+Keep:
+
+* Existing image optimization
+* Lazy loading after the first image
+* Existing reusable gallery components
+* Existing accessibility behavior
+
+Do not introduce a heavy new slider library unless the current gallery cannot be fixed with existing code.
+
+⸻
+
+15. Scope control
+
+Before editing, inspect the current components and determine the minimum number of files required.
+
+Only modify:
+
+* Product-page responsive styles
+* Gallery responsive styles
+* Thumbnail responsive styles
+* Sticky mobile CTA styles
+* Mobile floating-element positioning
+
+Do not refactor unrelated code.
+
+Do not rename components.
+
+Do not modify business logic.
+
+⸻
+
+Final validation checklist
+
+Before completing, verify:
+
+* Mobile hero image is not oversized.
+* Portrait images are not incorrectly cropped.
+* Product title and price appear earlier.
+* Thumbnails are easy to tap and horizontally scrollable.
+* Breadcrumb is compact or hidden on mobile.
+* Product specifications wrap correctly.
+* Sticky Add to Bag does not cover content.
+* Concierge button does not cover content.
+* Purchase popup does not interrupt the first screen.
+* No horizontal scrolling exists.
+* Desktop remains visually unchanged.
+* Color selection still works.
+* Length selection still works.
+* Product images still update correctly.
+* Checkout still works.
+* No console errors.
+* No broken imports.
+* No unrelated changes.
+
+Complete only the mobile-responsiveness repair. Do not add new features or make additional design changes.
