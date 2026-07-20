@@ -96,6 +96,16 @@ const uploadProductImg = multer({
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+app.use((req, res, next) => {
+  const p = req.path;
+  if (p.endsWith('.html') || p.endsWith('/') || p === '/' || !p.includes('.')) {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+  }
+  next();
+});
+
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: false
@@ -646,16 +656,6 @@ app.get(['/products/22-swiss-hd-body-wave', '/products/22-swiss-hd-body-wave/'],
       res.sendFile(path.join(__dirname, 'products', '22-swiss-hd-body-wave', 'index.html'));
     }
   }
-});
-
-app.use((req, res, next) => {
-  const p = req.path;
-  if (p.endsWith('.html') || p.endsWith('/') || p === '/' || !p.includes('.')) {
-    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-  }
-  next();
 });
 
 app.use(express.static(path.join(__dirname), {
