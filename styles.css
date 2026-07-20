@@ -3320,29 +3320,55 @@ button.btn-disabled {
 
   body { padding-bottom: 116px; }
 
-  .section { padding: 56px 0; }
+  /* ── Prevent iOS auto-zoom on form focus ── */
+  input:not([type=submit]):not([type=button]):not([type=checkbox]):not([type=radio]),
+  select, textarea { font-size: 16px !important; }
 
-  .hero-cinematic { min-height: 90vh; }
-  .hero-cinematic-content { padding: 60px 20px; }
-  .hero-sub { margin-bottom: 40px; }
-  .hero-cinematic-cta { margin-bottom: 32px; }
-  .quick-product { padding: 48px 0 56px; }
-  .quick-product-card { grid-template-columns: 1fr; gap: 28px; max-width: 420px; }
-  .quick-product-visual { aspect-ratio: 1/1; }
+  /* ── Container ── */
+  .container { padding: 0 20px; }
+
+  /* ── Sections ── */
+  .section { padding: 48px 0; }
+
+  /* ── Hero ── */
+  .hero-cinematic { min-height: 92vh; }
+  .hero-cinematic-content { padding: 56px 20px; }
+  .hero-sub { margin-bottom: 36px; }
+  .hero-cinematic-cta { margin-bottom: 28px; }
+
+  /* ── Home product card ── */
+  .quick-product { padding: 44px 0 52px; }
+  .quick-product-card { grid-template-columns: 1fr; gap: 24px; max-width: 420px; }
+  .quick-product-visual { aspect-ratio: 4/4.5; }
   .quick-product-info { text-align: left; }
-  .product-gallery .img-placeholder,
-  .product-main-img { aspect-ratio: 3/4; }
   .quick-product-info .eyebrow { margin-bottom: 8px; }
   .quick-product-row { justify-content: space-between; }
   .quick-product-row .btn { min-width: 140px; flex-shrink: 0; }
 
+  /* ── Product page gallery ── */
+  .product-gallery .img-placeholder,
+  .product-main-img { aspect-ratio: 3/4; }
+  .product-gallery-thumbs .thumb { width: 62px; height: 62px; }
+  .gallery-zoom-nav { display: none; } /* rely on swipe inside lightbox */
+
+  /* ── Product page options ── */
+  .shade-swatch { width: 44px; height: 44px; } /* 44px minimum touch target */
+  .shade-buttons { gap: 10px; flex-wrap: wrap; }
+  .length-btn { touch-action: manipulation; }
+  .product-quick-specs { padding: 16px; }
+
+  /* ── Grids ── */
   .why-grid { grid-template-columns: 1fr; gap: 20px; }
   .review-grid { grid-template-columns: 1fr; gap: 16px; }
-  .footer-inner { grid-template-columns: 1fr; gap: 28px; }
-
+  .footer-inner { grid-template-columns: 1fr; gap: 24px; }
   .product-grid { grid-template-columns: 1fr; }
-  .collection-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .collection-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
 
+  /* ── Cards ── */
+  .review-card { padding: 20px 16px; }
+  .collection-card-info { padding: 12px 14px 14px; }
+
+  /* ── Product page layout ── */
   .product-actions { flex-direction: column; }
   .product-actions .btn { width: 100%; }
   .spec-list { grid-template-columns: 1fr; }
@@ -3351,25 +3377,40 @@ button.btn-disabled {
   .product-trust-item { font-size: 0.75rem; }
   .breadcrumb { margin-bottom: 16px; font-size: 0.75rem; }
 
-  .about-values { grid-template-columns: 1fr; }
+  /* ── FAQ accordion ── */
+  .faq-question { padding: 16px 0; min-height: 52px; touch-action: manipulation; }
+  .faq-item { padding: 0; }
 
+  /* ── About ── */
+  .about-values { grid-template-columns: 1fr; }
   .page-hero { padding: 100px 0 40px; }
 
+  /* ── CTA ── */
   .btn-hero { width: 100%; max-width: 320px; margin: 0 auto; }
 
+  /* ── Trust / topbar ── */
   .trust-badges { gap: 20px; }
+  .topbar { letter-spacing: 1px; }
 
-  .shade-buttons { gap: 8px; }
+  /* ── Misc ── */
+  .waitlist-teaser { padding: 48px 0; }
 
-  .waitlist-teaser { padding: 56px 0; }
+  /* ── Long words wrap correctly ── */
+  h1, h2, h3, p, li { overflow-wrap: break-word; word-break: break-word; }
 }
 
 @media (max-width: 480px) {
   .container { padding: 0 16px; }
-  .collection-grid { grid-template-columns: 1fr; }
+  .collection-grid { grid-template-columns: 1fr; gap: 14px; }
   .header-inner { height: 60px; }
-  .topbar { font-size: 0.65rem; padding: 8px 12px; }
+  .brand { font-size: 1.4rem; }
+  .topbar { font-size: 0.7rem; letter-spacing: 0.5px; padding: 8px 10px; }
   .trust-badges { gap: 16px; }
+  .length-btn { min-width: 50px; padding: 0 12px; font-size: 0.88rem; }
+  .shade-swatch { width: 42px; height: 42px; }
+  .product-gallery-thumbs .thumb { width: 56px; height: 56px; }
+  .section { padding: 40px 0; }
+  .review-card { padding: 18px 14px; }
 }
 .trust-badges {
   margin-top: 12px;
