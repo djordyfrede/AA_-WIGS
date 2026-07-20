@@ -491,6 +491,29 @@ async function initDatabase() {
     console.log('[DB] Seeded 4 Medium Brown product images');
   }
 
+  // ── Always ensure 2 Dark Brown product images exist ──
+  const img2Check = await pool.query('SELECT COUNT(*) FROM product_images WHERE slug=$1', ['2-dark-brown-body-wave']);
+  if (parseInt(img2Check.rows[0].count) === 0) {
+    const images2 = [
+      { url: '/assets/2/2-1-front.jpg',             alt: '2 Dark Brown Body Wave – Front View' },
+      { url: '/assets/2/2-2-three-quarter.jpg',      alt: '2 Dark Brown Body Wave – Three Quarter View' },
+      { url: '/assets/2/2-3-three-quarter-opp.jpg',  alt: '2 Dark Brown Body Wave – Three Quarter Opposite' },
+      { url: '/assets/2/2-4-left-profile.jpg',       alt: '2 Dark Brown Body Wave – Left Profile' },
+      { url: '/assets/2/2-5-right-profile.jpg',      alt: '2 Dark Brown Body Wave – Right Profile' },
+      { url: '/assets/2/2-6-back.jpg',               alt: '2 Dark Brown Body Wave – Back View' },
+      { url: '/assets/2/2-7-lace.jpg',               alt: '2 Dark Brown Body Wave – Lace Closeup' },
+      { url: '/assets/2/2-8-texture.jpg',            alt: '2 Dark Brown Body Wave – Texture' },
+      { url: '/assets/2/2-9-lifestyle.jpg',          alt: '2 Dark Brown Body Wave – Lifestyle' },
+    ];
+    for (let i = 0; i < images2.length; i++) {
+      await pool.query(
+        'INSERT INTO product_images (slug, url, alt, sort_order) VALUES ($1,$2,$3,$4)',
+        ['2-dark-brown-body-wave', images2[i].url, images2[i].alt, i + 1]
+      );
+    }
+    console.log('[DB] Seeded 2 Dark Brown product images');
+  }
+
   // ── Always ensure 99J Burgundy product record exists ──
   const burProduct = await pool.query('SELECT id FROM products WHERE slug=$1', ['99j-burgundy-body-wave']);
   if (burProduct.rows.length === 0) {
