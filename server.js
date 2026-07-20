@@ -653,6 +653,16 @@ app.get(['/products/22-swiss-hd-body-wave', '/products/22-swiss-hd-body-wave/'],
   }
 });
 
+app.use((req, res, next) => {
+  const p = req.path;
+  if (p.endsWith('.html') || p.endsWith('/') || p === '/' || !p.includes('.')) {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+  }
+  next();
+});
+
 app.use(express.static(path.join(__dirname), {
   extensions: ['html'],
   index: 'index.html'
