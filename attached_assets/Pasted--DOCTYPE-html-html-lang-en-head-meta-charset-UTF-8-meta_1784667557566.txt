@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AA WIGS — Where Luxury Meets Confidence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:        #2A0A14;   /* near-black burgundy — hero ground */
+    --burgundy:   #6E1423;   /* signature accent */
+    --gold:       #B8935A;   /* champagne gold */
+    --ivory:      #F4EFE6;   /* content ground */
+    --espresso:   #241812;   /* body text on ivory */
+    --satin:      #FBF7F1;   /* text on dark */
+    --hair:       92, 21, 30;
+    --radius: 2px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;} }
+
+  body{
+    margin:0;
+    font-family:'Jost', sans-serif;
+    color:var(--espresso);
+    background:var(--ivory);
+    font-weight:300;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.serif{ font-family:'Playfair Display', serif; font-weight:500; }
+  a{ color:inherit; }
+  img{ display:block; max-width:100%; }
+  .eyebrow{
+    font-family:'Jost', sans-serif;
+    text-transform:uppercase;
+    letter-spacing:.22em;
+    font-size:.7rem;
+    font-weight:500;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:.6rem;
+    font-family:'Jost', sans-serif;
+    font-size:.85rem;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    text-decoration:none;
+    padding:1rem 2rem;
+    border:1px solid var(--gold);
+    border-radius:var(--radius);
+    transition:background .35s ease, color .35s ease;
+  }
+  .btn-solid{ background:var(--gold); color:var(--ink); }
+  .btn-solid:hover, .btn-solid:focus-visible{ background:transparent; color:var(--satin); }
+  .btn-ghost{ background:transparent; color:var(--satin); }
+  .btn-ghost:hover, .btn-ghost:focus-visible{ background:var(--gold); color:var(--ink); }
+  a:focus-visible, button:focus-visible{ outline:2px solid var(--gold); outline-offset:3px; }
+
+  /* ---------- NAV ---------- */
+  .nav{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:1.4rem clamp(1.5rem,4vw,4rem);
+    background:transparent;
+    transition:background .4s ease, padding .4s ease, box-shadow .4s ease;
+  }
+  .nav.solid{
+    background:rgba(244,239,230,.94);
+    backdrop-filter:blur(6px);
+    padding:1rem clamp(1.5rem,4vw,4rem);
+    box-shadow:0 1px 0 rgba(42,10,20,.08);
+  }
+  .nav.solid .wordmark, .nav.solid a{ color:var(--espresso); }
+  .wordmark{
+    font-family:'Playfair Display', serif;
+    font-size:1.2rem;
+    letter-spacing:.14em;
+    color:var(--satin);
+    text-decoration:none;
+  }
+  .nav-links{ display:flex; gap:clamp(1.2rem,2.5vw,2.4rem); list-style:none; margin:0; padding:0; }
+  .nav-links a{
+    font-size:.78rem; letter-spacing:.1em; text-transform:uppercase;
+    text-decoration:none; color:var(--satin); opacity:.9;
+    padding-bottom:3px; border-bottom:1px solid transparent;
+    transition:border-color .3s ease, opacity .3s ease;
+  }
+  .nav-links a:hover{ border-color:var(--gold); opacity:1; }
+  .nav-cta{
+    font-size:.72rem; letter-spacing:.1em; text-transform:uppercase;
+    text-decoration:none; padding:.6rem 1.2rem; border:1px solid var(--gold);
+    color:var(--satin);
+  }
+  .nav.solid .nav-cta{ color:var(--espresso); }
+  .nav-toggle{ display:none; background:none; border:none; color:var(--satin); font-size:1.4rem; cursor:pointer; }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    background:var(--ink);
+    display:grid;
+    grid-template-columns: 1.05fr 1fr;
+    overflow:hidden;
+  }
+  .hero-copy{
+    position:relative; z-index:2;
+    display:flex; flex-direction:column; justify-content:center;
+    padding:8rem clamp(1.5rem,6vw,5.5rem) 6rem;
+    color:var(--satin);
+  }
+  .hero-copy .eyebrow{ color:var(--gold); margin-bottom:1.6rem; }
+  .hero-copy h1{
+    font-size:clamp(2.6rem, 5vw, 4.4rem);
+    line-height:1.06;
+    margin:0 0 1.6rem;
+    max-width:11ch;
+  }
+  .hero-copy h1 em{ font-style:italic; color:var(--gold); }
+  .hero-sub{
+    font-size:1.05rem; line-height:1.7; max-width:34ch;
+    color:rgba(251,247,241,.82); margin:0 0 2.6rem; font-weight:300;
+  }
+  .hero-ctas{ display:flex; flex-wrap:wrap; gap:1rem; margin-bottom:3rem; }
+  .hero-scroll{
+    font-size:.72rem; letter-spacing:.14em; text-transform:uppercase;
+    color:rgba(251,247,241,.65); text-decoration:none;
+    display:inline-flex; align-items:center; gap:.5rem;
+  }
+  .hero-scroll svg{ transition:transform .3s ease; }
+  .hero-scroll:hover svg{ transform:translateY(3px); }
+
+  .hero-visual{ position:relative; }
+  .hero-visual img{
+    width:100%; height:100%; object-fit:cover; object-position:top center;
+  }
+  .hero-visual::before{
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(90deg, var(--ink) 0%, rgba(42,10,20,.15) 22%, rgba(42,10,20,0) 45%);
+    z-index:1;
+  }
+  .hero-visual::after{
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(0deg, var(--ink) 0%, rgba(42,10,20,0) 18%);
+    z-index:1;
+  }
+
+  @media (max-width: 880px){
+    .hero{ grid-template-columns:1fr; }
+    .hero-visual{ min-height:52vh; order:-1; }
+    .hero-copy{ padding:2rem clamp(1.5rem,6vw,3rem) 4rem; }
+    .hero-copy h1{ max-width:none; }
+    .nav-links, .nav-cta{ display:none; }
+    .nav-toggle{ display:block; }
+  }
+
+  /* ---------- SIGNATURE STRIP ---------- */
+  .strip{
+    background:var(--ivory);
+    border-bottom:1px solid rgba(110,20,35,.14);
+    padding:1.4rem clamp(1.2rem,4vw,3rem);
+  }
+  .strip-inner{
+    max-width:1180px; margin:0 auto;
+    display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:.5rem 0;
+    font-size:.82rem; letter-spacing:.06em; color:var(--burgundy); text-align:center;
+  }
+  .strip-inner span:not(.dot){ padding:0 1.1rem; }
+  .dot{ color:var(--gold); }
+
+  /* ---------- SECTION shells ---------- */
+  section{ padding:clamp(4rem,8vw,7rem) clamp(1.5rem,6vw,4rem); }
+  .section-inner{ max-width:1180px; margin:0 auto; }
+  .section-head{ max-width:52ch; margin-bottom:clamp(2.5rem,5vw,4rem); }
+  .section-head .eyebrow{ color:var(--burgundy); margin-bottom:1rem; }
+  .section-head h2{ font-size:clamp(1.9rem,3vw,2.6rem); line-height:1.2; margin:0; color:var(--ink); }
+
+  /* ---------- PROOF (signature element) ---------- */
+  .proof{ background:var(--ivory); }
+  .proof-grid{
+    display:grid;
+    grid-template-columns: 0.82fr 1fr;
+    gap:clamp(1.5rem,4vw,3rem);
+    align-items:stretch;
+  }
+  .proof-card{ position:relative; overflow:hidden; border-radius:var(--radius); }
+  .proof-card img{ width:100%; height:100%; object-fit:cover; }
+  .proof-tall{ aspect-ratio: 3 / 4.6; }
+  .proof-wide{ display:flex; flex-direction:column; gap:1.6rem; }
+  .proof-wide .proof-card{ aspect-ratio: 4/3.1; }
+  .proof-label{
+    position:absolute; left:0; right:0; bottom:0;
+    padding:1.6rem 1.8rem 1.4rem;
+    background:linear-gradient(0deg, rgba(42,10,20,.86) 0%, rgba(42,10,20,0) 100%);
+    color:var(--satin);
+  }
+  .proof-label .serif{ font-size:1.5rem; font-style:italic; display:block; margin-bottom:.2rem; }
+  .proof-label span.eyebrow{ color:var(--gold); }
+  .proof-note{
+    font-size:1rem; line-height:1.7; color:var(--espresso); opacity:.85;
+    max-width:46ch;
+  }
+
+  /* ---------- DETAILS ACCORDION ---------- */
+  .details{ background:#EDE6D8; }
+  .accordion{ max-width:900px; }
+  details{
+    border-top:1px solid rgba(110,20,35,.22);
+  }
+  details:last-of-type{ border-bottom:1px solid rgba(110,20,35,.22); }
+  summary{
+    cursor:pointer;
+    list-style:none;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:1.5rem .2rem;
+    font-family:'Playfair Display', serif; font-size:1.25rem;
+    color:var(--ink);
+  }
+  summary::-webkit-details-marker{ display:none; }
+  summary .plus{ font-family:'Jost'; font-size:1.4rem; color:var(--burgundy); transition:transform .3s ease; }
+  details[open] summary .plus{ transform:rotate(45deg); }
+  .details-body{ padding:0 .2rem 1.8rem; max-width:64ch; line-height:1.85; font-size:.98rem; }
+  .details-body ul{ margin:.6rem 0 0; padding-left:1.2rem; }
+  .details-body li{ margin-bottom:.5rem; }
+
+  /* ---------- FAQ ---------- */
+  .faq{ background:var(--ivory); }
+  .faq-grid{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(2rem,4vw,3.5rem); max-width:1000px; }
+  .faq-item h3{ font-size:1.05rem; margin:0 0 .6rem; color:var(--ink); }
+  .faq-item p{ margin:0; line-height:1.75; font-size:.95rem; opacity:.85; }
+  @media (max-width:700px){ .faq-grid{ grid-template-columns:1fr; } .proof-grid{ grid-template-columns:1fr; } }
+
+  /* ---------- CTA BAND ---------- */
+  .cta-band{
+    background:var(--ink); color:var(--satin); text-align:center;
+    padding:clamp(4rem,8vw,6rem) 1.5rem;
+  }
+  .cta-band .eyebrow{ color:var(--gold); margin-bottom:1.2rem; }
+  .cta-band h2{ font-size:clamp(1.8rem,3.4vw,2.6rem); margin:0 0 .8rem; }
+  .cta-band p{ opacity:.75; margin:0 0 2.2rem; }
+
+  /* ---------- FOOTER ---------- */
+  footer{ background:var(--ink); color:var(--satin); padding:2.5rem clamp(1.5rem,6vw,4rem) 2.2rem; border-top:1px solid rgba(184,147,90,.25); }
+  .footer-inner{ max-width:1180px; margin:0 auto; display:flex; flex-wrap:wrap; justify-content:space-between; gap:2rem; }
+  .footer-brand .wordmark{ color:var(--satin); }
+  .footer-tag{ font-size:.85rem; opacity:.6; margin-top:.5rem; max-width:26ch; }
+  .footer-cols{ display:flex; gap:clamp(2rem,5vw,4rem); flex-wrap:wrap; }
+  .footer-col a{ display:block; font-size:.82rem; text-decoration:none; opacity:.75; margin-bottom:.65rem; }
+  .footer-col a:hover{ opacity:1; }
+  .footer-col h4{ font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:var(--gold); margin:0 0 1rem; font-weight:500; }
+  .footer-bottom{
+    max-width:1180px; margin:2.4rem auto 0; padding-top:1.6rem;
+    border-top:1px solid rgba(251,247,241,.12);
+    display:flex; flex-wrap:wrap; justify-content:space-between; gap:.8rem;
+    font-size:.72rem; opacity:.55;
+  }
+
+  /* fade-in on scroll */
+  .reveal{ opacity:0; transform:translateY(18px); transition:opacity .8s ease, transform .8s ease; }
+  .reveal.in{ opacity:1; transform:none; }
+</style>
+</head>
+<body>
+
+<nav class="nav" id="siteNav">
+  <a href="#" class="wordmark">AA WIGS</a>
+  <ul class="nav-links">
+    <li><a href="#proof">Shop</a></li>
+    <li><a href="#">The First Circle</a></li>
+    <li><a href="#">Care</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <a href="#proof" class="nav-cta">Shop The Crown</a>
+  <button class="nav-toggle" aria-label="Menu">☰</button>
+</nav>
+
+<header class="hero">
+  <div class="hero-copy">
+    <span class="eyebrow">AA WIGS · Signature Body Wave</span>
+    <h1>Where Luxury <em>Meets</em> Confidence.</h1>
+    <p class="hero-sub">One unit. One standard. Swiss HD lace, 22 inches, prepared with intention — from the first touch to the final look.</p>
+    <div class="hero-ctas">
+      <a href="#proof" class="btn btn-solid">Shop The Crown — $379</a>
+      <a href="#details" class="btn btn-ghost">See the Details</a>
+    </div>
+    <a href="#proof" class="hero-scroll">
+      Look closer
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 4v16M5 13l7 7 7-7"/></svg>
+    </a>
+  </div>
+  <div class="hero-visual">
+    <img src="images/hero-back.jpg" alt="AA WIGS Signature Body Wave, back view showing natural fall and movement">
+  </div>
+</header>
+
+<div class="strip">
+  <div class="strip-inner">
+    <span>22" · 13×6 Swiss HD Lace</span><span class="dot">✦</span>
+    <span>180% Density</span><span class="dot">✦</span>
+    <span>Glueless Ready</span><span class="dot">✦</span>
+    <span>100% Virgin Human Hair</span>
+  </div>
+</div>
+
+<section class="proof" id="proof">
+  <div class="section-inner">
+    <div class="section-head reveal">
+      <span class="eyebrow">The Proof, Not the Pitch</span>
+      <h2>Look for yourself. The hairline is the whole argument.</h2>
+    </div>
+    <div class="proof-grid">
+      <div class="proof-card proof-tall reveal">
+        <img src="images/hairline-macro.jpg" alt="Macro detail of the Swiss HD lace hairline, showing an undetectable, natural part">
+        <div class="proof-label">
+          <span class="eyebrow">Swiss HD Lace</span>
+          <span class="serif">Undetectable.</span>
+        </div>
+      </div>
+      <div class="proof-wide">
+        <div class="proof-card reveal">
+          <img src="images/portrait.jpg" alt="Portrait wearing the AA WIGS Signature Body Wave, showing natural density and softness">
+          <div class="proof-label">
+            <span class="eyebrow">Cuticle-Aligned</span>
+            <span class="serif">Soft. Full. True to length.</span>
+          </div>
+        </div>
+        <p class="proof-note reveal">Every unit is selected, inspected, and presented with care — a limited release built for those who invest in lasting quality, not a restock cycle.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="details" id="details">
+  <div class="section-inner">
+    <div class="section-head reveal">
+      <span class="eyebrow">What You're Buying</span>
+      <h2>Everything worth knowing, said once.</h2>
+    </div>
+    <div class="accordion reveal">
+      <details open>
+        <summary>Details &amp; Care <span class="plus">+</span></summary>
+        <div class="details-body">
+          <p>100% virgin human hair, cuticle-aligned so it moves and softens naturally over time. Swiss HD lace gives an invisible melt at a pre-plucked hairline. 180% density for full volume without added weight. Glueless, adjustable band, heat safe to 200°C (392°F). Designed to last 1–2+ years with proper care — can be dyed and styled like your own hair.</p>
+        </div>
+      </details>
+      <details>
+        <summary>What Arrives With It <span class="plus">+</span></summary>
+        <div class="details-body">
+          <ul>
+            <li>Burgundy magnetic box with gold foil detail and champagne satin interior</li>
+            <li>Care guide card and a personal thank-you note</li>
+            <li>Protective satin storage bag</li>
+          </ul>
+        </div>
+      </details>
+      <details>
+        <summary>Shipping &amp; Returns <span class="plus">+</span></summary>
+        <div class="details-body">
+          <p>Free U.S. shipping, 3–7 business days after 1–3 days of processing. International delivery in 7–14 days. Unworn units may be returned within 14 days.</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="faq">
+  <div class="section-inner">
+    <div class="section-head reveal">
+      <span class="eyebrow">Two Real Questions</span>
+      <h2>The only things people actually ask.</h2>
+    </div>
+    <div class="faq-grid reveal">
+      <div class="faq-item">
+        <h3>How long does shipping take?</h3>
+        <p>Processing takes 1–2 business days, with delivery in 3–5 business days within the U.S.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Can I dye or restyle it?</h3>
+        <p>Yes — it's 100% virgin human hair, so it takes color and heat styling the way your own hair would.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="cta-band reveal">
+  <span class="eyebrow">Limited Release</span>
+  <h2>The Crown is prepared, not produced.</h2>
+  <p>One unit. Inspected by hand. Shipped when it's ready — not before.</p>
+  <a href="#proof" class="btn btn-solid">Shop The Crown — $379</a>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="#" class="wordmark">AA WIGS</a>
+      <p class="footer-tag">Where Luxury Meets Confidence.</p>
+    </div>
+    <div class="footer-cols">
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <a href="#proof">The Crown</a>
+        <a href="#details">Details &amp; Care</a>
+      </div>
+      <div class="footer-col">
+        <h4>Community</h4>
+        <a href="#">The First Circle</a>
+        <a href="#">Education Series</a>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <a href="#">Shipping</a>
+        <a href="#">Returns</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 AA WIGS. All rights reserved.</span>
+    <span>Free U.S. Shipping · 1–2 Year Wear · Luxury Packaging Included</span>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('siteNav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('solid', window.scrollY > 60);
+  });
+
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); } });
+  }, { threshold:0.15 });
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+
+</body>
+</html>

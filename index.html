@@ -249,131 +249,453 @@
     </div>
   </header>
 
-  <section class="hero-cinematic">
-    <div class="hero-cinematic-bg"></div>
-    <div class="hero-cinematic-gold"></div>
-    <div class="hero-particles" aria-hidden="true">
-      <span></span><span></span><span></span><span></span><span></span><span></span>
+  <style>
+    /* ── Homepage redesign: Hero / Strip / Proof / Details / FAQ ── */
+    .hs-hero {
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      min-height: 100vh;
+      background: #2A0A14;
+      overflow: hidden;
+    }
+    .hs-hero-copy {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 9rem clamp(2rem, 7vw, 6rem) 6rem;
+      color: #FBF7F1;
+    }
+    .hs-hero-eyebrow {
+      font-family: var(--font-sans);
+      font-size: 0.68rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #B8935A;
+      margin-bottom: 1.8rem;
+      font-weight: 500;
+    }
+    .hs-hero-copy h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(2.8rem, 5vw, 4.5rem);
+      line-height: 1.06;
+      font-weight: 500;
+      margin: 0 0 1.6rem;
+      color: #FBF7F1;
+      max-width: 13ch;
+    }
+    .hs-hero-copy h1 em {
+      font-style: italic;
+      color: #B8935A;
+    }
+    .hs-hero-sub {
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      line-height: 1.8;
+      color: rgba(251,247,241,0.72);
+      margin: 0 0 2.8rem;
+      font-weight: 300;
+      max-width: 34ch;
+    }
+    .hs-hero-btn {
+      display: inline-flex;
+      align-items: center;
+      align-self: flex-start;
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 1.1rem 2.4rem;
+      background: #B8935A;
+      color: #2A0A14;
+      border: 1px solid #B8935A;
+      font-weight: 600;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+    .hs-hero-btn:hover { background: transparent; color: #B8935A; }
+    .hs-hero-visual {
+      position: relative;
+      overflow: hidden;
+    }
+    .hs-hero-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+    }
+    .hs-hero-visual::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, #2A0A14 0%, rgba(42,10,20,0.1) 28%, transparent 52%);
+      z-index: 1;
+    }
+    .hs-hero-visual::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(0deg, #2A0A14 0%, transparent 18%);
+      z-index: 1;
+    }
+
+    /* Spec strip */
+    .hs-strip {
+      background: #F4EFE6;
+      border-bottom: 1px solid rgba(110,20,35,0.12);
+      padding: 1.25rem clamp(1.5rem, 4vw, 3rem);
+    }
+    .hs-strip-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 0 0.2rem;
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+      color: #6E1423;
+      text-align: center;
+    }
+    .hs-strip-inner span:not(.hs-dot) { padding: 0 1rem; }
+    .hs-dot { color: #B8935A; font-size: 0.65rem; }
+
+    /* Proof section */
+    .hs-proof {
+      background: #F4EFE6;
+      padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 4rem);
+    }
+    .hs-proof-inner { max-width: 1180px; margin: 0 auto; }
+    .hs-proof-head { margin-bottom: clamp(2rem, 4vw, 3.5rem); }
+    .hs-section-eyebrow {
+      font-family: var(--font-sans);
+      font-size: 0.68rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #6E1423;
+      margin-bottom: 1rem;
+      font-weight: 500;
+      display: block;
+    }
+    .hs-proof-head h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.9rem, 3vw, 2.6rem);
+      line-height: 1.2;
+      color: #2A0A14;
+      margin: 0;
+      max-width: 52ch;
+    }
+    .hs-proof-grid {
+      display: grid;
+      grid-template-columns: 0.82fr 1fr;
+      gap: clamp(1.2rem, 2.5vw, 2rem);
+      align-items: stretch;
+    }
+    .hs-proof-card {
+      position: relative;
+      overflow: hidden;
+      background: #2A0A14;
+    }
+    .hs-proof-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+    }
+    .hs-proof-card--tall { aspect-ratio: 3 / 4.4; }
+    .hs-proof-card--portrait { aspect-ratio: 4 / 4.8; }
+    .hs-proof-overlay {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      padding: 2.4rem 1.8rem 1.8rem;
+      background: linear-gradient(0deg, rgba(42,10,20,0.9) 0%, rgba(42,10,20,0) 100%);
+      color: #FBF7F1;
+    }
+    .hs-proof-overlay .hs-section-eyebrow { color: #B8935A; margin-bottom: 0.4rem; }
+    .hs-proof-title {
+      font-family: var(--font-serif);
+      font-size: 1.55rem;
+      font-style: italic;
+      line-height: 1.3;
+      display: block;
+    }
+
+    /* Details accordion */
+    .hs-details {
+      background: #EDE6D8;
+      padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 4rem);
+    }
+    .hs-details-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(3rem, 6vw, 6rem);
+      align-items: start;
+    }
+    .hs-details-head h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.9rem, 2.8vw, 2.5rem);
+      line-height: 1.2;
+      color: #2A0A14;
+      margin: 0.8rem 0 1.2rem;
+    }
+    .hs-details-head p {
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      line-height: 1.75;
+      color: rgba(36,24,18,0.68);
+      font-weight: 300;
+      margin: 0;
+      max-width: 38ch;
+    }
+    .hs-accordion { border-top: 1px solid rgba(110,20,35,0.18); }
+    .hs-acc-item { border-bottom: 1px solid rgba(110,20,35,0.18); }
+    .hs-acc-trigger {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.35rem 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      color: #2A0A14;
+      text-align: left;
+      gap: 1rem;
+    }
+    .hs-acc-trigger .hs-plus {
+      font-family: var(--font-sans);
+      font-size: 1.4rem;
+      color: #6E1423;
+      flex-shrink: 0;
+      transition: transform 0.3s ease;
+      line-height: 1;
+    }
+    .hs-acc-item.open .hs-acc-trigger .hs-plus { transform: rotate(45deg); }
+    .hs-acc-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+    .hs-acc-item.open .hs-acc-body { max-height: 600px; }
+    .hs-acc-content {
+      padding-bottom: 1.6rem;
+      font-family: var(--font-sans);
+      font-size: 0.92rem;
+      line-height: 1.85;
+      color: rgba(36,24,18,0.75);
+      font-weight: 300;
+    }
+    .hs-acc-content ul { margin: 0.4rem 0 0; padding-left: 1.2rem; }
+    .hs-acc-content li { margin-bottom: 0.5rem; }
+
+    /* FAQ */
+    .hs-faq {
+      background: #F4EFE6;
+      padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 4rem);
+    }
+    .hs-faq-inner { max-width: 1180px; margin: 0 auto; }
+    .hs-faq-head { margin-bottom: clamp(2rem, 4vw, 3.5rem); }
+    .hs-faq-head h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.9rem, 3vw, 2.6rem);
+      line-height: 1.2;
+      color: #2A0A14;
+      margin: 0.8rem 0 0;
+    }
+    .hs-faq-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(2rem, 4vw, 4rem);
+      max-width: 920px;
+    }
+    .hs-faq-item h3 {
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      color: #2A0A14;
+      margin: 0 0 0.7rem;
+    }
+    .hs-faq-item p {
+      font-family: var(--font-sans);
+      margin: 0;
+      line-height: 1.75;
+      font-size: 0.93rem;
+      color: rgba(36,24,18,0.72);
+      font-weight: 300;
+    }
+
+    /* Mobile */
+    @media (max-width: 880px) {
+      .hs-hero { grid-template-columns: 1fr; min-height: auto; }
+      .hs-hero-visual { min-height: 58vh; order: -1; }
+      .hs-hero-visual::before { background: linear-gradient(0deg, #2A0A14 0%, transparent 38%); }
+      .hs-hero-visual::after { display: none; }
+      .hs-hero-copy { padding: 2.5rem clamp(1.5rem, 6vw, 3rem) 4rem; }
+      .hs-hero-copy h1 { max-width: none; }
+      .hs-details-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+      .hs-proof-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .hs-proof-card--tall, .hs-proof-card--portrait { aspect-ratio: 4 / 4; }
+      .hs-faq-grid { grid-template-columns: 1fr; max-width: none; }
+    }
+    @media (max-width: 480px) {
+      .hs-hero-copy h1 { font-size: 2.3rem; }
+      .hs-hero-btn { align-self: stretch; justify-content: center; }
+    }
+  </style>
+
+  <!-- ── NEW HERO ──────────────────────────────────────────────── -->
+  <section class="hs-hero">
+    <div class="hs-hero-copy">
+      <span class="hs-hero-eyebrow">AA WIGS · Signature Body Wave</span>
+      <h1>Where Luxury <em>Meets</em> Confidence.</h1>
+      <p class="hs-hero-sub">Swiss HD lace. Glueless ready.<br>Delivered in signature packaging.</p>
+      <a class="hs-hero-btn" href="products/22-swiss-hd-body-wave/">Shop The Crown — $379</a>
     </div>
-    <div class="hero-cinematic-content">
-      <p class="eyebrow hero-fade-up">AA WIGS</p>
-      <h1 class="hero-fade-up hero-delay-1"><span class="hero-shimmer">Where Luxury</span><br><span class="hero-shimmer">Meets Confidence.</span></h1>
-      <p class="hero-sub hero-fade-up hero-delay-2">Swiss HD lace. Glueless ready. Delivered in signature packaging.</p>
-      <div class="hero-cinematic-cta hero-fade-up hero-delay-3">
-        <a class="btn btn-solid btn-hero" href="products/22-swiss-hd-body-wave/">Shop The Crown</a>
-      </div>
-      <a class="hero-secondary-link hero-fade-up hero-delay-4" href="#experience">
-        <span class="hero-arrow-bounce">↓</span> View the experience
-      </a>
-    </div>
-    <div class="hero-scroll-indicator" aria-hidden="true">
-      <div class="scroll-line"></div>
+    <div class="hs-hero-visual">
+      <img src="assets/1b/1b-new-1-front.png" alt="AA WIGS Signature Body Wave — 1B Natural Black, front view" fetchpriority="high">
     </div>
   </section>
 
-  <section class="quick-product fade-in" id="collection">
-    <div class="container">
-      <article class="quick-product-card">
-        <div class="quick-product-image">
-          <div class="quick-product-visual qp-gallery">
-            <img class="qp-slide active" src="/assets/products/model-1b.png"  alt="AA WIGS Body Wave – 1B Natural Black">
-            <img class="qp-slide"        src="/assets/products/model-99j.png" alt="AA WIGS Body Wave – 99J Burgundy">
-            <img class="qp-slide"        src="/assets/products/model-613.png" alt="AA WIGS Body Wave – 613 Blonde">
-            <img class="qp-slide"        src="/assets/products/model-27.png"  alt="AA WIGS Body Wave – 27 Honey Blonde">
-            <img class="qp-slide"        src="/assets/products/model-2.png"   alt="AA WIGS Body Wave – 2 Dark Brown">
-            <div class="qp-dots">
-              <span class="qp-dot active"></span>
-              <span class="qp-dot"></span>
-              <span class="qp-dot"></span>
-              <span class="qp-dot"></span>
-              <span class="qp-dot"></span>
+  <!-- ── SPEC STRIP ────────────────────────────────────────────── -->
+  <div class="hs-strip">
+    <div class="hs-strip-inner">
+      <span>22"</span><span class="hs-dot">✦</span>
+      <span>13×6 Swiss HD Lace</span><span class="hs-dot">✦</span>
+      <span>180% Density</span><span class="hs-dot">✦</span>
+      <span>Glueless Ready</span>
+    </div>
+  </div>
+
+  <!-- ── PROOF ─────────────────────────────────────────────────── -->
+  <section class="hs-proof" id="collection">
+    <div class="hs-proof-inner">
+      <div class="hs-proof-head">
+        <span class="hs-section-eyebrow">The Proof, Not the Pitch</span>
+        <h2>Look for yourself. The hairline is the whole argument.</h2>
+      </div>
+      <div class="hs-proof-grid">
+        <div class="hs-proof-card hs-proof-card--tall">
+          <img src="assets/1b/1b-new-3-lace.png" alt="Swiss HD lace hairline detail — undetectable, natural part" loading="lazy">
+          <div class="hs-proof-overlay">
+            <span class="hs-section-eyebrow">Swiss HD Lace</span>
+            <span class="hs-proof-title">Undetectable.</span>
+          </div>
+        </div>
+        <div class="hs-proof-card hs-proof-card--portrait">
+          <img src="assets/1b/1b-new-2-smile.png" alt="AA WIGS — full portrait, natural movement and full body wave" loading="lazy">
+          <div class="hs-proof-overlay">
+            <span class="hs-proof-title">Cuticle-Aligned.<br>Soft. Full.<br>True to length.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── DETAILS ACCORDION ────────────────────────────────────── -->
+  <section class="hs-details" id="experience">
+    <div class="hs-details-inner">
+      <div class="hs-details-head">
+        <span class="hs-section-eyebrow">Every Detail Considered</span>
+        <h2>Built for those who invest in lasting quality.</h2>
+        <p>One standard. Every unit prepared with intention — from sourcing to the final look.</p>
+      </div>
+      <div class="hs-accordion">
+        <div class="hs-acc-item">
+          <button class="hs-acc-trigger" aria-expanded="false">
+            What's Included
+            <span class="hs-plus">+</span>
+          </button>
+          <div class="hs-acc-body">
+            <div class="hs-acc-content">
+              <ul>
+                <li>Burgundy magnetic box with champagne satin interior</li>
+                <li>AA WIGS care guide card</li>
+                <li>Thank-you / confidence card</li>
+                <li>Protective satin storage bag</li>
+              </ul>
             </div>
           </div>
         </div>
-        <div class="quick-product-info">
-          <p class="eyebrow">Signature Unit</p>
-          <h2>22" 13x6 Swiss HD Lace</h2>
-          <p class="quick-product-spec">Body Wave · 180% Density · 1B Natural Black</p>
-          <p class="quick-product-brand-note">AA WIGS is not just hair. It is a signature experience — from the first touch to the final look.</p>
-          <div class="quick-product-row">
-            <span class="price">From $289</span>
-            <a class="btn btn-solid" href="products/22-swiss-hd-body-wave/">View Details</a>
+        <div class="hs-acc-item">
+          <button class="hs-acc-trigger" aria-expanded="false">
+            Full Specifications
+            <span class="hs-plus">+</span>
+          </button>
+          <div class="hs-acc-body">
+            <div class="hs-acc-content">
+              <ul>
+                <li>100% Virgin Human Hair</li>
+                <li>13×6 Swiss HD Lace frontal</li>
+                <li>180% Density — full, natural volume</li>
+                <li>Pre-plucked hairline, bleached knots</li>
+                <li>Glueless adjustable elastic band</li>
+                <li>Heat safe up to 200°C (392°F)</li>
+                <li>Available 18"–26" in 6 shades</li>
+              </ul>
+            </div>
           </div>
         </div>
-      </article>
-    </div>
-  </section>
-
-  <div class="luxury-divider" aria-hidden="true"><span>✦</span></div>
-
-  <section class="section statement fade-in">
-    <div class="container">
-      <div class="statement-inner">
-        <h2>Quiet luxury. Loud confidence.</h2>
-        <p>Every unit is designed to look natural, feel secure, and elevate your presence — from hairline detail to the unboxing moment.</p>
-        <div class="mini-points">
-          <div class="mini">Cuticle Aligned</div>
-          <div class="mini">True-to-Length</div>
-          <div class="mini">Soft + Full Ends</div>
+        <div class="hs-acc-item">
+          <button class="hs-acc-trigger" aria-expanded="false">
+            The AA Promise
+            <span class="hs-plus">+</span>
+          </button>
+          <div class="hs-acc-body">
+            <div class="hs-acc-content">
+              <ul>
+                <li>Quality-inspected before every shipment</li>
+                <li>Cuticle-aligned hair — minimal tangling, lasting softness</li>
+                <li>Designed to last 1–2+ years with proper care</li>
+                <li>Responsive support via Instagram @aawigshair</li>
+                <li>14-day return policy on unworn units</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <div class="luxury-divider" aria-hidden="true"><span>✦</span></div>
-
-  <section class="section experience" id="experience">
-    <div class="container grid-2 fade-in">
-      <div class="packaging-gallery">
-        <div class="img-wrap">
-          <img src="assets/packaging-1.jpg" alt="AA WIGS luxury burgundy packaging box with gold foil logo" fetchpriority="high">
-        </div>
-        <div class="img-wrap">
-          <img src="assets/packaging-2.jpg" alt="AA WIGS packaging interior with champagne satin lining" fetchpriority="high">
-        </div>
+  <!-- ── FAQ (2 questions) ─────────────────────────────────────── -->
+  <section class="hs-faq">
+    <div class="hs-faq-inner">
+      <div class="hs-faq-head">
+        <span class="hs-section-eyebrow">Quick Answers</span>
+        <h2>Common Questions</h2>
       </div>
-      <div>
-        <h2>The Packaging Experience</h2>
-        <p>
-          Your crown arrives in a burgundy luxury box with gold foil logo and champagne satin interior.
-          Built to feel premium the moment it's opened — because your hair is an investment.
-        </p>
-        <ul class="checklist">
-          <li>Burgundy magnetic box with gold foil logo</li>
-          <li>Champagne satin interior lining</li>
-          <li>Care guide card included</li>
-          <li>Personalized thank-you card</li>
-          <li>Protective satin storage bag</li>
-        </ul>
+      <div class="hs-faq-grid">
+        <div class="hs-faq-item">
+          <h3>How long does shipping take?</h3>
+          <p>Processing takes 1–3 business days. U.S. delivery is typically 3–7 business days after that. Free shipping on every order — no minimums.</p>
+        </div>
+        <div class="hs-faq-item">
+          <h3>Can the wig be dyed?</h3>
+          <p>Yes. Every AA WIGS unit is 100% virgin human hair and can be professionally dyed or color-treated, just like natural hair. We recommend working with a professional stylist.</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="section" id="why">
-    <div class="container">
-      <div class="section-head fade-in">
-        <h2>The Difference</h2>
-        <p>Designed for confidence, crafted with intention.</p>
-      </div>
-      <div class="why-grid fade-in">
-        <div class="why-card">
-          <span class="why-icon">✦</span>
-          <h3>Seamless Finish</h3>
-          <p>Designed to blend naturally with an undetectable hairline and refined finish.</p>
-        </div>
-        <div class="why-card">
-          <span class="why-icon">◆</span>
-          <h3>Effortless Confidence</h3>
-          <p>Soft movement, secure comfort, and a look that feels like yours.</p>
-        </div>
-        <div class="why-card">
-          <span class="why-icon">♛</span>
-          <h3>Signature Experience</h3>
-          <p>From the burgundy box to the champagne satin interior, every detail is intentional.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+  <script>
+  (function() {
+    document.querySelectorAll('.hs-acc-trigger').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var item = this.closest('.hs-acc-item');
+        var isOpen = item.classList.contains('open');
+        item.classList.toggle('open', !isOpen);
+        this.setAttribute('aria-expanded', String(!isOpen));
+      });
+    });
+  })();
+  </script>
 
   <section class="section" id="the-first-circle" style="background:var(--champagne);">
     <div class="container">
