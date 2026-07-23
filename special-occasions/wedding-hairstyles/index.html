@@ -259,7 +259,7 @@
       background: #FDFAF5;
     }
     .so-occasion-img-slot {
-      aspect-ratio: 16 / 9;
+      height: 380px;
       background: #F0E8DC;
       display: flex;
       flex-direction: column;
@@ -268,6 +268,7 @@
       gap: 8px;
       border-bottom: 1px solid rgba(197,163,85,0.18);
       position: relative;
+      overflow: hidden;
     }
     .so-occasion-img-slot img {
       position: absolute;
@@ -275,7 +276,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center;
+      object-position: center top;
     }
     .so-occasion-img-slot .so-placeholder-label {
       font-family: var(--font-sans);
@@ -355,11 +356,13 @@
 
     @media (max-width: 640px) {
       .so-occasion-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+      .so-occasion-img-slot { height: 260px; }
       .so-body { padding: 40px 20px 60px; }
       .so-article-header { padding: 36px 20px 32px; }
     }
     @media (max-width: 420px) {
       .so-occasion-grid { grid-template-columns: 1fr; }
+      .so-occasion-img-slot { height: 320px; }
     }
   </style>
 </head>
