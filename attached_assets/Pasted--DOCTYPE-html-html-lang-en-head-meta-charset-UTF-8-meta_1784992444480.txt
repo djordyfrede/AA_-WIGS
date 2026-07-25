@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The First Circle — AA WIGS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --wine-deep:  #4A1226;
+    --wine:       #6E1F3D;
+    --wine-light: #8A2C4C;
+    --gold:       #C9A468;
+    --satin:      #FBF3EA;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Jost', sans-serif;
+    background:linear-gradient(160deg, var(--wine) 0%, var(--wine-deep) 55%, #370D1C 100%);
+    color:var(--satin);
+    -webkit-font-smoothing:antialiased;
+  }
+  .eyebrow{
+    font-family:'Jost', sans-serif; text-transform:uppercase; letter-spacing:.28em;
+    font-size:.72rem; font-weight:500; color:var(--gold);
+  }
+  section{ padding:clamp(4.5rem,9vw,7.5rem) clamp(1.5rem,6vw,4rem); }
+  .wrap{ max-width:1180px; margin:0 auto; text-align:center; }
+  h2.serif{
+    font-family:'Playfair Display', serif; font-weight:500;
+    font-size:clamp(2.1rem,4vw,3rem); margin:.9rem 0 1.3rem; color:var(--satin);
+  }
+  .lead{
+    max-width:52ch; margin:0 auto clamp(3rem,6vw,4.5rem);
+    line-height:1.8; font-size:1.02rem; font-weight:300; color:rgba(251,243,234,.85);
+  }
+
+  .grid{
+    display:grid; grid-template-columns:repeat(3,1fr);
+    gap:clamp(1.4rem,3vw,2.2rem);
+  }
+  .card{
+    position:relative;
+    aspect-ratio:3/4;
+    border-radius:2px;
+    overflow:hidden;
+    isolation:isolate;
+  }
+  .card img{
+    position:absolute; inset:0; width:100%; height:100%;
+    object-fit:cover;
+    filter:blur(3px) saturate(85%);
+    transform:scale(1.08);
+    opacity:.34;
+  }
+  .card::before{
+    content:'';
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(55,13,28,.55) 0%, rgba(55,13,28,.78) 60%, rgba(55,13,28,.92) 100%);
+    z-index:1;
+  }
+  /* gold corner brackets instead of full outline */
+  .corner{ position:absolute; width:26px; height:26px; z-index:3; opacity:.9; }
+  .corner.tl{ top:16px; left:16px; border-top:1px solid var(--gold); border-left:1px solid var(--gold); }
+  .corner.tr{ top:16px; right:16px; border-top:1px solid var(--gold); border-right:1px solid var(--gold); }
+  .corner.bl{ bottom:16px; left:16px; border-bottom:1px solid var(--gold); border-left:1px solid var(--gold); }
+  .corner.br{ bottom:16px; right:16px; border-bottom:1px solid var(--gold); border-right:1px solid var(--gold); }
+
+  .card-inner{
+    position:relative; z-index:2;
+    height:100%;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:2rem 1.6rem;
+    text-align:center;
+  }
+  .monogram{
+    width:34px; height:34px; border-radius:50%;
+    border:1px solid var(--gold);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Playfair Display', serif; font-style:italic; font-size:.95rem;
+    color:var(--gold);
+    margin-bottom:1.4rem;
+  }
+  .reserved{
+    font-family:'Playfair Display', serif; font-style:italic; font-weight:400;
+    font-size:1.05rem; line-height:1.6; color:var(--satin); opacity:.92;
+    max-width:22ch;
+  }
+  .slot-number{
+    margin-top:1.2rem; font-size:.68rem; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--gold); opacity:.75;
+  }
+
+  .cta-row{ margin-top:clamp(3rem,6vw,4rem); }
+  .btn{
+    display:inline-flex; align-items:center; gap:.6rem;
+    font-family:'Jost', sans-serif; font-size:.82rem; letter-spacing:.12em; text-transform:uppercase;
+    text-decoration:none; padding:1rem 2.2rem; border:1px solid var(--gold);
+    background:var(--gold); color:var(--wine-deep);
+    border-radius:2px; transition:background .3s ease, color .3s ease;
+  }
+  .btn:hover{ background:transparent; color:var(--satin); }
+  .cta-note{
+    display:block; margin-top:1rem; font-size:.78rem; color:rgba(251,243,234,.6);
+  }
+
+  @media (max-width:820px){
+    .grid{ grid-template-columns:1fr; }
+    .card{ aspect-ratio:4/3; }
+  }
+</style>
+</head>
+<body>
+
+<section>
+  <div class="wrap">
+    <span class="eyebrow">The Story in Progress</span>
+    <h2 class="serif">Future Client Experiences</h2>
+    <p class="lead">These spaces are reserved for real stories from real women. They will be filled as our community grows — with honesty, care, and gratitude.</p>
+
+    <div class="grid">
+      <div class="card">
+        <img src="images/hero-back.jpg" alt="">
+        <div class="corner tl"></div><div class="corner tr"></div>
+        <div class="corner bl"></div><div class="corner br"></div>
+        <div class="card-inner">
+          <div class="monogram">AA</div>
+          <p class="reserved">Reserved for a future AA WIGS client story.</p>
+          <span class="slot-number">Story No. 01</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="images/hairline-macro.jpg" alt="">
+        <div class="corner tl"></div><div class="corner tr"></div>
+        <div class="corner bl"></div><div class="corner br"></div>
+        <div class="card-inner">
+          <div class="monogram">AA</div>
+          <p class="reserved">Reserved for a future AA WIGS client story.</p>
+          <span class="slot-number">Story No. 02</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="images/portrait.jpg" alt="">
+        <div class="corner tl"></div><div class="corner tr"></div>
+        <div class="corner bl"></div><div class="corner br"></div>
+        <div class="card-inner">
+          <div class="monogram">AA</div>
+          <p class="reserved">Reserved for a future AA WIGS client story.</p>
+          <span class="slot-number">Story No. 03</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-row">
+      <a href="#" class="btn">Be One of the First Three Stories</a>
+      <span class="cta-note">Join The First Circle to share yours.</span>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
