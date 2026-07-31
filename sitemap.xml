@@ -337,5 +337,41 @@
     <priority>0.75</priority>
     <lastmod>2026-07-21</lastmod>
   </url>
+  <url>
+    <loc>https://aawigs.com/knowledge-center/why-does-my-wig-shed/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <lastmod>2026-07-31</lastmod>
+  </url>
+  <url>
+    <loc>https://aawigs.com/knowledge-center/why-does-my-wig-tangle/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <lastmod>2026-07-31</lastmod>
+  </url>
+  <url>
+    <loc>https://aawigs.com/knowledge-center/heat-styling-body-wave/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <lastmod>2026-07-31</lastmod>
+  </url>
+  <url>
+    <loc>https://aawigs.com/knowledge-center/sleeping-in-a-wig/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <lastmod>2026-07-31</lastmod>
+  </url>
+  <url>
+    <loc>https://aawigs.com/knowledge-center/wig-glossary/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+    <lastmod>2026-07-31</lastmod>
+  </url>
+  <url>
+    <loc>https://aawigs.com/knowledge-center/traveling-with-a-wig/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <lastmod>2026-07-31</lastmod>
+  </url>
 
 </urlset>
