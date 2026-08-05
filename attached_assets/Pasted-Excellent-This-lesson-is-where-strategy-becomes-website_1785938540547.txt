@@ -1,0 +1,102 @@
+Excellent. This lesson is where strategy becomes website architecture.
+
+Everything you've learned so far answers:
+
+What should we teach?
+What should we write?
+What proof should we show?
+
+Now the report asks:
+
+"How should all of this be connected so visitors and Google can easily understand it?"
+
+This is one of the most important lessons because great content with poor structure often performs like average content.
+
+Lesson 10 — Architecture & Search Visibility
+
+The report explains that your articles should not exist as isolated pages.
+
+Instead, they should form one connected trust ecosystem.
+
+Think of a Luxury Hotel
+
+Imagine entering a luxury hotel.
+
+You immediately see signs directing you to:
+
+Reception
+Rooms
+Restaurant
+Spa
+Conference Center
+
+You never wonder:
+
+"Where do I go?"
+
+Now imagine there were no signs.
+
+Even if the hotel were beautiful...
+
+Guests would feel lost.
+
+The report wants AA WIGS to avoid that problem.
+
+The Complete Architecture
+
+The report proposes a structure like this:
+
+Knowledge Center
+        │
+        ▼
+Buying With Confidence (Hub)
+        │
+ ┌──────────────┬──────────────┬──────────────┐
+ │              │              │              │
+What You'll   Inspect      Industry      AA WIGS
+Receive       Before You    Truth         Standard
+              Install
+
+Every supporting article belongs somewhere under that system.
+
+Why One Hub Matters
+
+Imagine a visitor lands on:
+
+"How to Avoid Wig Scams"
+
+She finishes reading.
+
+Then what?
+
+Many websites simply say:
+
+"Read more."
+
+The report recommends something much more intentional.
+
+Every trust article should naturally guide the reader back to the Buying With Confidence hub or to another closely related article.
+
+Instead of dead ends...
+
+You create a learning journey.
+
+Internal Linking Rules
+
+One of the most practical parts of the report is that it gives a repeatable linking formula.
+
+Every trust article should include:
+
+One link back to the Buying With Confidence hub.
+Two or three links to closely related trust articles.
+One link to a relevant specification guide.
+One link to the appropriate support page (returns, shipping, contact, etc., when relevant).
+One gentle product or collection CTA after the educational question has been answered.
+
+Notice the order.
+
+Education comes first.
+
+The product invitation comes last.
+
+That's consistent with the trust-first philosophy you've been building.
