@@ -210,10 +210,6 @@
 </head>
 <body>
 
-  <div class="page-curtain" id="pageCurtain">
-    <div class="curtain-logo">AA WIGS</div>
-  </div>
-
   <div class="topbar">
     <span>✦ Swiss HD Lace · Glueless Ready · Premium Packaging ✦</span>
   </div>
@@ -225,6 +221,7 @@
         <a href="#collection">Shop</a>
         <a href="#experience">Experience</a>
         <a href="/the-first-circle/">The First Circle</a>
+        <a href="/knowledge-center/">Learn</a>
         <a href="care.html">Care</a>
         <a href="contact.html">Contact</a>
         <a class="btn btn-solid" href="products/22-swiss-hd-body-wave/">Shop The Crown</a>
@@ -243,6 +240,7 @@
       <a href="#collection">Shop</a>
       <a href="#experience">Experience</a>
       <a href="/the-first-circle/">The First Circle</a>
+      <a href="/knowledge-center/">Learn</a>
       <a href="care.html">Care</a>
       <a href="contact.html">Contact</a>
       <a class="btn btn-solid" href="products/22-swiss-hd-body-wave/">Shop The Crown</a>
@@ -545,19 +543,99 @@
       .hs-proof-card--tall, .hs-proof-card--portrait { aspect-ratio: 4 / 4; }
       .hs-faq-grid { grid-template-columns: 1fr; max-width: none; }
     }
+    /* Secondary CTA */
+    .hs-hero-ctas { display: flex; flex-direction: column; align-items: flex-start; gap: 1.1rem; }
+    .hs-hero-btn-sec {
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      color: rgba(251,247,241,0.6);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(251,247,241,0.22);
+      padding-bottom: 2px;
+      transition: color 0.25s, border-color 0.25s;
+    }
+    .hs-hero-btn-sec:hover { color: #B8935A; border-color: rgba(184,147,90,0.5); }
+
+    /* Buying With Confidence trust bar */
+    .hs-bwc {
+      background: #1e0710;
+      border-top: 1px solid rgba(184,147,90,0.18);
+      padding: 1.3rem clamp(1.5rem, 4vw, 3rem);
+    }
+    .hs-bwc-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem 2.4rem;
+    }
+    .hs-bwc-label {
+      font-family: var(--font-sans);
+      font-size: 0.62rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #B8935A;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    .hs-bwc-pillars {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0 2rem;
+    }
+    .hs-bwc-pillar {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      color: rgba(251,247,241,0.65);
+      letter-spacing: 0.01em;
+    }
+    .hs-bwc-icon { color: #B8935A; }
+    .hs-bwc-link {
+      font-family: var(--font-sans);
+      font-size: 0.7rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #B8935A;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(184,147,90,0.3);
+      padding-bottom: 1px;
+      flex-shrink: 0;
+      transition: color 0.2s, border-color 0.2s;
+      white-space: nowrap;
+    }
+    .hs-bwc-link:hover { color: #FBF7F1; border-color: rgba(251,247,241,0.4); }
+
+    @media (max-width: 880px) {
+      .hs-bwc-inner { flex-direction: column; gap: 0.9rem; text-align: center; }
+      .hs-bwc-pillars { justify-content: center; gap: 0.8rem 1.4rem; }
+    }
+
     @media (max-width: 480px) {
       .hs-hero-copy h1 { font-size: 2.3rem; }
       .hs-hero-btn { align-self: stretch; justify-content: center; }
+      .hs-hero-ctas { align-items: stretch; }
     }
   </style>
 
   <!-- ── NEW HERO ──────────────────────────────────────────────── -->
   <section class="hs-hero">
     <div class="hs-hero-copy">
-      <span class="hs-hero-eyebrow">AA WIGS · Signature Body Wave</span>
-      <h1>Where Luxury <em>Meets</em> Confidence.</h1>
-      <p class="hs-hero-sub">Swiss HD lace. Glueless ready.<br>Delivered in signature packaging.</p>
-      <a class="hs-hero-btn" href="products/22-swiss-hd-body-wave/">Shop The Crown — $379</a>
+      <span class="hs-hero-eyebrow">The Signature Body Wave House</span>
+      <h1>Luxury Body Wave <em>Human Hair</em> Wigs.</h1>
+      <p class="hs-hero-sub">Swiss HD lace that disappears into your hairline. 180% density. Glueless ready. Every unit inspected before it ships.</p>
+      <div class="hs-hero-ctas">
+        <a class="hs-hero-btn" href="/collection.html">Shop Signature Collection — From $289</a>
+        <a class="hs-hero-btn-sec" href="/knowledge-center/buying-with-confidence/">How We Earn Your Trust →</a>
+      </div>
     </div>
     <div class="hs-hero-visual">
       <img src="assets/1b/1b-new-1-front.png" alt="AA WIGS Signature Body Wave — 1B Natural Black, front view" fetchpriority="high">
@@ -573,6 +651,20 @@
       <span>Glueless Ready</span>
     </div>
   </div>
+
+  <!-- ── BUYING WITH CONFIDENCE TRUST BAR ─────────────────────── -->
+  <section class="hs-bwc">
+    <div class="hs-bwc-inner">
+      <span class="hs-bwc-label">Buying With Confidence</span>
+      <div class="hs-bwc-pillars">
+        <div class="hs-bwc-pillar"><span class="hs-bwc-icon">✓</span> Documented Inspection</div>
+        <div class="hs-bwc-pillar"><span class="hs-bwc-icon">✓</span> Real Product Photography</div>
+        <div class="hs-bwc-pillar"><span class="hs-bwc-icon">✓</span> Transparent Standards</div>
+        <div class="hs-bwc-pillar"><span class="hs-bwc-icon">✓</span> Luxury Packaging Included</div>
+      </div>
+      <a class="hs-bwc-link" href="/knowledge-center/buying-with-confidence/">See How We Document Every Unit →</a>
+    </div>
+  </section>
 
   <!-- ── PROOF ─────────────────────────────────────────────────── -->
   <section class="hs-proof" id="collection">
@@ -679,6 +771,14 @@
         <div class="hs-faq-item">
           <h3>Can the wig be dyed?</h3>
           <p>Yes. Every AA WIGS unit is 100% virgin human hair and can be professionally dyed or color-treated, just like natural hair. We recommend working with a professional stylist.</p>
+        </div>
+        <div class="hs-faq-item">
+          <h3>What is your return policy?</h3>
+          <p>14-day returns on unworn units in original packaging. Inspect your wig on arrival using our <a href="/knowledge-center/first-ten-minutes/" style="color:inherit;border-bottom:1px solid rgba(36,24,18,0.3);">First Ten Minutes guide</a> — it documents the condition before you install, which protects your return options.</p>
+        </div>
+        <div class="hs-faq-item">
+          <h3>How do I know the quality is real?</h3>
+          <p>Every claim is documented. Our <a href="/knowledge-center/buying-with-confidence/" style="color:inherit;border-bottom:1px solid rgba(36,24,18,0.3);">Buying With Confidence hub</a> explains how we inspect every unit, what virgin human hair actually means, how our photography is produced, and what you should check on arrival.</p>
         </div>
       </div>
     </div>
@@ -1133,7 +1233,7 @@
 
   <div class="mobile-shop-btn">
     <p class="sticky-urgency" id="stickyUrgency" style="display:none"></p>
-    <a class="btn btn-solid sticky-cta-btn" href="products/22-swiss-hd-body-wave/">Secure Your Crown — From $289</a>
+    <a class="btn btn-solid sticky-cta-btn" href="/collection.html">Shop Signature Collection — From $289</a>
     <p class="sticky-trust">Free Shipping&nbsp;&nbsp;•&nbsp;&nbsp;1–2 Year Wear&nbsp;&nbsp;•&nbsp;&nbsp;Luxury Packaging Included</p>
   </div>
 
