@@ -291,8 +291,42 @@
       color: var(--kc-gold);
     }
 
-    /* ── Featured Articles ─────────────────────────────────────────────── */
+    /* ── Category Sections ─────────────────────────────────────────────── */
     .kc-articles-section { background: var(--kc-champagne); }
+    .kc-eyebrow-label {
+      font-family: var(--kc-sans);
+      font-size: 0.65rem;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--kc-gold);
+      margin: 0 0 8px;
+      font-weight: 600;
+    }
+    .kc-cat-section {
+      padding: 64px 24px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .kc-cat-section + .kc-cat-section {
+      border-top: 1px solid rgba(197,163,85,0.18);
+    }
+    .kc-cat-head {
+      margin-bottom: 32px;
+    }
+    .kc-cat-head h2 {
+      font-family: var(--kc-serif);
+      font-size: 1.55rem;
+      font-weight: 400;
+      color: var(--kc-burg-deep);
+      margin: 0 0 6px;
+    }
+    .kc-cat-head p {
+      font-family: var(--kc-sans);
+      font-size: 0.85rem;
+      color: var(--kc-text-muted);
+      margin: 0;
+      line-height: 1.6;
+    }
     .kc-articles-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -783,322 +817,346 @@
     </div>
   </section>
 
-  <!-- ── FEATURED ARTICLES ──────────────────────────────────────────────── -->
-  <section class="kc-section kc-articles-section">
+  <!-- ── BUYING WITH CONFIDENCE ────────────────────────────────────────── -->
+  <section class="kc-section kc-articles-section" id="buying-with-confidence">
     <div class="kc-section-head">
-      <h2>Featured Articles</h2>
-      <p>Trending reads on luxury hair, style, and confidence.</p>
+      <p class="kc-eyebrow-label">Trust System</p>
+      <h2>Buying With Confidence</h2>
+      <p>Every question answered before, during, and after your purchase — from what arrives in the box to how we inspect every unit before it ships.</p>
+      <a href="/knowledge-center/buying-with-confidence/" style="display:inline-block;margin-top:14px;font-size:0.75rem;letter-spacing:1.5px;text-transform:uppercase;color:#C5A355;font-family:var(--font-body,sans-serif);text-decoration:none;border-bottom:1px solid rgba(197,163,85,0.4);padding-bottom:2px;">Explore the Full Hub →</a>
     </div>
-    <div class="kc-articles-grid">
+  <!-- Buying With Confidence articles -->
+    <div class="kc-cat-section">
+      <div class="kc-articles-grid">
+        <a class="kc-article-card" href="/knowledge-center/whats-in-the-box/" aria-label="What's in the AA WIGS Box">
+          <span class="kc-badge" style="background:rgba(197,163,85,0.12);color:#7a5a00;">Before Delivery</span>
+          <h3>What You'll Actually Receive</h3>
+          <p>The burgundy box, satin bag, wig, care card, and every included item — documented before your package arrives.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/knowledge-center/first-ten-minutes/" aria-label="The First Ten Minutes">
+          <span class="kc-badge" style="background:rgba(197,163,85,0.12);color:#7a5a00;">On Arrival</span>
+          <h3>First Ten Minutes — Inspect Before You Install</h3>
+          <p>Before cutting lace, washing, or styling: the step-by-step inspection that documents your unit's condition at arrival.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/knowledge-center/is-this-normal/" aria-label="Is This Normal?">
+          <span class="kc-badge" style="background:rgba(197,163,85,0.12);color:#7a5a00;">Diagnostic</span>
+          <h3>Is This Normal? Shedding, Scent, Color & More</h3>
+          <p>🟢🟡🔴 thresholds for every common concern — shedding, wave compression, scent, color, lace, density — in one place.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/knowledge-center/protect-your-return/" aria-label="Protect Your Return">
+          <span class="kc-badge" style="background:rgba(197,163,85,0.12);color:#7a5a00;">Your Rights</span>
+          <h3>How to Protect Your Return Options</h3>
+          <p>What to do and what to avoid on arrival — so your options stay open if something is genuinely wrong.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/knowledge-center/returns-explained/" aria-label="Returns Explained">
+          <span class="kc-badge" style="background:rgba(197,163,85,0.12);color:#7a5a00;">Your Rights</span>
+          <h3>Returns Explained — How the Process Works</h3>
+          <p>A plain-language walkthrough: who is eligible, how to submit, what to include, and what happens after you make contact.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/knowledge-center/shipping-explained/" aria-label="Shipping Explained">
+          <span class="kc-badge" style="background:rgba(197,163,85,0.12);color:#7a5a00;">Logistics</span>
+          <h3>Shipping Explained — Processing, Transit & Delivery</h3>
+          <p>What each stage between order and delivery actually means — and what to do if timelines change.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/knowledge-center/our-photography/" aria-label="Our Photography">
+          <span class="kc-badge" style="background:rgba(197,163,85,0.12);color:#7a5a00;">Industry Truth</span>
+          <h3>How AA WIGS Photographs Its Products</h3>
+          <p>Why a wig looks different on screen — lighting, screen variation, shipping compression — and the AA WIGS photography standard.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/knowledge-center/how-we-inspect-your-wig/" aria-label="How We Inspect Your Wig">
+          <span class="kc-badge" style="background:rgba(197,163,85,0.12);color:#7a5a00;">AA WIGS Standard</span>
+          <h3>How We Inspect Your Wig Before It Ships</h3>
+          <p>Every check performed before a unit is approved to ship — documented in full. Coming soon.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/knowledge-center/aa-wigs-quality-standard/" aria-label="AA WIGS Quality Standard">
+          <span class="kc-badge" style="background:rgba(197,163,85,0.12);color:#7a5a00;">AA WIGS Standard</span>
+          <h3>AA WIGS Quality Standard — What We Check</h3>
+          <p>Every inspection point — virgin hair to Swiss HD lace to packaging — explained before a single unit ships.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/knowledge-center/how-to-evaluate-human-hair/" aria-label="How to Evaluate Human Hair">
+          <span class="kc-badge" style="background:rgba(197,163,85,0.12);color:#7a5a00;">AA WIGS Standard</span>
+          <h3>How to Evaluate Human Hair</h3>
+          <p>Seven tests any buyer can perform — the cuticle test, silicone test, wet test, and more. What good hair does and what compromised hair reveals.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+      </div>
+    </div>
+  </section>
 
-      <a class="kc-article-card" href="/knowledge-center/buying-with-confidence/" aria-label="Buying With Confidence — The AA WIGS Trust Hub" style="border-top:3px solid #C5A355;">
-        <span class="kc-badge" style="background:rgba(197,163,85,0.15);color:#7a5a00;">Trust Hub</span>
-        <h3>Buying With Confidence — The Complete Trust System</h3>
-        <p>Every question answered before, during, and after your purchase. Four pillars: what you'll receive, how to inspect it, industry truth, and the AA WIGS standard.</p>
-        <span class="kc-read-link">Explore the Hub →</span>
-      </a>
+  <!-- ── EXPERT GUIDES ──────────────────────────────────────────────────── -->
+  <section class="kc-section" style="background:#fff;" id="expert-guides">
+    <div class="kc-section-head" style="padding-bottom:0;">
+      <p class="kc-eyebrow-label">Pre-Purchase Clarity</p>
+      <h2>Expert Guides</h2>
+      <p>Everything a first-time and returning buyer needs to make a confident decision — before spending a penny.</p>
+    </div>
+    <div class="kc-cat-section" style="padding-top:32px;">
+      <div class="kc-articles-grid">
+        <a class="kc-article-card" href="/knowledge-center/first-luxury-wig-without-regret/" aria-label="How To Choose Your First Luxury Wig Without Regret">
+          <span class="kc-badge">First-Time Buyer</span>
+          <h3>How To Choose Your First Luxury Wig Without Regret</h3>
+          <p>Face shape, lifestyle, length, color, and lace — the complete first-time buyer's framework.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/knowledge-center/what-most-women-receive-when-they-buy-a-wig-online/" aria-label="What Most Women Receive When They Buy A Wig Online">
+          <span class="kc-badge">Buying Guide</span>
+          <h3>What Most Women Actually Receive When They Buy A Wig Online</h3>
+          <p>The gap between what was promised and what arrived — what causes it, and what a different standard looks like.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/knowledge-center/why-women-are-afraid-to-buy-wigs-online/" aria-label="Why Women Are Afraid To Buy Wigs Online">
+          <span class="kc-badge">Trust</span>
+          <h3>Why Women Are Afraid To Buy Wigs Online — And How AA WIGS Is Different</h3>
+          <p>The real trust problem in the wig industry — and how AA WIGS was built to solve it.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/how-to-identify-a-quality-wig/" aria-label="How To Know If You're Buying A Quality Wig">
+          <span class="kc-badge">Buying Guide</span>
+          <h3>How To Know If You're Buying A Quality Wig Or Wasting Your Money</h3>
+          <p>The five quality markers that separate premium wigs from cheap ones — before you spend a penny.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/buying-a-wig-online-guide/" aria-label="What To Look For When Buying A Wig Online">
+          <span class="kc-badge">Buying Guide</span>
+          <h3>What To Look For When Buying A Wig Online</h3>
+          <p>The complete pre-purchase checklist: lace, density, reviews, return policy, and brand credibility.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/truth-about-human-hair-wigs/" aria-label="The Truth About Human Hair Wigs">
+          <span class="kc-badge">Industry Truth</span>
+          <h3>The Truth About Human Hair Wigs: What Most Sellers Won't Tell You</h3>
+          <p>What "human hair" really means — the quality spectrum, lace reality, and what genuine luxury looks like.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/how-to-avoid-wig-scams/" aria-label="How To Avoid Wig Scams">
+          <span class="kc-badge">Buyer Protection</span>
+          <h3>How To Avoid Wig Scams: 12 Red Flags Every Buyer Should Know</h3>
+          <p>The specific warning signs that separate a legitimate brand from one that will disappoint you.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/questions-before-buying-a-wig-online/" aria-label="10 Questions Before Buying">
+          <span class="kc-badge">Buying Guide</span>
+          <h3>10 Questions You Should Ask Before Buying Any Wig Online</h3>
+          <p>The pre-purchase checklist that protects your investment and ensures you get exactly what you expect.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/why-your-wig-looks-different-than-the-model/" aria-label="Why Your Wig Never Looks Like The Model">
+          <span class="kc-badge">Industry Truth</span>
+          <h3>Why Your Wig Never Looks The Way It Does On The Model</h3>
+          <p>Lighting, styling teams, wave pattern — and what you can actually do about it.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/the-hidden-cost-of-cheap-wigs/" aria-label="The Hidden Cost Of Cheap Wigs">
+          <span class="kc-badge">Luxury Education</span>
+          <h3>The Hidden Cost Of Buying Cheap Wigs</h3>
+          <p>The real 12-month cost comparison between premium and budget wigs — the numbers might surprise you.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/knowledge-center/what-happens-before-it-reaches-you/" aria-label="What Happens Before It Reaches You">
+          <span class="kc-badge">Behind The Brand</span>
+          <h3>What Happens Before An AA WIGS Unit Reaches You</h3>
+          <p>The complete journey — from supplier selection to the moment you open the box.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/knowledge-center/anatomy-of-a-luxury-wig/" aria-label="The Anatomy of a Luxury Wig">
+          <span class="kc-badge">Luxury Education</span>
+          <h3>What You're Actually Paying For: The Anatomy of a Luxury Wig</h3>
+          <p>The invisible difference between a $30 wig and a luxury unit — explained layer by layer.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/how-to-choose-a-natural-looking-wig/" aria-label="How To Know If A Wig Will Look Natural On You">
+          <span class="kc-badge">Beginner Guide</span>
+          <h3>How To Know If A Wig Will Look Natural On You Before You Buy</h3>
+          <p>How length, density, lace type, colour, and installation combine to create an undetectable result.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/what-makes-a-wig-look-expensive/" aria-label="What Makes A Wig Look Expensive">
+          <span class="kc-badge">Luxury Education</span>
+          <h3>What Makes A Wig Look Expensive? 10 Details Luxury Buyers Notice</h3>
+          <p>The lace, movement, density, and finishing details that separate genuine luxury from a high price tag.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/why-some-human-hair-wigs-last-years/" aria-label="Why Some Wigs Last Years">
+          <span class="kc-badge">Quality</span>
+          <h3>Why Some Human Hair Wigs Last Years While Others Last Months</h3>
+          <p>The construction and care factors that determine whether your wig goes the distance.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/aa-wigs-luxury-buying-guide/" aria-label="The AA WIGS Luxury Buying Guide">
+          <span class="kc-badge">Luxury Guide</span>
+          <h3>The AA WIGS Luxury Buying Guide: Length, Color &amp; Lace</h3>
+          <p>How to choose the perfect body wave wig for your lifestyle, aesthetic, and confidence goals.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+      </div>
+    </div>
+  </section>
 
-      <a class="kc-article-card" href="/knowledge-center/whats-in-the-box/" aria-label="What's in the AA WIGS Box">
-        <span class="kc-badge">Before Delivery</span>
-        <h3>What's in the AA WIGS Box — Every Item Explained</h3>
-        <p>The burgundy box, satin bag, wig, care card, and every included accessory — documented before your package arrives so there are no surprises at the door.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
+  <!-- ── WIG CARE ───────────────────────────────────────────────────────── -->
+  <section class="kc-section kc-articles-section" id="wig-care">
+    <div class="kc-section-head" style="padding-bottom:0;">
+      <p class="kc-eyebrow-label">Maintenance & Styling</p>
+      <h2>Wig Care</h2>
+      <p>How to wash, store, style, and protect your wig so it lasts as long as possible.</p>
+    </div>
+    <div class="kc-cat-section" style="padding-top:32px;">
+      <div class="kc-articles-grid">
+        <a class="kc-article-card" href="/knowledge-center/why-does-my-wig-shed/" aria-label="Why Does My Wig Shed?">
+          <span class="kc-badge">Wig Care</span>
+          <h3>Why Does My Wig Shed? Causes, Limits, and How to Stop It</h3>
+          <p>Shedding is the #1 fear buyers have and the least honestly explained. What causes it, what is normal, and what it reveals about quality.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/knowledge-center/why-does-my-wig-tangle/" aria-label="Why Does My Wig Tangle?">
+          <span class="kc-badge">Wig Care</span>
+          <h3>Why Does My Wig Tangle? Causes and How to Prevent It</h3>
+          <p>Tangling is not random — it has specific, fixable causes. The cuticle factor, the nape problem, and the daily habits that stop it for good.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/knowledge-center/heat-styling-body-wave/" aria-label="Heat Styling Body Wave Wigs">
+          <span class="kc-badge">Styling</span>
+          <h3>Heat Styling Guide for Body Wave Wigs — Safe Temperatures and Technique</h3>
+          <p>Can you flat iron or curl a body wave wig? Yes — if you know the right temperature and how to protect the wave pattern.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/knowledge-center/refresh-body-wave/" aria-label="Refresh Your Body Wave">
+          <span class="kc-badge">Wig Care</span>
+          <h3>How To Refresh Your Body Wave Between Washes</h3>
+          <p>Over-washing accelerates wear. The technique to revive the wave without stressing the hair.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/knowledge-center/glueless-wig-installation/" aria-label="Glueless Wig Installation">
+          <span class="kc-badge">Installation</span>
+          <h3>How To Install A Glueless Wig For A Natural Hairline</h3>
+          <p>The step-by-step installation guide for a secure, natural-looking result without bonding agents.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/knowledge-center/sleeping-in-a-wig/" aria-label="Sleeping in a Wig">
+          <span class="kc-badge">Wig Care</span>
+          <h3>Can You Sleep in a Human Hair Wig? The Honest Answer</h3>
+          <p>What happens to the wig during six to eight hours of pillow friction — and what most women settle on once they know.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/knowledge-center/traveling-with-a-wig/" aria-label="Traveling With a Wig">
+          <span class="kc-badge">Lifestyle</span>
+          <h3>How to Travel With a Human Hair Wig — Packing, TSA, and On-the-Road Care</h3>
+          <p>How to pack it, what airport security actually does, and how to keep it looking good on day five.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/how-to-store-a-human-hair-wig/" aria-label="How To Store A Human Hair Wig">
+          <span class="kc-badge">Wig Care</span>
+          <h3>How To Store A Human Hair Wig To Keep It Looking Luxury</h3>
+          <p>The storage methods that protect your investment between every single wear.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/how-long-does-a-body-wave-wig-last/" aria-label="How Long Does A Body Wave Wig Last?">
+          <span class="kc-badge">Wig Care</span>
+          <h3>How Long Does A Luxury Body Wave Wig Last?</h3>
+          <p>The honest 1–3 year answer — and exactly what determines whether you reach the upper end of that range.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+      </div>
+    </div>
+  </section>
 
-      <a class="kc-article-card" href="/knowledge-center/first-ten-minutes/" aria-label="The First Ten Minutes — Inspect Before You Install">
-        <span class="kc-badge">On Arrival</span>
-        <h3>The First Ten Minutes — Inspect Before You Install</h3>
-        <p>Before cutting lace, washing, or styling: complete this ten-minute inspection. It documents your unit's condition at arrival and protects your entire purchase.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
+  <!-- ── PRODUCT GUIDES ────────────────────────────────────────────────── -->
+  <section class="kc-section" style="background:#fff;" id="product-guides">
+    <div class="kc-section-head" style="padding-bottom:0;">
+      <p class="kc-eyebrow-label">Specifications & Selection</p>
+      <h2>Product Guides</h2>
+      <p>Length, density, lace, color, and construction — everything that shapes how a wig fits, looks, and lasts.</p>
+    </div>
+    <div class="kc-cat-section" style="padding-top:32px;">
+      <div class="kc-articles-grid">
+        <a class="kc-article-card" href="/knowledge-center/wig-glossary/" aria-label="The Complete Wig Glossary">
+          <span class="kc-badge">Reference</span>
+          <h3>The Complete Wig Glossary — Every Term Explained</h3>
+          <p>Swiss HD lace, cuticle-aligned, virgin hair, glueless, density, weft — every industry term, explained plainly.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/knowledge-center/wig-density/" aria-label="What 180% Density Means">
+          <span class="kc-badge">Specifications</span>
+          <h3>What 180% Density Actually Means — And Why It Changes Everything</h3>
+          <p>The numbers keep climbing. Most buyers assume higher is always better — here is what the number actually represents.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/knowledge-center/virgin-human-hair/" aria-label="The Cuticle Is Everything">
+          <span class="kc-badge">Quality Education</span>
+          <h3>The Cuticle Is Everything: What Virgin Human Hair Actually Preserves</h3>
+          <p>The single most important structure in any strand of human hair — and what it means for longevity.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/hd-lace-vs-transparent-lace/" aria-label="HD Lace vs Transparent Lace">
+          <span class="kc-badge">Lace Education</span>
+          <h3>HD Lace vs Transparent Lace: Which Is Better For A Natural Install?</h3>
+          <p>The difference that determines whether your wig looks undetectable or obvious.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/body-wave-guide/" aria-label="Body Wave Guide">
+          <span class="kc-badge">Style</span>
+          <h3>Why Body Wave Wigs Are The Ultimate Luxury Choice</h3>
+          <p>The one texture that does everything — and why it defines the AA WIGS standard.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/body-wave-vs-straight-wig/" aria-label="Body Wave vs Straight Wig">
+          <span class="kc-badge">Style Guide</span>
+          <h3>Body Wave vs Straight Wig: Which Should You Choose?</h3>
+          <p>A detailed comparison of texture, versatility, and daily maintenance.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/22-vs-24-inch-guide/" aria-label="22 vs 24 Inch Guide">
+          <span class="kc-badge">Length Guide</span>
+          <h3>22 vs 24 Inch Body Wave — Which Is Right For You?</h3>
+          <p>A practical guide to choosing your perfect body wave length.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/best-wig-length-for-beginners/" aria-label="Best Wig Length For Beginners">
+          <span class="kc-badge">Length Guide</span>
+          <h3>Best Wig Length For Beginners: 18, 20, 22, 24, or 26 Inches?</h3>
+          <p>Every length explained — with our clear recommendation for first-time buyers.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/knowledge-center/wig-color-for-skin-tone/" aria-label="Wig Color For Skin Tone">
+          <span class="kc-badge">Style Guide</span>
+          <h3>How To Choose The Right Wig Color For Your Skin Tone</h3>
+          <p>How shade interacts with your skin's undertone — taking the guesswork out of color selection entirely.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+      </div>
+    </div>
+  </section>
 
-      <a class="kc-article-card" href="/knowledge-center/is-this-normal/" aria-label="Is This Normal? Human Hair Wig Diagnostic Guide">
-        <span class="kc-badge" style="background:rgba(197,163,85,0.15);color:#7a5a00;">Trust Hub</span>
-        <h3>Is This Normal? Shedding, Scent, Color & More — Diagnostic Guide</h3>
-        <p>One guide for every common concern. Clear 🟢🟡🔴 thresholds for shedding, wave compression, scent, color, lace, density, and more — before and during wear.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/knowledge-center/shipping-explained/" aria-label="Understanding Your AA WIGS Shipment">
-        <span class="kc-badge" style="background:rgba(197,163,85,0.15);color:#7a5a00;">Trust Hub</span>
-        <h3>Shipping Explained — Processing, Transit & Delivery</h3>
-        <p>What each stage between order and delivery actually means — and what to do if timelines change.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/knowledge-center/protect-your-return/" aria-label="How to Protect Your Return Options">
-        <span class="kc-badge" style="background:rgba(197,163,85,0.15);color:#7a5a00;">Trust Hub</span>
-        <h3>How to Protect Your Return Options</h3>
-        <p>What to do and what to avoid before contacting support — so your options remain open if something is genuinely wrong.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/knowledge-center/our-photography/" aria-label="How AA WIGS Photographs Its Products">
-        <span class="kc-badge" style="background:rgba(197,163,85,0.15);color:#7a5a00;">Trust Hub</span>
-        <h3>How AA WIGS Photographs Its Products</h3>
-        <p>Why a wig can look different on screen than in person — lighting, screen calibration, shipping compression, and the AA WIGS photography standard.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/knowledge-center/why-does-my-wig-shed/" aria-label="Why Does My Wig Shed?">
-        <span class="kc-badge">Wig Care</span>
-        <h3>Why Does My Wig Shed? Causes, Limits, and How to Stop It</h3>
-        <p>Shedding is the #1 fear buyers have and the least honestly explained. What causes it, what is normal, and what persistent shedding reveals about quality.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/knowledge-center/why-does-my-wig-tangle/" aria-label="Why Does My Wig Tangle?">
-        <span class="kc-badge">Wig Care</span>
-        <h3>Why Does My Wig Tangle? Causes and How to Prevent It</h3>
-        <p>Tangling is not random — it is caused by specific, fixable things. The cuticle factor, the nape problem, and the daily habits that stop it for good.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/knowledge-center/heat-styling-body-wave/" aria-label="Heat Styling Guide for Body Wave Wigs">
-        <span class="kc-badge">Styling</span>
-        <h3>Heat Styling Guide for Body Wave Wigs — Safe Temperatures and Techniques</h3>
-        <p>Can you flat iron or curl a body wave wig? Yes — if you know the right temperature, technique, and how to protect the wave pattern.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/knowledge-center/sleeping-in-a-wig/" aria-label="Can You Sleep in a Human Hair Wig?">
-        <span class="kc-badge">Wig Care</span>
-        <h3>Can You Sleep in a Human Hair Wig? The Honest Answer</h3>
-        <p>Technically yes. But here is what happens to the wig during six to eight hours of pillow friction — and what most women settle on once they know.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/knowledge-center/wig-glossary/" aria-label="The Complete Beginner's Wig Glossary">
-        <span class="kc-badge">Beginner Guide</span>
-        <h3>The Complete Beginner's Wig Glossary — Every Term Explained</h3>
-        <p>Swiss HD lace, cuticle-aligned, virgin hair, glueless, density, weft — every term the wig industry uses, explained plainly so you can buy with confidence.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/knowledge-center/traveling-with-a-wig/" aria-label="How to Travel With a Human Hair Wig">
-        <span class="kc-badge">Lifestyle</span>
-        <h3>How to Travel With a Human Hair Wig — Packing, TSA, and Care on the Road</h3>
-        <p>How to pack it, what airport security actually does, how to store it without a stand, and how to keep it looking as good on day five as day one.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/knowledge-center/what-most-women-receive-when-they-buy-a-wig-online/" aria-label="What Most Women Receive When They Buy A Wig Online — And Why It Matters">
-        <span class="kc-badge">Buying Guide</span>
-        <h3>What Most Women Receive When They Buy A Wig Online — And Why It Matters</h3>
-        <p>The gap between what was promised and what arrived. What causes it, why it matters, and what a different standard looks like.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/body-wave-guide/" aria-label="Why Body Wave Wigs Are The Ultimate Luxury Choice">
-        <span class="kc-badge">Style</span>
-        <h3>Why Body Wave Wigs Are The Ultimate Luxury Choice</h3>
-        <p>The one texture that does everything — and why it defines the AA WIGS standard.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/why-women-choose-wigs/" aria-label="Why Women Are Choosing Wigs More Than Ever">
-        <span class="kc-badge">Culture</span>
-        <h3>Why Women Are Choosing Wigs More Than Ever</h3>
-        <p>A cultural shift in beauty, confidence, and self-expression.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/psychology-of-luxury-hair/" aria-label="The Psychology of Luxury Hair">
-        <span class="kc-badge">Lifestyle</span>
-        <h3>The Psychology of Luxury Hair</h3>
-        <p>Why the way we wear our hair changes the way we carry ourselves.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/22-vs-24-inch-guide/" aria-label="22 vs 24 Inch Body Wave — Which Is Right For You?">
-        <span class="kc-badge">Comparison</span>
-        <h3>22 vs 24 Inch Body Wave — Which Is Right For You?</h3>
-        <p>A practical guide to choosing your perfect body wave length.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/hd-lace-vs-transparent-lace/" aria-label="HD Lace vs Transparent Lace: Which Is Better For A Natural Install?">
-        <span class="kc-badge">Lace Education</span>
-        <h3>HD Lace vs Transparent Lace: Which Is Better For A Natural Install?</h3>
-        <p>The difference that determines whether your wig looks undetectable or obvious.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/how-long-does-a-body-wave-wig-last/" aria-label="How Long Does A Luxury Body Wave Wig Last?">
-        <span class="kc-badge">Wig Care</span>
-        <h3>How Long Does A Luxury Body Wave Wig Last?</h3>
-        <p>The honest 1–3 year answer — and exactly how to reach the upper end of that range.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/body-wave-vs-straight-wig/" aria-label="Body Wave vs Straight Wig: Which Should You Choose?">
-        <span class="kc-badge">Style Guide</span>
-        <h3>Body Wave vs Straight Wig: Which Should You Choose?</h3>
-        <p>A detailed comparison of texture, versatility, and daily maintenance.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/best-wig-length-for-beginners/" aria-label="Best Wig Length For Beginners: 18, 20, 22, 24, or 26 Inches?">
-        <span class="kc-badge">Length Guide</span>
-        <h3>Best Wig Length For Beginners: 18, 20, 22, 24, or 26 Inches?</h3>
-        <p>Every length explained — with our clear recommendation for first-time buyers.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/how-to-store-a-human-hair-wig/" aria-label="How To Store A Human Hair Wig To Keep It Looking Luxury">
-        <span class="kc-badge">Wig Care</span>
-        <h3>How To Store A Human Hair Wig To Keep It Looking Luxury</h3>
-        <p>The storage methods that protect your investment between every single wear.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/how-to-identify-a-quality-wig/" aria-label="How To Know If You're Buying A Quality Wig Or Wasting Your Money">
-        <span class="kc-badge">Buying Guide</span>
-        <h3>How To Know If You're Buying A Quality Wig Or Wasting Your Money</h3>
-        <p>The five quality markers that separate premium wigs from cheap ones — before you spend a penny.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/buying-a-wig-online-guide/" aria-label="What To Look For When Buying A Wig Online So You're Never Disappointed">
-        <span class="kc-badge">Buying Guide</span>
-        <h3>What To Look For When Buying A Wig Online So You're Never Disappointed</h3>
-        <p>The complete pre-purchase checklist: lace, density, reviews, return policy, and brand credibility.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/how-to-choose-a-natural-looking-wig/" aria-label="How To Know If A Wig Will Look Natural On You Before You Buy">
-        <span class="kc-badge">Beginner Guide</span>
-        <h3>How To Know If A Wig Will Look Natural On You Before You Buy</h3>
-        <p>How length, density, lace type, colour, and installation combine to create a truly undetectable result.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/why-your-wig-looks-different-than-the-model/" aria-label="Why Your Wig Never Looks The Way It Does On The Model">
-        <span class="kc-badge">Education</span>
-        <h3>Why Your Wig Never Looks The Way It Does On The Model</h3>
-        <p>The honest explanation: lighting, styling teams, wave pattern, and what you can actually do about it.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/the-hidden-cost-of-cheap-wigs/" aria-label="The Hidden Cost Of Buying Cheap Wigs">
-        <span class="kc-badge">Luxury Education</span>
-        <h3>The Hidden Cost Of Buying Cheap Wigs</h3>
-        <p>The real 12-month cost comparison between premium and budget wigs — the numbers might surprise you.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/how-to-avoid-wig-scams/" aria-label="How To Avoid Wig Scams: 12 Red Flags Every Buyer Should Know">
-        <span class="kc-badge">Buyer Protection</span>
-        <h3>How To Avoid Wig Scams: 12 Red Flags Every Buyer Should Know</h3>
-        <p>The specific warning signs that separate a legitimate brand from one that will disappoint you.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/truth-about-human-hair-wigs/" aria-label="The Truth About Human Hair Wigs: What Most Sellers Won't Tell You">
-        <span class="kc-badge">Wig Education</span>
-        <h3>The Truth About Human Hair Wigs: What Most Sellers Won't Tell You</h3>
-        <p>What "human hair" really means — the quality spectrum, lace reality, and what genuine luxury looks like.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/questions-before-buying-a-wig-online/" aria-label="10 Questions You Should Ask Before Buying Any Wig Online">
-        <span class="kc-badge">Buying Guide</span>
-        <h3>10 Questions You Should Ask Before Buying Any Wig Online</h3>
-        <p>The pre-purchase checklist that protects your investment and ensures you get exactly what you expect.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/why-some-human-hair-wigs-last-years/" aria-label="Why Some Human Hair Wigs Last Years While Others Last Only Months">
-        <span class="kc-badge">Wig Quality</span>
-        <h3>Why Some Human Hair Wigs Last Years While Others Last Only Months</h3>
-        <p>The construction and care factors that determine whether your wig goes the distance.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/aa-wigs-luxury-buying-guide/" aria-label="The AA WIGS Luxury Buying Guide: Length, Color & Lace">
-        <span class="kc-badge">Luxury Guide</span>
-        <h3>The AA WIGS Luxury Buying Guide: Length, Color &amp; Lace</h3>
-        <p>How to choose the perfect body wave wig for your lifestyle, aesthetic, and confidence goals.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/what-makes-a-wig-look-expensive/" aria-label="What Makes A Wig Look Expensive? 10 Details Luxury Buyers Notice">
-        <span class="kc-badge">Luxury Education</span>
-        <h3>What Makes A Wig Look Expensive? 10 Details Luxury Buyers Notice</h3>
-        <p>The lace, movement, density, and finishing details that separate genuine luxury from a high price tag.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/knowledge-center/aa-wigs-quality-standard/" aria-label="The AA WIGS Quality Standard: What We Check Before Every Wig Reaches You">
-        <span class="kc-badge">Quality Standard</span>
-        <h3>The AA WIGS Quality Standard: What We Check Before Every Wig Reaches You</h3>
-        <p>Every inspection point — virgin hair to Swiss HD lace to packaging — explained in full before a single unit ships.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/knowledge-center/anatomy-of-a-luxury-wig/" aria-label="What You're Actually Paying For: The Anatomy of a Luxury Wig">
-        <span class="kc-badge">Luxury Education</span>
-        <h3>What You're Actually Paying For: The Anatomy of a Luxury Wig</h3>
-        <p>The invisible difference between a $30 wig and a luxury unit — explained layer by layer.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/knowledge-center/first-luxury-wig-without-regret/" aria-label="How To Choose Your First Luxury Wig Without Regret">
-        <span class="kc-badge">First-Time Buyer</span>
-        <h3>How To Choose Your First Luxury Wig Without Regret</h3>
-        <p>Face shape, lifestyle, length, color, and lace — the complete first-time buyer's framework.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/knowledge-center/what-happens-before-it-reaches-you/" aria-label="What Happens Before An AA WIGS Unit Reaches You">
-        <span class="kc-badge">Behind The Brand</span>
-        <h3>What Happens Before An AA WIGS Unit Reaches You</h3>
-        <p>The complete eight-step journey — from supplier selection to the moment you open the box.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/knowledge-center/why-women-are-afraid-to-buy-wigs-online/" aria-label="Why Women Are Afraid To Buy Wigs Online — And How AA WIGS Is Different">
-        <span class="kc-badge">Building Trust</span>
-        <h3>Why Women Are Afraid To Buy Wigs Online — And How AA WIGS Is Different</h3>
-        <p>The real trust problem in the wig industry — and how AA WIGS was built to solve it.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/knowledge-center/wig-density/" aria-label="What '180% Density' Actually Means — And Why It Changes Everything">
-        <span class="kc-badge">Wig Education</span>
-        <h3>What '180% Density' Actually Means — And Why It Changes Everything</h3>
-        <p>The numbers keep climbing. Most buyers assume higher is always better — but that assumption leads to wigs that look unnatural, feel heavy, and don't hold their style.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/knowledge-center/glueless-wig-installation/" aria-label="How To Install A Glueless Wig For A Natural Hairline">
-        <span class="kc-badge">Beginner Guide</span>
-        <h3>How To Install A Glueless Wig For A Natural Hairline</h3>
-        <p>The number one reason women hesitate to buy their first luxury wig is not price. It is fear. Here is the complete step-by-step installation guide.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/knowledge-center/wig-color-for-skin-tone/" aria-label="How To Choose The Right Wig Color For Your Skin Tone">
-        <span class="kc-badge">Style Guide</span>
-        <h3>How To Choose The Right Wig Color For Your Skin Tone</h3>
-        <p>Color is personal. Understanding how shade interacts with your skin's undertone takes the guesswork out of choosing — entirely.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/knowledge-center/virgin-human-hair/" aria-label="The Cuticle Is Everything: What Virgin Human Hair Actually Preserves">
-        <span class="kc-badge">Quality Education</span>
-        <h3>The Cuticle Is Everything: What Virgin Human Hair Actually Preserves</h3>
-        <p>Most conversations about wig quality start and end with labels. The single most important structure in any strand of human hair is the cuticle — here is what that means in practice.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
-      <a class="kc-article-card" href="/knowledge-center/refresh-body-wave/" aria-label="How To Refresh Your Body Wave Between Washes Without Ruining The Curl Pattern">
-        <span class="kc-badge">Wig Care</span>
-        <h3>How To Refresh Your Body Wave Between Washes Without Ruining The Curl Pattern</h3>
-        <p>Over-washing virgin human hair accelerates wear. The key is the right technique — applied consistently — to revive the wave without stressing the hair.</p>
-        <span class="kc-read-link">Read Article →</span>
-      </a>
-
+  <!-- ── BRAND JOURNAL ─────────────────────────────────────────────────── -->
+  <section class="kc-section" style="background:var(--kc-champagne);" id="brand-journal">
+    <div class="kc-section-head" style="padding-bottom:0;">
+      <p class="kc-eyebrow-label">Culture & Perspective</p>
+      <h2>Brand Journal</h2>
+      <p>The ideas, choices, and observations behind the brand — written in long form, without marketing language.</p>
+    </div>
+    <div class="kc-cat-section" style="padding-top:32px;">
+      <div class="kc-articles-grid">
+        <a class="kc-article-card" href="/why-women-choose-wigs/" aria-label="Why Women Are Choosing Wigs More Than Ever">
+          <span class="kc-badge">Culture</span>
+          <h3>Why Women Are Choosing Wigs More Than Ever</h3>
+          <p>A cultural shift in beauty, confidence, and self-expression — and what it says about where the industry is going.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+        <a class="kc-article-card" href="/psychology-of-luxury-hair/" aria-label="The Psychology of Luxury Hair">
+          <span class="kc-badge">Perspective</span>
+          <h3>The Psychology of Luxury Hair</h3>
+          <p>Why the way we wear our hair changes the way we carry ourselves.</p>
+          <span class="kc-read-link">Read Article →</span>
+        </a>
+      </div>
     </div>
   </section>
 
