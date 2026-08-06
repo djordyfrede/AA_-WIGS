@@ -533,10 +533,11 @@
     /* Mobile */
     @media (max-width: 880px) {
       .hs-hero { grid-template-columns: 1fr; min-height: auto; }
-      .hs-hero-visual { min-height: 42vh; order: -1; }
+      .hs-hero-visual { min-height: clamp(220px, 38vh, 340px); order: -1; }
+      .hs-hero-visual img { object-position: center 8%; }
       .hs-hero-visual::before { background: linear-gradient(0deg, #2A0A14 0%, transparent 38%); }
       .hs-hero-visual::after { display: none; }
-      .hs-hero-copy { padding: 1.4rem clamp(1.5rem, 6vw, 3rem) 2rem; }
+      .hs-hero-copy { padding: clamp(0.9rem, 2vh, 1.4rem) clamp(1.5rem, 6vw, 3rem) clamp(1.2rem, 2.5vh, 2rem); }
       .hs-hero-copy h1 { max-width: none; }
       .hs-details-inner { grid-template-columns: 1fr; gap: 2.5rem; }
       .hs-proof-grid { grid-template-columns: 1fr; gap: 1rem; }
@@ -620,11 +621,12 @@
     }
 
     @media (max-width: 480px) {
-      .hs-hero-eyebrow { margin-bottom: 0.7rem; }
-      .hs-hero-copy h1 { font-size: 2rem; line-height: 1.08; margin-bottom: 0.75rem; }
-      .hs-hero-sub { font-size: 0.875rem; line-height: 1.6; margin-bottom: 1.4rem; }
-      .hs-hero-btn { align-self: stretch; justify-content: center; padding: 0.9rem 1.8rem; }
-      .hs-hero-ctas { align-items: stretch; gap: 0.75rem; }
+      .hs-hero-eyebrow { font-size: 0.58rem; letter-spacing: 3px; margin-bottom: clamp(0.4rem, 1vh, 0.7rem); }
+      .hs-hero-copy h1 { font-size: clamp(1.75rem, 6.5vw, 2rem); line-height: 1.08; margin-bottom: clamp(0.5rem, 1.2vh, 0.75rem); }
+      .hs-hero-sub { font-size: clamp(0.8rem, 2.1vw, 0.875rem); line-height: 1.65; margin-bottom: clamp(0.9rem, 2vh, 1.4rem); }
+      .hs-hero-btn { align-self: stretch; justify-content: center; padding: clamp(0.75rem, 1.8vh, 0.9rem) 1.6rem; font-size: 0.72rem; letter-spacing: 2px; }
+      .hs-hero-ctas { align-items: stretch; gap: 0.6rem; }
+      .hs-hero-btn-sec { display: none; }
     }
   </style>
 
@@ -633,7 +635,7 @@
     <div class="hs-hero-copy">
       <span class="hs-hero-eyebrow">The Signature Body Wave House</span>
       <h1>Luxury Body Wave <em>Human Hair</em> Wigs.</h1>
-      <p class="hs-hero-sub">Swiss HD lace that disappears into your hairline. 180% density. Glueless ready. Every unit inspected before it ships.</p>
+      <p class="hs-hero-sub">Swiss HD lace that disappears into your hairline.<br>180% Density.&nbsp; Glueless Ready.<br>Every unit inspected before it ships.</p>
       <div class="hs-hero-ctas">
         <a class="hs-hero-btn" href="/collection.html">Shop Signature Collection — From $289</a>
         <a class="hs-hero-btn-sec" href="/knowledge-center/buying-with-confidence/">How We Earn Your Trust →</a>
