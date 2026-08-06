@@ -300,8 +300,8 @@ async function initDatabase() {
       ['store_email', 'hello@aawigs.com'],
       ['store_instagram', 'https://instagram.com/aawigshair'],
       ['store_tiktok', ''],
-      ['sticky_urgency_text', '🔥 Limited stock available'],
-      ['sticky_urgency_active', 'true'],
+      ['sticky_urgency_text', ''],
+      ['sticky_urgency_active', 'false'],
       ['product_features', JSON.stringify([
         {"title":"100% Virgin Human Hair","subtitle":"Soft, Full & Natural"},
         {"title":"HD Lace","subtitle":"Invisible Melt Finish"},
