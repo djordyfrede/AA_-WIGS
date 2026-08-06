@@ -1203,7 +1203,6 @@
   </footer>
 
   <div class="mobile-shop-btn">
-    <p class="sticky-urgency" id="stickyUrgency" style="display:none"></p>
     <a class="btn btn-solid sticky-cta-btn" href="/collection.html">Shop Signature Collection — From $289</a>
     <p class="sticky-trust">Free Shipping&nbsp;&nbsp;•&nbsp;&nbsp;1–2 Year Wear&nbsp;&nbsp;•&nbsp;&nbsp;Luxury Packaging Included</p>
   </div>
@@ -1212,21 +1211,6 @@
   <script src="cart.js?v=20260308a"></script>
   <script src="chat.js?v=20260308a"></script>
   <script>
-  (function(){
-    var urgencyEl = document.getElementById('stickyUrgency');
-    if (urgencyEl) {
-      fetch('/api/settings')
-        .then(function(r){ return r.json(); })
-        .then(function(data){
-          var s = data.settings || {};
-          if (s.sticky_urgency_active !== 'false' && s.sticky_urgency_text) {
-            urgencyEl.textContent = s.sticky_urgency_text;
-            urgencyEl.style.display = 'block';
-          }
-        })
-        .catch(function(){});
-    }
-  })();
 
   </script>
   <script>
