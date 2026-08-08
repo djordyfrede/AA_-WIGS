@@ -1,0 +1,101 @@
+• deep burgundy
+• ivory / cream
+• restrained gold accents
+• editorial typography
+• large negative space
+• premium photography
+• clean section transitions
+• minimal interface noise
+
+Avoid:
+
+• excessive gradients
+• excessive glassmorphism
+• too many gold borders
+• excessive animations
+• floating elements everywhere
+• countdown timers
+• aggressive popups
+• discount-first messaging
+• giant sale banners
+• excessive badges
+• crowded product cards
+• generic “luxury” stock design
+
+The site should feel composed rather than decorated.
+
+DISTINCTIVE BRAND TEST
+
+After making the improvements, perform this test:
+
+Imagine removing the AA WIGS logo and company name from the homepage.
+
+Ask:
+
+Could a returning customer still recognize this as AA WIGS because of:
+
+• Body Wave specialization
+• restrained product architecture
+• The First Circle
+• The Proof, Not the Pitch
+• The AA WIGS Standard
+• education-first shopping
+• burgundy / ivory visual language
+• photography direction
+• tone of voice
+• product presentation?
+
+If the answer is no, strengthen those existing distinctive assets.
+
+Do NOT solve the problem by creating more slogans.
+
+COMPETITOR TEST
+
+Review every proposed section and ask:
+
+“Could this section appear almost unchanged on 20 other wig websites?”
+
+If yes, rewrite or redesign it.
+
+Avoid generic phrases such as:
+
+• Elevate your beauty
+• Unleash your confidence
+• Luxury redefined
+• Because you deserve the best
+• Crafted for queens
+• Slay every day
+• Your crown, your confidence
+• Premium hair for premium women
+• Where beauty meets elegance
+
+AA WIGS should sound intelligent, calm, specific, assured, and knowledgeable.
+
+Not loud.
+
+Not desperate.
+
+Not overly poetic.
+
+Not trend-chasing.
+
+FINAL GOAL
+
+Do not make AA WIGS look more like a luxury wig company.
+
+Make AA WIGS look more like AA WIGS.
+
+The visitor should leave understanding:
+
+AA WIGS specializes in Body Wave.
+AA WIGS deliberately limits choice.
+AA WIGS has a defined quality standard.
+AA WIGS shows proof instead of making vague claims.
+AA WIGS teaches before asking customers to purchase.
+AA WIGS has its own world called The First Circle.
+
+Preserve all working functionality, SEO structure, responsive behavior, product links, schema, navigation, analytics, forms, and existing backend integrations.
+
+Do not break existing code.
+
+Before implementing major visual changes, reuse the strongest existing AA WIGS components rather than rebuilding the website unnecessarily.

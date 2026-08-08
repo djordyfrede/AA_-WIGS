@@ -620,6 +620,63 @@
       .hs-bwc-pillars { justify-content: center; gap: 0.8rem 1.4rem; }
     }
 
+    /* One Texture. One Standard. */
+    .ots-statement {
+      background: #FBF7F1;
+      border-top: 1px solid rgba(36,24,18,0.07);
+      border-bottom: 1px solid rgba(36,24,18,0.07);
+      padding: clamp(3.5rem, 7vw, 6rem) clamp(1.5rem, 5vw, 4rem);
+      text-align: center;
+    }
+    .ots-inner { max-width: 680px; margin: 0 auto; }
+    .ots-eyebrow {
+      font-family: var(--font-sans);
+      font-size: 0.62rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #B8935A;
+      font-weight: 600;
+      margin-bottom: 1.8rem;
+    }
+    .ots-heading {
+      font-family: var(--font-serif);
+      font-size: clamp(2.6rem, 6vw, 4.2rem);
+      font-weight: 500;
+      color: #2A0A14;
+      line-height: 1.06;
+      letter-spacing: -0.01em;
+      margin: 0 0 1.6rem;
+    }
+    .ots-body {
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      line-height: 1.8;
+      color: rgba(36,24,18,0.55);
+      margin: 0 0 2.4rem;
+      max-width: 46ch;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .ots-lengths {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0;
+    }
+    .ots-length-item {
+      font-family: var(--font-sans);
+      font-size: 0.7rem;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(36,24,18,0.4);
+      padding: 0.5rem 1.4rem;
+      border-right: 1px solid rgba(36,24,18,0.12);
+    }
+    .ots-length-item:last-child { border-right: none; }
+    @media (max-width: 480px) {
+      .ots-length-item { padding: 0.4rem 0.85rem; font-size: 0.65rem; }
+    }
+
     @media (max-width: 480px) {
       .hs-hero-eyebrow { font-size: 0.58rem; letter-spacing: 3px; margin-bottom: clamp(0.4rem, 1vh, 0.7rem); }
       .hs-hero-copy h1 { font-size: clamp(1.75rem, 6.5vw, 2rem); line-height: 1.08; margin-bottom: clamp(0.5rem, 1.2vh, 0.75rem); }
@@ -655,6 +712,22 @@
       <span>Glueless Ready</span>
     </div>
   </div>
+
+  <!-- ── ONE TEXTURE. ONE STANDARD. ───────────────────────────── -->
+  <section class="ots-statement">
+    <div class="ots-inner">
+      <p class="ots-eyebrow">The AA WIGS Standard</p>
+      <h2 class="ots-heading">One Texture.<br>One Standard.</h2>
+      <p class="ots-body">AA WIGS specializes in Body Wave — not because it is the only option, but because we chose to become exceptional at one thing. Every unit is built to the same specification before it ships.</p>
+      <div class="ots-lengths">
+        <span class="ots-length-item">18″</span>
+        <span class="ots-length-item">20″</span>
+        <span class="ots-length-item">22″</span>
+        <span class="ots-length-item">24″</span>
+        <span class="ots-length-item">26″</span>
+      </div>
+    </div>
+  </section>
 
   <!-- ── BUYING WITH CONFIDENCE TRUST BAR ─────────────────────── -->
   <section class="hs-bwc">
@@ -700,8 +773,8 @@
     <div class="hs-details-inner">
       <div class="hs-details-head">
         <span class="hs-section-eyebrow">Every Detail Considered</span>
-        <h2>Built for those who invest in lasting quality.</h2>
-        <p>One standard. Every unit prepared with intention — from sourcing to the final look.</p>
+        <h2>One construction standard. Applied to every unit before it ships.</h2>
+        <p>From sourcing to the final inspection — the same specification, every time.</p>
       </div>
       <div class="hs-accordion">
         <div class="hs-acc-item">
@@ -741,7 +814,7 @@
         </div>
         <div class="hs-acc-item">
           <button class="hs-acc-trigger" aria-expanded="false">
-            The AA Promise
+            The AA WIGS Standard
             <span class="hs-plus">+</span>
           </button>
           <div class="hs-acc-body">
@@ -804,12 +877,12 @@
   <section class="section" id="the-first-circle" style="background:var(--champagne);">
     <div class="container">
       <div class="section-head fade-in">
-        <p class="eyebrow">Community</p>
+        <p class="eyebrow">The First Circle</p>
         <h2>The First Circle</h2>
-        <p style="max-width:560px;margin:0 auto;">Discover the community behind AA WIGS through authentic experiences, educational content, unboxings, installations, and the journey of women who become part of our brand.</p>
+        <p style="max-width:520px;margin:0 auto;">The women who choose AA WIGS do not need to be persuaded. They want to understand the product before they purchase it. The First Circle is where that relationship continues — unboxings, installations, honest experiences, and brand stories from women who have worn the standard.</p>
       </div>
       <div class="fade-in" style="text-align:center;margin-top:40px;">
-        <a href="/the-first-circle/" class="btn btn-solid" style="display:inline-block;padding:16px 40px;font-size:0.85rem;letter-spacing:0.12em;text-transform:uppercase;">Explore The First Circle</a>
+        <a href="/the-first-circle/" class="btn btn-solid" style="display:inline-block;padding:16px 40px;font-size:0.85rem;letter-spacing:0.12em;text-transform:uppercase;">Enter The First Circle</a>
       </div>
     </div>
   </section>
@@ -913,9 +986,9 @@
     </style>
     <div class="container">
       <div class="section-head fade-in">
-        <p class="eyebrow" style="color: var(--gold);">Become an Expert</p>
+        <p class="eyebrow" style="color: var(--gold);">Know Before You Choose</p>
         <h2>The AA WIGS Education Series</h2>
-        <p>Everything you need to know — from lace technology to length selection to lifelong care.</p>
+        <p>Education is part of the AA WIGS product. Understand what you are buying before you choose it.</p>
       </div>
 
       <div class="edu-track">
@@ -930,21 +1003,21 @@
         <a class="edu-card" href="/body-wave-guide/">
           <p class="edu-card-eyebrow">Signature Texture</p>
           <p class="edu-card-title">Why Body Wave?</p>
-          <p class="edu-card-desc">Timeless movement, effortless versatility. The guide to the only texture AA WIGS offers — and why.</p>
+          <p class="edu-card-desc">AA WIGS offers one texture. This is why we chose Body Wave — and what that decision means for the unit you receive.</p>
           <span class="edu-card-cta">Read the Guide</span>
         </a>
 
         <a class="edu-card" href="/wig-length-guide/">
           <p class="edu-card-eyebrow">Find Your Fit</p>
-          <p class="edu-card-title">Luxury Length Guide</p>
-          <p class="edu-card-desc">Compare 18″ to 26″ — where each length falls, who it suits, and our recommendation for your style.</p>
+          <p class="edu-card-title">Five Lengths. Find Yours.</p>
+          <p class="edu-card-desc">18″ through 26″ — where each length falls, how it moves, and how to choose the right one before you order.</p>
           <span class="edu-card-cta">Find Your Length</span>
         </a>
 
         <a class="edu-card" href="/luxury-packaging/">
           <p class="edu-card-eyebrow">The Unboxing</p>
-          <p class="edu-card-title">Luxury Packaging Experience</p>
-          <p class="edu-card-desc">Burgundy magnetic box. Champagne satin interior. Every AA WIGS reveal is designed to feel intentional.</p>
+          <p class="edu-card-title">What Arrives at Your Door</p>
+          <p class="edu-card-desc">Burgundy magnetic box. Champagne satin interior. Every component of the AA WIGS delivery is considered before it leaves us.</p>
           <span class="edu-card-cta">See the Box</span>
         </a>
 
@@ -995,24 +1068,24 @@
     <div class="vip-wrap">
       <!-- Left: copy + benefits -->
       <div>
-        <p style="font-family:var(--font-sans);font-size:0.65rem;letter-spacing:3px;text-transform:uppercase;color:#C5A355;margin-bottom:14px;opacity:0.9">Exclusive Access</p>
-        <h2 style="font-family:var(--font-serif);font-size:clamp(1.8rem,4vw,2.6rem);color:#fff;margin-bottom:16px;line-height:1.2">Join the<br>AA WIGS VIP List</h2>
-        <p style="color:rgba(255,255,255,0.65);font-size:0.95rem;line-height:1.7;margin-bottom:32px">Become part of an exclusive group of women who receive first access, private invitations, and luxury education — before anyone else.</p>
+        <p style="font-family:var(--font-sans);font-size:0.65rem;letter-spacing:3px;text-transform:uppercase;color:#C5A355;margin-bottom:14px;opacity:0.9">The First Circle</p>
+        <h2 style="font-family:var(--font-serif);font-size:clamp(1.8rem,4vw,2.6rem);color:#fff;margin-bottom:16px;line-height:1.2">Enter<br>The First Circle.</h2>
+        <p style="color:rgba(255,255,255,0.65);font-size:0.95rem;line-height:1.7;margin-bottom:32px">Early announcements. Brand stories. The AA WIGS Standard — before it goes public.</p>
         <ul class="vip-benefits" style="list-style:none;padding:0;margin:0">
-          <li><span class="vip-bull">✦</span>Early access to new collections &amp; limited restocks</li>
-          <li><span class="vip-bull">✦</span>Private luxury hair education &amp; styling guides</li>
-          <li><span class="vip-bull">✦</span>VIP launch invitations before public drops</li>
-          <li><span class="vip-bull">✦</span>Restock notifications for sold-out shades</li>
+          <li><span class="vip-bull">✦</span>First access to new collections and restocks</li>
+          <li><span class="vip-bull">✦</span>Brand stories and behind-the-standard content</li>
+          <li><span class="vip-bull">✦</span>Announcements before public release</li>
+          <li><span class="vip-bull">✦</span>Restock notifications for your length and shade</li>
         </ul>
       </div>
 
       <!-- Right: form card -->
       <div class="vip-form-card">
-        <p style="font-family:var(--font-serif);font-size:1.15rem;color:#C5A355;margin-bottom:20px;text-align:center">Reserve Your Spot</p>
+        <p style="font-family:var(--font-serif);font-size:1.15rem;color:#C5A355;margin-bottom:20px;text-align:center">Enter The First Circle</p>
 
         <div id="vipSectionSuccess" class="vip-success">
-          <h3>Welcome to the VIP List ✦</h3>
-          <p>You're in. Expect exclusive access, early drops, and luxury education — sent directly to you.</p>
+          <h3>You're In ✦</h3>
+          <p>You are now part of The First Circle.</p>
         </div>
 
         <form id="vipSectionForm" onsubmit="submitVipForm(event,'vipSectionForm','homepage-section')">
@@ -1025,9 +1098,9 @@
           <div id="vipSecError" class="vip-error-msg"></div>
           <div class="vip-gdpr-row">
             <input type="checkbox" id="vipSecGdpr" required>
-            <span>I agree to receive exclusive updates, early access offers, and luxury hair education from AA WIGS. I can unsubscribe at any time. <a href="/privacy.html" style="color:#C5A355;text-decoration:none" target="_blank">Privacy Policy</a>.</span>
+            <span>I agree to receive updates, early announcements, and brand stories from AA WIGS. I can unsubscribe at any time. <a href="/privacy.html" style="color:#C5A355;text-decoration:none" target="_blank">Privacy Policy</a>.</span>
           </div>
-          <button type="submit" class="vip-submit-btn" id="vipSecBtn">Join the VIP List →</button>
+          <button type="submit" class="vip-submit-btn" id="vipSecBtn">Enter The First Circle →</button>
         </form>
       </div>
     </div>
@@ -1036,21 +1109,21 @@
   <div class="luxury-divider" aria-hidden="true"><span>✦</span></div>
 
   <!-- VIP Popup Overlay -->
-  <div id="vipPopup" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(10,0,5,0.72);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px;" role="dialog" aria-modal="true" aria-label="Join the VIP List">
+  <div id="vipPopup" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(10,0,5,0.72);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px;" role="dialog" aria-modal="true" aria-label="Enter The First Circle">
     <div style="background:linear-gradient(145deg,#1c0009,#2e000f);border:1px solid rgba(197,163,85,0.3);border-radius:20px;max-width:480px;width:100%;padding:40px 36px 32px;position:relative;box-shadow:0 30px 80px rgba(0,0,0,0.6);animation:vipSlideIn 0.45s cubic-bezier(0.16,1,0.3,1)">
       <style>
         @keyframes vipSlideIn { from { opacity:0; transform:translateY(30px) scale(0.95); } to { opacity:1; transform:none; } }
       </style>
       <button onclick="closeVipPopup()" aria-label="Close" style="position:absolute;top:14px;right:16px;background:none;border:none;color:rgba(255,255,255,0.4);font-size:1.4rem;cursor:pointer;line-height:1;padding:4px 8px;transition:color 0.2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">&times;</button>
       <div style="text-align:center;margin-bottom:24px">
-        <p style="font-family:var(--font-sans);font-size:0.62rem;letter-spacing:3px;text-transform:uppercase;color:#C5A355;margin-bottom:10px;opacity:0.9">Exclusive Access</p>
-        <h2 style="font-family:var(--font-serif);font-size:1.7rem;color:#fff;margin-bottom:10px;line-height:1.25">Join the AA WIGS<br>VIP List</h2>
-        <p style="color:rgba(255,255,255,0.55);font-size:0.84rem;line-height:1.6">Early drops. Restock alerts.<br>Luxury education. VIP only.</p>
+        <p style="font-family:var(--font-sans);font-size:0.62rem;letter-spacing:3px;text-transform:uppercase;color:#C5A355;margin-bottom:10px;opacity:0.9">The First Circle</p>
+        <h2 style="font-family:var(--font-serif);font-size:1.7rem;color:#fff;margin-bottom:10px;line-height:1.25">Enter<br>The First Circle.</h2>
+        <p style="color:rgba(255,255,255,0.55);font-size:0.84rem;line-height:1.6">Early announcements. Brand stories.<br>The AA WIGS Standard.</p>
       </div>
 
       <div id="vipPopupSuccess" class="vip-success">
         <h3>You're In ✦</h3>
-        <p>Welcome to the VIP list. Watch for exclusive access coming your way.</p>
+        <p>You are now part of The First Circle.</p>
         <button onclick="closeVipPopup()" style="margin-top:16px;padding:10px 24px;background:#C5A355;color:#1a0008;border:none;border-radius:6px;font-weight:700;cursor:pointer;font-size:0.85rem">Continue Shopping →</button>
       </div>
 
@@ -1064,9 +1137,9 @@
         <div id="vipPopError" class="vip-error-msg"></div>
         <div class="vip-gdpr-row" style="margin:10px 0 14px">
           <input type="checkbox" id="vipPopGdpr" required style="accent-color:#C5A355">
-          <span style="font-size:0.72rem;color:rgba(255,255,255,0.45);line-height:1.5">I agree to receive VIP updates &amp; exclusive offers from AA WIGS. Unsubscribe anytime.</span>
+          <span style="font-size:0.72rem;color:rgba(255,255,255,0.45);line-height:1.5">I agree to receive updates and brand stories from AA WIGS. Unsubscribe anytime.</span>
         </div>
-        <button type="submit" class="vip-submit-btn" id="vipPopBtn">Join the VIP List →</button>
+        <button type="submit" class="vip-submit-btn" id="vipPopBtn">Enter The First Circle →</button>
       </form>
     </div>
   </div>
@@ -1180,7 +1253,7 @@
     <div class="container footer-inner">
       <div>
         <span class="brand">AA WIGS</span>
-        <p class="muted">Where Luxury Meets Confidence.</p>
+        <p class="muted">One Texture. One Standard.</p>
       </div>
       <div class="footer-links">
         <a href="collection.html">Shop All</a>
@@ -1201,14 +1274,14 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <p class="footer-brand-statement">AA WIGS is a luxury human hair wig brand specializing exclusively in premium Body Wave wigs. Every collection is crafted with Swiss HD Lace, glueless comfort, premium packaging, and timeless elegance.</p>
+      <p class="footer-brand-statement">AA WIGS specializes in one texture: Body Wave. Every unit is built to the same specification — 13×6 Swiss HD lace, 180% density, virgin human hair, individually inspected before it ships.</p>
       <p>&copy; 2026 AA WIGS. All rights reserved.</p>
     </div>
   </footer>
 
   <div class="mobile-shop-btn">
     <a class="btn btn-solid sticky-cta-btn" href="/collection.html">Shop Signature Collection — From $289</a>
-    <p class="sticky-trust">Free Shipping&nbsp;&nbsp;•&nbsp;&nbsp;1–2 Year Wear&nbsp;&nbsp;•&nbsp;&nbsp;Luxury Packaging Included</p>
+    <p class="sticky-trust">Free Shipping&nbsp;&nbsp;•&nbsp;&nbsp;1–2 Year Wear&nbsp;&nbsp;•&nbsp;&nbsp;Signature Packaging Included</p>
   </div>
 
   <script src="app.js?v=20260308a"></script>
