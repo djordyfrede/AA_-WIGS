@@ -104,7 +104,7 @@
         <label for="shade">Shade Interested In</label>
         <select id="shade" name="shade" required>
           <option value="" disabled selected>Select a shade</option>
-          <option value="1B Natural Black">1B Natural Black</option>
+          <option value="Natural Black">Natural Black</option>
           <option value="Soft Black">Soft Black</option>
           <option value="Chocolate Brown">Chocolate Brown</option>
           <option value="Honey Highlight">Honey Highlight</option>
@@ -116,9 +116,11 @@
         <label for="length">Length Preference</label>
         <select id="length" name="length" required>
           <option value="" disabled selected>Select length</option>
+          <option value="18">18 inches</option>
           <option value="20">20 inches</option>
           <option value="22">22 inches</option>
           <option value="24">24 inches</option>
+          <option value="26">26 inches</option>
         </select>
       </div>
       <div class="form-submit">
@@ -170,6 +172,21 @@
           btn.textContent = 'Notify Me';
         });
       });
+
+      // Pre-fill from URL params (e.g. ?shade=Natural+Black&length=22)
+      (function() {
+        var params = new URLSearchParams(window.location.search);
+        var shade = params.get('shade');
+        var length = params.get('length');
+        if (shade) {
+          var shadeEl = document.getElementById('shade');
+          if (shadeEl) shadeEl.value = shade;
+        }
+        if (length) {
+          var lengthEl = document.getElementById('length');
+          if (lengthEl) lengthEl.value = length;
+        }
+      })();
     </script>
   </div>
 

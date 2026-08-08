@@ -244,7 +244,7 @@
       } else if (totalStock === 0) {
         badgeClass = 'badge-sold';
         badgeText = 'Sold Out';
-        href = productUrl;
+        href = '/waitlist.html?shade=' + encodeURIComponent(shade.displayName);
       } else {
         badgeClass = 'badge-stock';
         badgeText = 'Available';

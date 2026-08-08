@@ -597,6 +597,15 @@
       '27': '27 Honey Blonde'
     };
 
+    var WAITLIST_SHADE_NAMES = {
+      '1B': 'Natural Black',
+      '2': 'Soft Black',
+      '4': 'Chocolate Brown',
+      '613': 'Platinum Blonde',
+      '99J': 'Burgundy Wine',
+      '27': 'Honey Highlight'
+    };
+
     var VARIANTS = {
       '1B': {
         '18': { price: 289, url: 'https://buy.stripe.com/28EbJ18V94nt3hmb4M4c801' },
@@ -697,7 +706,11 @@
       e.preventDefault();
       var variantKey = getVariantKey(selectedColor, selectedLength);
       var info = getStockInfo(selectedColor, selectedLength);
-      if (info.status === 'sold-out' || info.status === 'unavailable') return;
+      if (info.status === 'sold-out' || info.status === 'unavailable') {
+        var wlShade = WAITLIST_SHADE_NAMES[selectedColor] || selectedColor;
+        window.location.href = '/waitlist.html?shade=' + encodeURIComponent(wlShade) + '&length=' + encodeURIComponent(selectedLength);
+        return;
+      }
       var colorName = COLOR_NAMES[selectedColor] || selectedColor;
       var price = getLivePrice(selectedColor, selectedLength);
       Cart.addItem({
@@ -766,18 +779,20 @@
         }
       }
 
-      // Enable/disable Add to Cart buttons
+      // Update Add to Cart / Join Waitlist buttons
       var soldOut = info.status === 'sold-out' || info.status === 'unavailable';
       var livePrice = getLivePrice(selectedColor, selectedLength);
       if (addBtn) {
-        addBtn.disabled = soldOut;
-        addBtn.classList.toggle('btn-disabled', soldOut);
-        addBtn.textContent = soldOut ? 'Sold Out' : 'Add to Bag \u2014 $' + livePrice.toFixed(2);
+        addBtn.disabled = false;
+        addBtn.classList.toggle('btn-waitlist', soldOut);
+        addBtn.classList.toggle('btn-disabled', false);
+        addBtn.textContent = soldOut ? 'Join Waitlist \u2192' : 'Add to Bag \u2014 $' + livePrice.toFixed(2);
       }
       if (mobileBtn) {
-        mobileBtn.disabled = soldOut;
-        mobileBtn.classList.toggle('btn-disabled', soldOut);
-        mobileBtn.textContent = soldOut ? 'Sold Out' : 'Add to Bag \u2014 $' + livePrice.toFixed(2);
+        mobileBtn.disabled = false;
+        mobileBtn.classList.toggle('btn-waitlist', soldOut);
+        mobileBtn.classList.toggle('btn-disabled', false);
+        mobileBtn.textContent = soldOut ? 'Join Waitlist \u2192' : 'Add to Bag \u2014 $' + livePrice.toFixed(2);
       }
 
       // Update length buttons — gray out sold-out lengths for this color

@@ -3002,6 +3002,20 @@ button.btn-disabled {
   border-color: var(--gray-300) !important;
 }
 
+.btn.btn-waitlist,
+button.btn-waitlist {
+  background: transparent !important;
+  color: var(--gold) !important;
+  border: 1.5px solid var(--gold) !important;
+  cursor: pointer !important;
+  opacity: 0.9;
+}
+.btn.btn-waitlist:hover,
+button.btn-waitlist:hover {
+  background: rgba(197,163,85,0.1) !important;
+  opacity: 1;
+}
+
 .product-trust-row {
   display: flex;
   flex-wrap: wrap;
