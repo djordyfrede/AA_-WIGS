@@ -1,0 +1,81 @@
+That starts to create a philosophy visitors can remember.
+
+But I would still improve 3 things.
+
+First, the hero still leads with:
+
+Luxury Body Wave Human Hair Wigs.
+
+That is clear for SEO and first-time visitors, so I would not remove it entirely. But visually, it currently feels more generic than the section underneath.
+
+I would tighten the hero hierarchy to something like:
+
+THE SIGNATURE BODY WAVE HOUSE
+
+Luxury Body Wave
+Human Hair Wigs.
+
+One texture. One construction standard.
+
+Swiss HD Lace · 180% Density · Glueless Ready
+Every unit inspected before it ships.
+
+That way, the hero keeps the important descriptive keywords, but immediately begins teaching visitors what makes AA WIGS different.
+
+Second, your sticky purchase bar is visually competing too strongly with the brand storytelling. In both screenshots, the burgundy “SHOP SIGNATURE COLLECTION — FROM $289” area takes a lot of vertical space on mobile. It almost feels like a second hero following the visitor.
+
+I would make the sticky bar more restrained on mobile:
+
+Signature Body Wave · From $289
+SHOP
+
+Then keep “Free Shipping · 1–2 Year Wear · Signature Packaging” either inside the actual product section or as a much smaller secondary line.
+
+Right now, the bar is interrupting the elegant pacing you created.
+
+Third, I would refine this sentence:
+
+“not because it is the only option, but because we chose to become exceptional at one thing.”
+
+The idea is excellent, but “not because it is the only option” slightly sounds like you're defending the limitation.
+
+AA WIGS doesn't need to defend specialization.
+
+I would make it more assured:
+
+AA WIGS specializes exclusively in Body Wave. We chose depth over endless selection—refining one texture to one defined standard.
+
+Then:
+
+Every unit is built and inspected against that same specification before it ships.
+
+That feels calmer and more authoritative.
+
+So the complete section could become:
+
+THE AA WIGS STANDARD
+One Texture.
+One Standard.
+
+AA WIGS specializes exclusively in Body Wave. We chose depth over endless selection—refining one texture to one defined standard.
+
+Every unit is built and inspected against that same specification before it ships.
+
+18″ · 20″ · 22″ · 24″ · 26″
+
+That's stronger because you're no longer saying “we only have this.”
+
+You're saying:
+
+“We deliberately chose this.”
+
+And that's the psychological difference between limited inventory and specialization.
+
+One more thing: visually, I like that the second section has a lot of breathing room. Do not let the developer start filling that space with cards, icons, badges, extra paragraphs, animations, or little feature boxes. The emptiness is helping it feel intentional.
+
+The website is beginning to communicate:
+
+AA WIGS doesn't sell everything.
+AA WIGS knows exactly what it sells.
+
+That is the direction I would keep pushing.

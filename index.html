@@ -287,6 +287,14 @@
       font-style: italic;
       color: #B8935A;
     }
+    .hs-hero-tagline {
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      letter-spacing: 0.03em;
+      color: rgba(251,247,241,0.45);
+      margin: -0.6rem 0 1.8rem;
+      font-weight: 300;
+    }
     .hs-hero-sub {
       font-family: var(--font-sans);
       font-size: 1rem;
@@ -294,7 +302,7 @@
       color: rgba(251,247,241,0.72);
       margin: 0 0 2.8rem;
       font-weight: 300;
-      max-width: 34ch;
+      max-width: 44ch;
     }
     .hs-hero-btn {
       display: inline-flex;
@@ -669,18 +677,23 @@
       letter-spacing: 2.5px;
       text-transform: uppercase;
       color: rgba(36,24,18,0.4);
-      padding: 0.5rem 1.4rem;
-      border-right: 1px solid rgba(36,24,18,0.12);
+      padding: 0.5rem 0;
     }
-    .ots-length-item:last-child { border-right: none; }
+    .ots-length-item + .ots-length-item::before {
+      content: ' · ';
+      letter-spacing: 0;
+      margin: 0 0.7rem;
+      opacity: 0.45;
+    }
     @media (max-width: 480px) {
       .ots-length-item { padding: 0.4rem 0.85rem; font-size: 0.65rem; }
     }
 
     @media (max-width: 480px) {
       .hs-hero-eyebrow { font-size: 0.58rem; letter-spacing: 3px; margin-bottom: clamp(0.4rem, 1vh, 0.7rem); }
-      .hs-hero-copy h1 { font-size: clamp(1.75rem, 6.5vw, 2rem); line-height: 1.08; margin-bottom: clamp(0.5rem, 1.2vh, 0.75rem); }
-      .hs-hero-sub { font-size: clamp(0.8rem, 2.1vw, 0.875rem); line-height: 1.65; margin-bottom: clamp(0.9rem, 2vh, 1.4rem); }
+      .hs-hero-copy h1 { font-size: clamp(1.75rem, 6.5vw, 2rem); line-height: 1.08; margin-bottom: clamp(0.4rem, 1vh, 0.6rem); }
+      .hs-hero-tagline { font-size: 0.7rem; margin: 0 0 clamp(0.7rem, 1.5vh, 1.1rem); }
+      .hs-hero-sub { font-size: clamp(0.78rem, 2.1vw, 0.85rem); line-height: 1.6; margin-bottom: clamp(0.9rem, 2vh, 1.4rem); }
       .hs-hero-btn { align-self: stretch; justify-content: center; padding: clamp(0.75rem, 1.8vh, 0.9rem) 1.6rem; font-size: 0.72rem; letter-spacing: 2px; }
       .hs-hero-ctas { align-items: stretch; gap: 0.6rem; }
       .hs-hero-btn-sec { display: none; }
@@ -692,7 +705,8 @@
     <div class="hs-hero-copy">
       <span class="hs-hero-eyebrow">The Signature Body Wave House</span>
       <h1>Luxury Body Wave <em>Human Hair</em> Wigs.</h1>
-      <p class="hs-hero-sub">Swiss HD lace that disappears into your hairline.<br>180% Density.&nbsp; Glueless Ready.<br>Every unit inspected before it ships.</p>
+      <p class="hs-hero-tagline">One texture. One construction standard.</p>
+      <p class="hs-hero-sub">Swiss HD Lace · 180% Density · Glueless Ready.<br>Every unit inspected before it ships.</p>
       <div class="hs-hero-ctas">
         <a class="hs-hero-btn" href="/collection.html">Shop Signature Collection — From $289</a>
         <a class="hs-hero-btn-sec" href="/knowledge-center/buying-with-confidence/">How We Earn Your Trust →</a>
@@ -718,7 +732,7 @@
     <div class="ots-inner">
       <p class="ots-eyebrow">The AA WIGS Standard</p>
       <h2 class="ots-heading">One Texture.<br>One Standard.</h2>
-      <p class="ots-body">AA WIGS specializes in Body Wave — not because it is the only option, but because we chose to become exceptional at one thing. Every unit is built to the same specification before it ships.</p>
+      <p class="ots-body">AA WIGS specializes exclusively in Body Wave. We chose depth over endless selection — refining one texture to one defined standard.<br><br>Every unit is built and inspected against that same specification before it ships.</p>
       <div class="ots-lengths">
         <span class="ots-length-item">18″</span>
         <span class="ots-length-item">20″</span>
@@ -1280,8 +1294,11 @@
   </footer>
 
   <div class="mobile-shop-btn">
-    <a class="btn btn-solid sticky-cta-btn" href="/collection.html">Shop Signature Collection — From $289</a>
-    <p class="sticky-trust">Free Shipping&nbsp;&nbsp;•&nbsp;&nbsp;1–2 Year Wear&nbsp;&nbsp;•&nbsp;&nbsp;Signature Packaging Included</p>
+    <div class="sticky-product-info">
+      <span class="sticky-product-name">Signature Body Wave</span>
+      <span class="sticky-product-price">From $289</span>
+    </div>
+    <a class="btn sticky-cta-btn" href="/collection.html">Shop</a>
   </div>
 
   <script src="app.js?v=20260308a"></script>
