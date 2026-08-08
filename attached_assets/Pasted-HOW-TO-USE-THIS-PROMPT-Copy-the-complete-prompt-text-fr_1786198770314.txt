@@ -1,0 +1,34 @@
+HOW TO USE THIS PROMPT
+Copy the complete prompt text from the REPLIT PROMPT section below and paste it directly into the Replit AI chat. Do not split it into multiple messages. Send it as one complete instruction.
+After Replit implements the changes, verify each fix using the VERIFICATION CHECKLIST at the end of this document before closing the session.
+⚠  Do not ask Replit to redesign, restructure, or improve anything beyond these five specific fixes. Scope is intentional.
+✦
+REPLIT PROMPT
+— — — COPY EVERYTHING BELOW THIS LINE — — —
+ 
+Make exactly five targeted fixes to the AA WIGS product page. Do not change any other page, section, layout, color, font, image, navigation, footer, or functionality. Do not redesign anything. Do not add anything new. Execute only these five fixes:
+FIX 1 — REMOVE GENERIC TAGLINE  — REMOVE, DO NOT REPLACE
+On the product page, find and permanently remove this line:
+"Luxury Hair That Moves Like Yours."
+This line appears directly below the product title 'AA Signature Body Wave' in the product header section. Remove it completely. Do not replace it with any other tagline, subtitle, or copy. The specification line below it should remain and move up to fill the space naturally.
+⚠  Do not add any replacement text. Leave the space clean.
+FIX 2 — REMOVE 'LIMITED STOCK' CHECKBOX  — REMOVE, DO NOT REPLACE
+On the product page, find and permanently remove the trust badge or checkbox item that reads:
+"✓ Limited Stock"
+This appears in the trust badges section alongside 'Free U.S. Shipping' and 'Secure Stripe Checkout.' Remove only the 'Limited Stock' item. Keep all other trust badges exactly as they are. Do not add any replacement badge or text in its place.
+⚠  Do not replace with 'Waitlist Only' or any other stock-related message. Simply remove it.
+FIX 3 — REPLACE 'LUXURY PACKAGING' WITH 'SIGNATURE PACKAGING'  — FIND AND REPLACE ALL INSTANCES
+On the product page only, find every instance of the following phrases and replace them with the corrected versions shown below. This fix applies to the product page file only — not the homepage, not other pages.
+ 
+FIND:  "Luxury Packaging Included"
+REPLACE WITH:  "Signature Packaging Included"
+ 
+FIND:  "Free Luxury Packaging Included"
+REPLACE WITH:  "Signature Packaging Included"
+ 
+FIND:  "Luxury packaging — burgundy box, champagne satin"
+REPLACE WITH:  "Signature packaging — burgundy box, champagne satin"
+ 
+FIND:  "LUXURY PACKAGING INCLUDED"
+REPLACE WITH:  "SIGNATURE PACKAGING INCLUDED"
+Search for any other variation of 'Luxury Packaging' on this page and replace with 'Signature Packaging.' The word 'Signature' replaces 'Luxury' in all packaging references on this page. This is a brand standard correction.
