@@ -207,6 +207,10 @@ const Cart = {
           '<span id="cartTotal">$0</span>' +
         '</div>' +
         '<p class="cart-shipping-note">Shipping calculated at checkout</p>' +
+        '<div class="rpb-wrap rpb-cart">' +
+          '<svg class="rpb-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2L3 7v6c0 5.25 3.75 10.15 9 11.25C17.25 23.15 21 18.25 21 13V7l-9-5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><polyline points="9 12 11 14 15 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+          '<div class="rpb-copy"><span class="rpb-headline">14-Day Returns — Lace Uncut</span><a class="rpb-link" href="/returns/#return-conditions">Full return if the lace is uncut →</a></div>' +
+        '</div>' +
         '<a id="cartCheckoutBtn" class="btn btn-solid cart-checkout-btn">Checkout</a>' +
         '<a href="/products/22-swiss-hd-body-wave/" class="cart-continue">Continue Shopping</a>' +
       '</div>';
