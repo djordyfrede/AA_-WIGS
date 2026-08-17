@@ -323,7 +323,7 @@ async function initDatabase() {
         {"title":"Lace Care","intro":"The lace is the most delicate part of your wig. Handle it with intention.","steps":["When cutting lace, use sharp scissors and follow your natural hairline.","If using adhesive, choose a gentle formula designed for HD lace.","Remove adhesive residue with a lace-safe solvent — never pull or peel aggressively.","Clean the lace area after each wear to keep it clear and re-applicable."],"tip":""}
       ])],
       ['announcement_bar_active', 'true'],
-      ['announcement_bar_text', 'FREE U.S. SHIPPING ON ALL ORDERS · LIMITED STOCK AVAILABLE'],
+      ['announcement_bar_text', 'FREE U.S. SHIPPING ON ALL ORDERS · SWISS HD LACE · GLUELESS READY'],
       ['hero_title', 'Where Luxury Meets Confidence'],
       ['hero_subtitle', 'Premium Swiss HD Lace · 180% Density · Free U.S. Shipping'],
       ['shipping_policy', ''],
