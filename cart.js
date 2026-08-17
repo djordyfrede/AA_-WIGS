@@ -1,3 +1,12 @@
+const CART_SHADE_IMAGES = {
+  '1B Natural Black': '/assets/products/model-1b.png',
+  '2 Dark Brown':     '/assets/products/model-2.png',
+  '4 Medium Brown':   '/assets/4/4-1-front.jpg',
+  '27 Honey Blonde':  '/assets/products/model-27.png',
+  '99J Burgundy':     '/assets/products/model-99j.png',
+  '613 Blonde':       '/assets/products/model-613.png'
+};
+
 const Cart = {
   items: [],
 
@@ -86,6 +95,8 @@ const Cart = {
       overlay.classList.add('open');
       document.body.style.overflow = 'hidden';
     }
+    const chatW = document.getElementById('aaChatWidget');
+    if (chatW) chatW.style.display = 'none';
   },
 
   close() {
@@ -96,6 +107,8 @@ const Cart = {
       overlay.classList.remove('open');
       document.body.style.overflow = '';
     }
+    const chatW = document.getElementById('aaChatWidget');
+    if (chatW) chatW.style.display = '';
   },
 
   showConfirmation() {
@@ -124,11 +137,18 @@ const Cart = {
       const lengthInfo = item.length ? ' \u00b7 ' + item.length : '';
       const unitPrice = parseFloat(item.price) || 0;
       const lineTotal = (unitPrice * item.qty).toFixed(2);
+      const thumbSrc = CART_SHADE_IMAGES[item.shade] || '';
+      const thumbEl = thumbSrc
+        ? '<img class="cart-thumb" src="' + thumbSrc + '" alt="" aria-hidden="true" onerror="this.style.display=\'none\'">'
+        : '<div class="cart-thumb cart-thumb-placeholder"></div>';
       html += '<div class="cart-item">' +
-        '<div class="cart-item-info">' +
-          '<h4>' + item.name + '</h4>' +
-          '<p class="cart-item-shade">' + item.shade + lengthInfo + '</p>' +
-          '<p class="cart-item-price">$' + unitPrice.toFixed(2) + (item.qty > 1 ? ' \u00d7 ' + item.qty + ' = $' + lineTotal : '') + '</p>' +
+        '<div class="cart-item-left">' +
+          thumbEl +
+          '<div class="cart-item-info">' +
+            '<h4>' + item.name + '</h4>' +
+            '<p class="cart-item-shade">' + item.shade + lengthInfo + '</p>' +
+            '<p class="cart-item-price">$' + unitPrice.toFixed(2) + (item.qty > 1 ? ' \u00d7 ' + item.qty + ' = $' + lineTotal : '') + '</p>' +
+          '</div>' +
         '</div>' +
         '<div class="cart-item-controls">' +
           '<div class="qty-control">' +
@@ -213,6 +233,12 @@ const Cart = {
         '</div>' +
         '<a id="cartCheckoutBtn" class="btn btn-solid cart-checkout-btn">Checkout</a>' +
         '<a href="/products/22-swiss-hd-body-wave/" class="cart-continue">Continue Shopping</a>' +
+        '<div class="cart-trust-row">' +
+          '<span>\u2713 Free U.S. Shipping</span>' +
+          '<span>\u2713 Secure Stripe Checkout</span>' +
+          '<span>\u2713 Signature Packaging Included</span>' +
+        '</div>' +
+        '<a href="/the-first-circle/" class="cart-first-circle">The First Circle \u2192</a>' +
       '</div>';
     document.body.appendChild(panel);
 
