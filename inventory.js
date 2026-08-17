@@ -35,7 +35,7 @@ var Inventory = {
     var stock = this.getStock(colorCode, length);
     if (stock === -1) return { status: 'unknown', stock: -1, label: '', className: '' };
     if (stock === 0) return { status: 'sold-out', stock: 0, label: 'Sold Out', className: 'stock-sold-out' };
-    if (stock <= 5) return { status: 'low', stock: stock, label: 'Low Stock \u2013 Only ' + stock + ' left', className: 'stock-low' };
+    if (stock <= 5) return { status: 'in-stock', stock: stock, label: 'In Stock', className: 'stock-in' };
     return { status: 'in-stock', stock: stock, label: 'In Stock', className: 'stock-in' };
   },
 

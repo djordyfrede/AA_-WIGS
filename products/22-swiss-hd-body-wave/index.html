@@ -266,10 +266,6 @@
           <p class="price-value-line">✦ Signature Packaging Included</p>
 
           <div class="social-proof-live">
-            <div class="proof-pill proof-viewing">
-              <span class="proof-dot"></span>
-              <span class="proof-text">Limited release. Prepared with intention.</span>
-            </div>
             <div class="proof-pill proof-sold">
               <span class="proof-check">&#10003;</span>
               <span class="proof-text">Each unit is selected, inspected, and presented with care.</span>
@@ -780,7 +776,7 @@
         if (info.status === 'sold-out') {
           indicator.innerHTML = '<span class="stock-sold-out">Sold Out</span>';
         } else if (info.status === 'low') {
-          indicator.innerHTML = '<span class="stock-low">Low Stock — Only ' + info.stock + ' left</span>';
+          indicator.innerHTML = '';
         } else if (info.status === 'in-stock') {
           indicator.innerHTML = '<span class="stock-in">In Stock</span>';
         } else {

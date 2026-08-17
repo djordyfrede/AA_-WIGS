@@ -703,7 +703,7 @@
         if (info.status === 'sold-out') {
           indicator.innerHTML = '<span class="stock-sold-out">Sold Out</span>';
         } else if (info.status === 'low') {
-          indicator.innerHTML = '<span class="stock-low">Low Stock — Only ' + info.stock + ' left</span>';
+          indicator.innerHTML = '';
         } else if (info.status === 'in-stock') {
           indicator.innerHTML = '<span class="stock-in">In Stock</span>';
         } else {

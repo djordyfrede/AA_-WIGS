@@ -2995,23 +2995,6 @@ p {
   display: block;
 }
 
-.stock-low {
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: var(--burgundy);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  padding: 4px 12px;
-  background: rgba(124, 8, 50, 0.06);
-  border-radius: 20px;
-  animation: stockPulse 2s ease-in-out infinite;
-}
-
-@keyframes stockPulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.65; }
-}
-
 .stock-sold-out {
   font-size: 0.78rem;
   font-weight: 600;
@@ -3214,23 +3197,9 @@ button.btn-waitlist:hover {
   transition: opacity 0.5s ease;
 }
 
-.proof-viewing {
-  background: rgba(124,8,50,0.06);
-  color: var(--burgundy);
-}
-
 .proof-sold {
   background: rgba(197,163,85,0.10);
   color: var(--gold-dark);
-}
-
-.proof-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--burgundy);
-  animation: proofPulse 2s ease-in-out infinite;
-  flex-shrink: 0;
 }
 
 .proof-check {
@@ -3242,11 +3211,6 @@ button.btn-waitlist:hover {
 
 .proof-text {
   transition: opacity 0.5s ease;
-}
-
-@keyframes proofPulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.35; }
 }
 
 @media (max-width: 600px) {
